@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 
 class Dialogs {
@@ -18,7 +19,7 @@ class Dialogs {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('ok'),
+                child: Text('Aceptar'),
               )
             ],
           );

@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 class ResultExpertPage extends StatelessWidget {
   const ResultExpertPage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);

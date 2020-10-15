@@ -29,10 +29,11 @@ class AuthApiProvider {
         );
         formData.files.add(MapEntry('file', multiPartFile));
       }
+      print(formData);
       await httpManager.postForm("auth/register", formData);
       return true;
     } catch (error) {
-      Dialogs.alert(context, title: "Error", message: error.message);
+      Dialogs.alert(context, title: "Ocurrio un error", message: "No se pudo crear el experto");
       return false;
     }
   }
@@ -58,13 +59,13 @@ class AuthApiProvider {
       } else {
         Dialogs.alert(
           context,
-          title: "Error",
-          message: "Tu eres un experto, no un estudiante.",
+          title: "Error de inicio sesión",
+          message: "Acceso sólo para investigadores",
         );
         return false;
       }
     } catch (error) {
-      Dialogs.alert(context, title: "Error", message: "Estudiante no encontrado");
+      Dialogs.alert(context, title: "Error de inicio sesión", message: "El usuario y/o contraseña incorrectos");
       return false;
     }
   }
@@ -90,13 +91,13 @@ class AuthApiProvider {
       } else {
         Dialogs.alert(
           context,
-          title: "Error",
-          message: "Tu eres un estudiante, no un experto.",
+          title: "Error de inicio sesión",
+          message: "Acceso sólo para expertos",
         );
         return false;
       }
     } catch (error) {
-      Dialogs.alert(context, title: "Error", message: "Experto no encontrado");
+      Dialogs.alert(context, title: "Error de inicio sesión", message: "El usuario y/o contraseña incorrectos");
       return false;
     }
   }

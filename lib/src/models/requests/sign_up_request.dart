@@ -14,6 +14,7 @@ class SignUpRequest {
   SignUpRequest({
     this.email,
     this.password,
+    this.name,
     this.fullName,
     this.role,
     this.file,
@@ -22,7 +23,7 @@ class SignUpRequest {
   });
 
   Map<String, dynamic> toJson() => {
-        // 'name': name,
+        'name': name,
         'fullName': fullName,
         'file': file,
         'mail': email,
