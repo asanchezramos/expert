@@ -1,5 +1,6 @@
 class ExpertEntity {
   int id;
+  String name;
   String fullName;
   String specialty;
   int status;
@@ -7,11 +8,12 @@ class ExpertEntity {
   String phone;
 
   ExpertEntity(
-      {this.id, this.fullName, this.specialty, this.status, this.photo, this.phone});
+      {this.id, this.name,this.fullName, this.specialty, this.status, this.photo, this.phone});
 
   factory ExpertEntity.fromJson(Map<String, dynamic> json) {
     return ExpertEntity(
       id: json['userId'] ?? 0,
+      name: json['name'] ?? "",
       fullName: json['fullName'] ?? "",
       specialty: json['specialty'] ?? "",
       status: json['status'] ?? 0,

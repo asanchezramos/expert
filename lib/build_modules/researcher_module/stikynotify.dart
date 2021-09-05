@@ -14,13 +14,7 @@ class FunkyNotificationState extends State<FunkyNotification>
   void initState() {
     super.initState();
 
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 750));
-    position = Tween<Offset>(begin: Offset(0.0, -4.0), end: Offset.zero)
-        .animate(
-        CurvedAnimation(parent: controller, curve: Curves.bounceInOut));
 
-    controller.forward();
   }
 
   @override

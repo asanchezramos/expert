@@ -6,6 +6,8 @@ class SessionManager {
 
   static const String USER_ID = "USER_ID";
   static const String USER_ROLE = "USER_ROLE";
+  static const String RESEARCH_ID = "RESEARCH_ID";
+  static const String REMEMBER_ID = "REMEMBER_ID";
 
   static Future<SessionManager> getInstance() async {
     if (_instance == null) {
@@ -37,6 +39,24 @@ class SessionManager {
   String getRole() {
     if (_sharedPreference == null) return null;
     return _sharedPreference.getString(USER_ROLE) ?? null;
+  }
+
+  setResearchId(int researchId) async {
+    if (_sharedPreference == null) return null;
+    return await _sharedPreference.setInt(RESEARCH_ID, researchId);
+  }
+
+  int getResearchId() {
+    if (_sharedPreference == null) return null;
+    return _sharedPreference.getInt(RESEARCH_ID) ?? null;
+  }
+  bool getRememberId(){
+    if (_sharedPreference == null) return null;
+    return _sharedPreference.getBool(REMEMBER_ID) ?? false;
+  }
+  setRememberId(bool rememberId) async {
+    if (_sharedPreference == null) return null;
+    return await _sharedPreference.setBool(REMEMBER_ID, rememberId);
   }
 
   clear() async {

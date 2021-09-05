@@ -35,6 +35,20 @@ class HttpManager {
     return parsed;
   }
 
+  Future<dynamic> delete(url) async {
+    final headers = await _getHeaders();
+    final response =
+    await http.Client().delete(AppConfig.API_URL + url, headers: headers);
+    print(response.body);
+    final parsed = jsonDecode(response.body);
+    final success = parsed["success"];
+
+    if (!success) {
+      throw new Exception("error al eliminar");
+    }
+    return parsed;
+  }
+
   Future<dynamic> post(url, data) async {
     final headers = await _getHeaders();
     final response = await http.Client().post(AppConfig.API_URL + url,
@@ -72,9 +86,31 @@ class HttpManager {
     }
   }
 
+  Future<dynamic> putForm(url, data) async {
+    final dio = Dio();
+    Options options;
+    final token = await TokenManager.getInstance().getToken();
+    if (token != null) {
+      options =
+          Options(headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    }
+
+    try {
+      final response =
+      await dio.put(AppConfig.API_URL + url, data: data, options: options);
+      final parsed = response.data;
+      final success = parsed["success"];
+      if (!success) {
+        throw new Exception("error al crear");
+      }
+      return parsed;
+    } catch (e) {
+      throw new Exception("error al crear");
+    }
+  }
   _getHeaders() async {
     final token = await TokenManager.getInstance().getToken();
-
+    print(token);
     return {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'

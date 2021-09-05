@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:expert/build_modules/expert_module/init_expert.dart';
+import 'package:expert/build_modules/researcher_module/init_researcher.dart';
 import 'package:expert/src/pages/expert/pages/login_expert_page.dart';
 import 'package:expert/src/pages/student/Pages/login_student_page.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,7 @@ class AuthApiProvider {
       await httpManager.postForm("auth/register", formData);
       return true;
     } catch (error) {
-      Dialogs.alert(context, title: "Ocurrio un error", message: "No se pudo crear el experto");
+      Dialogs.alert(context, title: "Ocurrio un error", message: "No se pudo crear el usuario");
       return false;
     }
   }
@@ -55,6 +57,7 @@ class AuthApiProvider {
         final session = await SessionManager.getInstance();
         await session.setUserId(user.id);
         await session.setRole(user.role);
+        print("asdasda");
         return true;
       } else {
         Dialogs.alert(
@@ -108,15 +111,15 @@ class AuthApiProvider {
     final session = await SessionManager.getInstance();
     final role = session.getRole();
     if (role == "U") {
-      nextPage = LoginStudentPage();
+      nextPage = InitResearcherModule();
     } else {
-      nextPage = LoginExpertPage();
+      nextPage = InitExpertModule();
     }
     await session.clear();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => nextPage),
-      (Route<dynamic> route) => false,
-    );
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>nextPage
+                ));
   }
 }

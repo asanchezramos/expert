@@ -1,4 +1,8 @@
+import 'package:expert/build_modules/researcher_module/perfil_expert.dart';
+import 'package:expert/src/app_config.dart';
 import 'package:flutter/material.dart';
+import 'package:expert/src/models/expert_entity.dart';
+import 'package:expert/src/api/expert_api_provider.dart';
 
 class FindResearcher extends SearchDelegate{
   @override
@@ -6,7 +10,7 @@ class FindResearcher extends SearchDelegate{
     // TODO: implement buildActions
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: Icon(Icons.clear, color: Colors.pink[900],),
         onPressed: () {
           query = '';
         },
@@ -19,7 +23,7 @@ class FindResearcher extends SearchDelegate{
     // TODO: implement buildLeading
     return IconButton(
       icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+          icon: AnimatedIcons.menu_arrow, color: Colors.pink[900], progress: transitionAnimation),
       onPressed: () {
         close(context, null);
       },
@@ -29,31 +33,54 @@ class FindResearcher extends SearchDelegate{
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
+    print(query);
+    String param = " " +query ;
     return FutureBuilder(
-      future: onLoadRedResults(),
+      future: ExpertApiProvider.getFindExpert(param),
       builder: (context, snapshot) {
         if(snapshot.hasData){
           return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
+                ExpertEntity element = snapshot.data[index];
                 return ListTile(
-                  leading: CircleAvatar(
+                  contentPadding: EdgeInsets.only(left: 20,top: 10,bottom: 10,right: 20),
+                  leading: (element.photo.length <= 0) ? CircleAvatar(
+                    radius: 25,
                     backgroundColor: Colors.amber,
-                    child: Text(snapshot.data[index]["acronimo"],style: TextStyle(color: Colors.pink[900]),),
+                    child:  Text(
+                      onBuildLettersPicture(element.name , element.fullName),
+                      style: TextStyle(color: Colors.pink[900], fontWeight: FontWeight.bold),
+                    ),
+                    //child: Image.asset("assets/programmer.png"),
+                  ) :
+                  CircleAvatar(
+                    backgroundImage: NetworkImage("${AppConfig.API_URL}public/${element.photo}"),
+                    backgroundColor: Colors.grey,
+                    radius: 25,
                     //child: Image.asset("assets/programmer.png"),
                   ),
                   title: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(snapshot.data[index]["nombre"]),
-                        Text(snapshot.data[index]["especialidad"], style: TextStyle(fontWeight: FontWeight.bold),)
+                        Text(element.name + ' ' + element.fullName),
+                        Text(
+                          element.specialty,
+                          style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                        )
                       ],
                     ),
                   ),
-                  onTap: () {},
+                  trailing: Icon(Icons.arrow_forward, color: Colors.pink[900],) ,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => PerfilExpert(element)));
+                  },
                 );
               });
         }else{
@@ -71,30 +98,51 @@ class FindResearcher extends SearchDelegate{
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
     return FutureBuilder(
-      future: onLoadRedSuggestions(),
+      future: ExpertApiProvider.getFindExpert(" "),
       builder: (context, snapshot) {
         if(snapshot.hasData){
           return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
+                ExpertEntity element = snapshot.data[index];
                 return ListTile(
-                  leading: CircleAvatar(
+                  contentPadding: EdgeInsets.only(left: 20,top: 10,bottom: 10,right: 20),
+                  leading: (element.photo.length <= 0) ? CircleAvatar(
+                    radius: 25,
                     backgroundColor: Colors.amber,
-                    child: Text(snapshot.data[index]["acronimo"],style: TextStyle(color: Colors.pink[900]),),
+                    child:  Text(
+                      onBuildLettersPicture(element.name , element.fullName),
+                      style: TextStyle(color: Colors.pink[900], fontWeight: FontWeight.bold),
+                    ),
+                    //child: Image.asset("assets/programmer.png"),
+                  ) :
+                  CircleAvatar(
+                    backgroundImage: NetworkImage("${AppConfig.API_URL}public/${element.photo}"),
+                    backgroundColor: Colors.grey,
+                    radius: 25,
                     //child: Image.asset("assets/programmer.png"),
                   ),
-                  title: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                  title: Container( 
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(snapshot.data[index]["nombre"]),
-                        Text(snapshot.data[index]["especialidad"], style: TextStyle(fontWeight: FontWeight.bold),)
+                        Text(element.name + ' ' + element.fullName),
+                        Text(
+                          element.specialty,
+                          style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                        )
                       ],
                     ),
                   ),
-                  onTap: () {},
+                  trailing: Icon(Icons.arrow_forward, color: Colors.pink[900],) ,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => PerfilExpert(element)));
+                  },
                 );
               });
         }else{
@@ -109,6 +157,21 @@ class FindResearcher extends SearchDelegate{
   }
   @override
   String get searchFieldLabel => 'Búsqueda de experto';
+}
+String onBuildLettersPicture(firstLetterAux, secondLetterAux) {
+
+  String fistLetter = "" ;
+  String lastLetter = "";
+  List<String> aa = firstLetterAux.split(" ");
+  if(aa.length > 0){
+    fistLetter = aa[0].substring(0,1).toUpperCase();
+  }
+  List<String> bb = secondLetterAux.split(" ") ;
+  if(bb.length > 0){
+    lastLetter = bb[0].substring(0,1).toUpperCase();
+  }
+  String oChars = "$fistLetter$lastLetter" ;
+  return oChars;
 }
 Future onLoadRedSuggestions() async {
   final List<dynamic> _listRed = [
