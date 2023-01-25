@@ -3,7 +3,7 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ExpertResp extends StatefulWidget {
-  const ExpertResp({Key key}) : super(key: key);
+  const ExpertResp({Key? key}) : super(key: key);
   @override
   _ExpertRespState createState() => _ExpertRespState();
 }
@@ -33,7 +33,7 @@ class _ExpertRespState extends State<ExpertResp> {
 }
 
 class ExpertContact extends StatelessWidget {
-  const ExpertContact({Key key}) : super(key: key);
+  const ExpertContact({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +57,10 @@ class ExpertContact extends StatelessWidget {
 }
 
 class DataExpert extends StatelessWidget {
-  const DataExpert({Key key, this.name, this.expert}) : super(key: key);
+  const DataExpert({Key? key, this.name, this.expert}) : super(key: key);
 
-  final String name;
-  final String expert;
+  final String? name;
+  final String? expert;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +128,7 @@ class DataExpert extends StatelessWidget {
 }
 
 class ComentExpert extends StatelessWidget {
-  const ComentExpert({Key key}) : super(key: key);
+  const ComentExpert({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

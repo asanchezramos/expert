@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_launcher_icon.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-xhdpi\\launcher_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_screen.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\screen.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_launcher_icon.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\launcher_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_screen.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\screen.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-hdpi_launcher_icon.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-hdpi\\launcher_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_launcher_icon.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\launcher_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-mdpi_launcher_icon.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-mdpi\\launcher_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_screen.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-xhdpi\\screen.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-mdpi_screen.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-mdpi\\screen.png"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\drawable_launch_background.xml.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\drawable\\launch_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-hdpi_screen.png.flat",
+        "source": "C:\\Users\\tjcri\\Documents\\Github\\expert\\android\\app\\src\\main\\res\\mipmap-hdpi\\screen.png"
+    }
+]

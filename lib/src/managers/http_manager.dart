@@ -12,7 +12,7 @@ class HttpManager {
   Future<dynamic> get(url) async {
     final headers = await _getHeaders();
     final response =
-        await http.Client().get(AppConfig.API_URL + url, headers: headers);
+        await http.Client().get(Uri.parse(AppConfig.API_URL + url ), headers: headers);
     final parsed = jsonDecode(response.body);
     final success = parsed["success"];
 
@@ -25,7 +25,7 @@ class HttpManager {
   Future<dynamic> put(url) async {
     final headers = await _getHeaders();
     final response =
-        await http.Client().put(AppConfig.API_URL + url, headers: headers);
+        await http.Client().put(Uri.parse(AppConfig.API_URL + url), headers: headers);
     final parsed = jsonDecode(response.body);
     final success = parsed["success"];
 
@@ -38,7 +38,7 @@ class HttpManager {
   Future<dynamic> delete(url) async {
     final headers = await _getHeaders();
     final response =
-    await http.Client().delete(AppConfig.API_URL + url, headers: headers);
+    await http.Client().delete(Uri.parse(AppConfig.API_URL + url), headers: headers);
     print(response.body);
     final parsed = jsonDecode(response.body);
     final success = parsed["success"];
@@ -51,7 +51,7 @@ class HttpManager {
 
   Future<dynamic> post(url, data) async {
     final headers = await _getHeaders();
-    final response = await http.Client().post(AppConfig.API_URL + url,
+    final response = await http.Client().post(Uri.parse(AppConfig.API_URL + url),
         body: jsonEncode(data), headers: headers);
     final parsed = jsonDecode(response.body);
     final success = parsed["success"];
@@ -64,8 +64,8 @@ class HttpManager {
 
   Future<dynamic> postForm(url, data) async {
     final dio = Dio();
-    Options options;
-    final token = await TokenManager.getInstance().getToken();
+    Options? options;
+    final token = await TokenManager.getInstance()!.getToken();
     if (token != null) {
       options =
           Options(headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
@@ -88,8 +88,8 @@ class HttpManager {
 
   Future<dynamic> putForm(url, data) async {
     final dio = Dio();
-    Options options;
-    final token = await TokenManager.getInstance().getToken();
+    Options? options;
+    final token = await TokenManager.getInstance()!.getToken();
     if (token != null) {
       options =
           Options(headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
@@ -109,7 +109,7 @@ class HttpManager {
     }
   }
   _getHeaders() async {
-    final token = await TokenManager.getInstance().getToken();
+    final token = await TokenManager.getInstance()!.getToken();
     print(token);
     return {
       'Content-Type': 'application/json; charset=UTF-8',

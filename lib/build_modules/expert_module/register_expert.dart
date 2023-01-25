@@ -20,19 +20,20 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
   final TextEditingController _lastName = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _speciality = TextEditingController();
+  final TextEditingController _orcid = TextEditingController();
   final TextEditingController _firstPass = TextEditingController();
   final TextEditingController _lastPass = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   String _siglas = "";
   bool isBusy = false;
-  File imageFile;
+  File? imageFile;
   bool visibleFirstPass = false;
   bool visibleLastPass = false;
   pickImageFromGallery() async {
-    var photo = await ImagePicker.pickImage(source: ImageSource.gallery);
+     PickedFile? photo = await ImagePicker.platform.pickImage(source: ImageSource.gallery); 
     setState(() {
-      imageFile = photo;
+     imageFile = File(photo!.path);
     });
   }
   void _toggleFirstPass() {
@@ -54,8 +55,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
           appBar: AppBar(
             title: Text("Regístrate Experto"),
             centerTitle: true,
-            leading: BackButton(
-              color: Colors.white,
+            leading: BackButton( 
               onPressed: () {
 
                 FocusScope.of(context).unfocus();
@@ -70,7 +70,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
             onTap: () {
               final FocusScopeNode focus = FocusScope.of(context);
               if (!focus.hasPrimaryFocus && focus.hasFocus) {
-                FocusManager.instance.primaryFocus.unfocus();
+                FocusManager.instance.primaryFocus!.unfocus();
               }
             },
             child: Padding(
@@ -86,7 +86,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                         child: Stack(
                           children: [
                             CircleAvatar(
-                              backgroundImage: FileImage(imageFile),
+                              backgroundImage: FileImage(imageFile!),
                               backgroundColor: Colors.grey,
                               radius: 50,
                               //child: Image.asset("assets/programmer.png"),
@@ -96,8 +96,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                               right: 0,
                               child: IconButton(
                                 icon: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.pink[900],
+                                  Icons.camera_alt, 
                                 ),
                                 onPressed: () {
                                   pickImageFromGallery();
@@ -124,8 +123,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                               right: 0,
                               child: IconButton(
                                 icon: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.pink[900],
+                                  Icons.camera_alt, 
                                 ),
                                 onPressed: () {
                                   pickImageFromGallery();
@@ -141,7 +139,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                       child: TextFormField(
                         controller: _firstName,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.text,
@@ -155,11 +153,14 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                           String fistLetter = "" ;
                           String lastLetter = "";
                           List<String> aa = value.split(" ");
-                          if(aa.length > 0){
+                          if(aa.length > 0 && value.length > 0){
                             fistLetter = aa[0].substring(0,1).toUpperCase();
                           }
                           List<String> bb = _lastName.text.split(" ");
-                          if(bb.length > 0){
+                          print(_lastName.text.length);
+                          print(_lastName.text);
+                          print(bb.length  );
+                          if(bb.length > 0 && _lastName.text.length > 0){
                             lastLetter = bb[0].substring(0,1).toUpperCase();
                           }
                           String oChars = "$fistLetter$lastLetter";
@@ -175,7 +176,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                       child: TextFormField(
                         controller: _lastName,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.text,
@@ -189,12 +190,12 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                           String fistLetter = "" ;
                           String lastLetter = "";
                           List<String> aa = _firstName.text.split(" ");
-                          if(aa.length > 0){
+                          if(aa.length > 0 && _firstName.text.length > 0){
                             fistLetter = aa[0].substring(0,1).toUpperCase();
                           }
                           List<String> bb = value.split(" ") ;
                           print(bb);
-                          if(bb.length > 0){
+                          if(bb.length > 0 && value.length > 0){
                             lastLetter = bb[0].substring(0,1).toUpperCase();
                           }
                           String oChars = "$fistLetter$lastLetter" ;
@@ -210,7 +211,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                       child: TextFormField(
                         controller: _email,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
@@ -227,7 +228,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                       child: TextFormField(
                         controller: _speciality,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
@@ -258,9 +259,26 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextFormField(
+                        controller: _orcid,
+                        validator: (val) {
+                          if (val!.isEmpty) return 'Este campo es requerido';
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.none,
+                        decoration: InputDecoration(
+                          labelText: "Código ORCID",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: TextFormField(
                         controller: _phone,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.phone,
@@ -277,7 +295,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                       child: TextFormField(
                         controller: _firstPass,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.visiblePassword,
@@ -299,7 +317,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                       child: TextFormField(
                         controller: _lastPass,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         keyboardType: TextInputType.visiblePassword,
@@ -322,12 +340,9 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
               )
             ),
           ),
-        bottomSheet: Container(
-          color: Colors.pink[900],
+        bottomSheet: Container( 
           height: 50,
-          child: FlatButton(
-            color: Colors.pink[900],
-            textColor: Colors.amber,
+          child: ElevatedButton(  
             child: Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -356,7 +371,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                 Dialogs.alert(context,title: "Advertencia",message: "Las contraseñas no coinciden");
                 return ;
               }
-              if (_form.currentState.validate() && !isBusy) {
+              if (_form.currentState!.validate() && !isBusy) {
                 setState(() {
                   isBusy = true;
                 });
@@ -370,6 +385,7 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
                   password: _firstPass.text,
                   file: imageFile != null ? imageFile : null,
                   role: 'E',
+                  orcid: _orcid.text
                 );
 
                 final success = await auth.register(context, request);
@@ -392,11 +408,12 @@ class _RegisterExpertModuleState extends State<RegisterExpertModule> {
     );
   }
 
-  Future<bool> _onBackPressed() {
+  Future<bool> _onBackPressed() async {
     FocusScope.of(context).unfocus();
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => InitExpertModule()));
+            return false;
   }
 }

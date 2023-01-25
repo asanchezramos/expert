@@ -35,7 +35,8 @@ class AuthApiProvider {
       await httpManager.postForm("auth/register", formData);
       return true;
     } catch (error) {
-      Dialogs.alert(context, title: "Ocurrio un error", message: "No se pudo crear el usuario");
+      Dialogs.alert(context,
+          title: "Ocurrio un error", message: "No se pudo crear el usuario");
       return false;
     }
   }
@@ -49,15 +50,16 @@ class AuthApiProvider {
         "auth/login",
         loginRequest.toJson(),
       );
-      final token = responseData['token'] as String;
+      final token = responseData['token'] as String?;
       final user = UserEntity.fromJson(responseData['data']);
 
       if (user.role == "U") {
-        await TokenManager.getInstance().setToken(token);
-        final session = await SessionManager.getInstance();
-        await session.setUserId(user.id);
-        await session.setRole(user.role);
-        print("asdasda");
+        await TokenManager.getInstance()!.setToken(token);
+        SessionManager? session = await SessionManager.getInstance();
+        if (session != null) {
+          await session.setUserId(user.id);
+          await session.setRole(user.role);
+        }
         return true;
       } else {
         Dialogs.alert(
@@ -68,7 +70,9 @@ class AuthApiProvider {
         return false;
       }
     } catch (error) {
-      Dialogs.alert(context, title: "Error de inicio sesión", message: "El usuario y/o contraseña incorrectos");
+      Dialogs.alert(context,
+          title: "Error de inicio sesión",
+          message: "El usuario y/o contraseña incorrectos");
       return false;
     }
   }
@@ -82,14 +86,16 @@ class AuthApiProvider {
         "auth/login",
         loginRequest.toJson(),
       );
-      final token = responseData['token'] as String;
+      final token = responseData['token'] as String?;
       final user = UserEntity.fromJson(responseData['data']);
 
       if (user.role == "E") {
-        await TokenManager.getInstance().setToken(token);
-        final session = await SessionManager.getInstance();
-        await session.setUserId(user.id);
-        await session.setRole(user.role);
+        await TokenManager.getInstance()!.setToken(token);
+        SessionManager? session = await SessionManager.getInstance();
+        if (session != null) {
+          await session.setUserId(user.id);
+          await session.setRole(user.role);
+        }
         return true;
       } else {
         Dialogs.alert(
@@ -100,26 +106,27 @@ class AuthApiProvider {
         return false;
       }
     } catch (error) {
-      Dialogs.alert(context, title: "Error de inicio sesión", message: "El usuario y/o contraseña incorrectos");
+      Dialogs.alert(context,
+          title: "Error de inicio sesión",
+          message: "El usuario y/o contraseña incorrectos");
       return false;
     }
   }
 
   static Future logout(context) async {
     Widget nextPage;
-    await TokenManager.getInstance().cleanToken();
-    final session = await SessionManager.getInstance();
-    final role = session.getRole();
-    if (role == "U") {
-      nextPage = InitResearcherModule();
-    } else {
-      nextPage = InitExpertModule();
+    await TokenManager.getInstance()!.cleanToken();
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      final role = session.getRole();
+      if (role == "U") {
+        nextPage = InitResearcherModule();
+      } else {
+        nextPage = InitExpertModule();
+      }
+      await session.clear();
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => nextPage));
     }
-    await session.clear();
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) =>nextPage
-                ));
   }
 }

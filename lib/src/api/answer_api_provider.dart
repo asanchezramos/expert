@@ -9,14 +9,13 @@ import '../managers/http_manager.dart';
 class AnswerApiProvider {
   static final HttpManager httpManager = HttpManager();
 
-  static Future<List<SolicitudeAnswerEntity>> getAnswerBySolicitude(
+  static Future<List<SolicitudeAnswerEntity>?> getAnswerBySolicitude(
       solicitudeId) async {
     try {
       final responseData =
           await httpManager.get("mobile/solicitude-answer/$solicitudeId");
       return SolicitudeAnswerEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return null;
     }
   }
@@ -39,9 +38,8 @@ class AnswerApiProvider {
 
       await httpManager.postForm("mobile/answer", formData);
       return true;
-    } catch (e) {
-      print("Error ${e.message}");
-      Dialogs.alert(context, title: "Error", message: e.message);
+    } catch (e) { 
+      Dialogs.alert(context, title: "Error", message: "");
       return false;
     }
   }

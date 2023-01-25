@@ -1,8 +1,8 @@
 class CriterioEntity {
-  int criterioId;
-  int expertId;
-  String name;
-  String speciality;
+  int? criterioId;
+  int? expertId;
+  String? name;
+  String? speciality;
 
   CriterioEntity(
       {this.criterioId, this.expertId,this.name, this.speciality});
@@ -16,7 +16,7 @@ class CriterioEntity {
     );
   }
   static List<CriterioEntity> fromJSONList(List<dynamic> jsonList) {
-    List<CriterioEntity> items = List<CriterioEntity>();
+    List<CriterioEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(CriterioEntity.fromJson(json));
     });

@@ -2,7 +2,7 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
 }
 
 class Student extends StatelessWidget {
-  const Student({Key key}) : super(key: key);
+  const Student({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class Student extends StatelessWidget {
 }
 
 class Expert extends StatelessWidget {
-  const Expert({Key key}) : super(key: key);
+  const Expert({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

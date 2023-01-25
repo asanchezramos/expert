@@ -1,19 +1,19 @@
 import 'dart:io';
 
 class ResearchEntity {
-  int researchId;
-  int researcherId;
-  int expertId;
-  String title;
-  String speciality;
-  String authors;
-  String observation;
-  String attachmentOne;
-  String attachmentTwo;
-  int status;
-  File attachmentOneFile;
-  File attachmentTwoFile;
-  String updatedAt;
+  int? researchId;
+  int? researcherId;
+  int? expertId;
+  String? title;
+  String? speciality;
+  String? authors;
+  String? observation;
+  String? attachmentOne;
+  String? attachmentTwo;
+  int? status;
+  File? attachmentOneFile;
+  File? attachmentTwoFile;
+  String? updatedAt;
 
   ResearchEntity(
       { this.researchId,
@@ -62,7 +62,7 @@ class ResearchEntity {
         "attachmentTwo": attachmentTwo
       };
   static List<ResearchEntity> fromJSONList(List<dynamic> jsonList) {
-    List<ResearchEntity> items = List<ResearchEntity>();
+    List<ResearchEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(ResearchEntity.fromJson(json));
     });

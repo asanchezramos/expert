@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'list_experts.dart';
 
 class LoginStudentPage extends StatelessWidget {
-  const LoginStudentPage({Key key}) : super(key: key);
+  const LoginStudentPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class LoginStudentPage extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
-  const Logo({Key key}) : super(key: key);
+  const Logo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class Logo extends StatelessWidget {
 }
 
 class FormStudent extends StatefulWidget {
-  const FormStudent({Key key}) : super(key: key);
+  const FormStudent({Key? key}) : super(key: key);
 
   @override
   _FormStudentState createState() => _FormStudentState();
@@ -90,7 +90,7 @@ class _FormStudentState extends State<FormStudent> {
             TextFormField(
               controller: _email,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -104,7 +104,7 @@ class _FormStudentState extends State<FormStudent> {
               controller: _pass,
               obscureText: true,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -116,7 +116,7 @@ class _FormStudentState extends State<FormStudent> {
             ),
             InkWell(
               onTap: () async {
-                if (_form.currentState.validate()) {
+                if (_form.currentState!.validate()) {
                   setState(() {
                     isBusy = true;
                   });
@@ -168,7 +168,7 @@ class _FormStudentState extends State<FormStudent> {
 }
 
 class RegisterLogin extends StatelessWidget {
-  const RegisterLogin({Key key}) : super(key: key);
+  const RegisterLogin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../../student/widgets/list.dart';
 
 class StudentList extends StatelessWidget {
-  const StudentList({Key key}) : super(key: key);
+  const StudentList({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -38,12 +38,12 @@ class StudentList extends StatelessWidget {
 
 Widget _buildList(BuildContext context) {
   final Responsive responsive = Responsive.of(context);
-  return FutureBuilder<List<UserSolicitudeEntity>>(
+  return FutureBuilder<List<UserSolicitudeEntity>?>(
       future: SolicitudeApiProvider.getAllUserSolicitudesByExpert(),
       builder: (BuildContext context,
-          AsyncSnapshot<List<UserSolicitudeEntity>> snapshot) {
+          AsyncSnapshot<List<UserSolicitudeEntity>?> snapshot) {
         if (snapshot.hasData) {
-          final items = snapshot.data;
+          final items = snapshot.data!;
           if (items.length == 0) {
             return Text("No hay solicitudes");
           }
@@ -66,7 +66,7 @@ Widget _buildList(BuildContext context) {
                           },
                           child: ListStudent(
                             name: items[index].fullName,
-                            photo: snapshot.data[index].photo,
+                            photo: snapshot.data![index].photo,
                             expert: items[index].specialty != ''
                                 ? items[index].specialty
                                 : '-',
@@ -86,7 +86,7 @@ Widget _buildList(BuildContext context) {
 }
 
 class Search extends StatelessWidget {
-  const Search({Key key}) : super(key: key);
+  const Search({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

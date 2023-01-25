@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class Dialogs {
   static void alert(BuildContext context,
-      {String title = "", String message = ""}) {
+      {String title = "", String? message = ""}) {
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context) {
@@ -13,7 +13,7 @@ class Dialogs {
             content: Container(
               padding: EdgeInsets.only(top: 10),
               child: Text(
-                message,
+                message!,
                 style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
               ),
             ),
@@ -28,7 +28,7 @@ class Dialogs {
           );
         });
   }
-  static Future<bool> confirm(BuildContext context,
+  static Future<bool?> confirm(BuildContext context,
       {String title = "", String message = ""}) {
     return showCupertinoDialog(
         context: context,

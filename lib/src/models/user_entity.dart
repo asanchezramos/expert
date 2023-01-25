@@ -1,7 +1,7 @@
 class UserEntity {
-  int id;
-  String email;
-  String role;
+  int? id;
+  String? email;
+  String? role;
 
   UserEntity({
     this.id,
@@ -18,7 +18,7 @@ class UserEntity {
   }
 
   static List<UserEntity> fromJSONList(List<dynamic> jsonList) {
-    List<UserEntity> items = List<UserEntity>();
+    List<UserEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(UserEntity.fromJson(json));
     });

@@ -7,14 +7,14 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class RegisterStudentPage extends StatefulWidget {
-  const RegisterStudentPage({Key key}) : super(key: key);
+  const RegisterStudentPage({Key? key}) : super(key: key);
 
   @override
   _RegisterStudentPageState createState() => _RegisterStudentPageState();
 }
 
 class _RegisterStudentPageState extends State<RegisterStudentPage> {
-  Future<String> imageFilePath;
+  Future<String?>? imageFilePath;
   pickImageFromGallery() {
     setState(() {
       imageFilePath = FilePickerManager.pickImageFromGallery();
@@ -40,12 +40,12 @@ class _RegisterStudentPageState extends State<RegisterStudentPage> {
   }
 
   Widget _logo() {
-    return FutureBuilder<String>(
+    return FutureBuilder<String?>(
       future: imageFilePath,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return _buildLogo(snapshot.data);
+          return _buildLogo(snapshot.data!);
         } else if (snapshot.error != null) {
           return const Text(
             'No se pudo abrir la galería',
@@ -92,7 +92,7 @@ class _RegisterStudentPageState extends State<RegisterStudentPage> {
 }
 
 class Logo extends StatelessWidget {
-  const Logo({Key key}) : super(key: key);
+  const Logo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +108,8 @@ class Logo extends StatelessWidget {
 }
 
 class FormStudentRegister extends StatefulWidget {
-  final Future<String> imageFilePath;
-  const FormStudentRegister({Key key, this.imageFilePath}) : super(key: key);
+  final Future<String?>? imageFilePath;
+  const FormStudentRegister({Key? key, this.imageFilePath}) : super(key: key);
 
   @override
   _FormStudentRegisterState createState() => _FormStudentRegisterState();
@@ -144,7 +144,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
             TextFormField(
               controller: _email,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -154,7 +154,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
             TextFormField(
               controller: _fullName,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -164,7 +164,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
             TextFormField(
               controller: _specialty,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -174,7 +174,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
             TextFormField(
               controller: _phone,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -187,7 +187,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
             TextFormField(
               controller: _pass,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               obscureText: true,
@@ -202,7 +202,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
               controller: _confirmPass,
               obscureText: true,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 if (val != _pass.text) return 'Not Match';
                 return null;
               },
@@ -215,7 +215,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
             ),
             InkWell(
               onTap: () async {
-                if (_form.currentState.validate() && !isBusy) {
+                if (_form.currentState!.validate() && !isBusy) {
                   setState(() {
                     isBusy = true;
                   });
@@ -270,7 +270,7 @@ class _FormStudentRegisterState extends State<FormStudentRegister> {
 }
 
 class ReturnLoginStudent extends StatelessWidget {
-  const ReturnLoginStudent({Key key}) : super(key: key);
+  const ReturnLoginStudent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

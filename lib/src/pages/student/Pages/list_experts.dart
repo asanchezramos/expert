@@ -8,21 +8,21 @@ import '../widgets/list.dart';
 import 'contact_expert.dart';
 
 class ExpertoList extends StatefulWidget {
-  const ExpertoList({Key key}) : super(key: key);
+  const ExpertoList({Key? key}) : super(key: key);
 
   @override
   _ExpertoListState createState() => _ExpertoListState();
 }
 
 class _ExpertoListState extends State<ExpertoList> {
-  List<ExpertEntity> users = List<ExpertEntity>();
-  List<ExpertEntity> usersForDisplay = List<ExpertEntity>();
+  List<ExpertEntity> users = [];
+  List<ExpertEntity> usersForDisplay = [];
   @override
   void initState() {
     super.initState();
     ExpertApiProvider.getExperts().then((userSpecialty) {
       setState(() {
-        users.addAll(userSpecialty);
+        users.addAll(userSpecialty!);
         usersForDisplay = users;
         //filterUsers = users;
       });
@@ -86,16 +86,16 @@ class _ExpertoListState extends State<ExpertoList> {
 
 Widget _buildList(BuildContext context) {
   final Responsive responsive = Responsive.of(context);
-  return FutureBuilder<List<ExpertEntity>>(
+  return FutureBuilder<List<ExpertEntity>?>(
       future: ExpertApiProvider.getExperts(),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<ExpertEntity>> snapshot,
+        AsyncSnapshot<List<ExpertEntity>?> snapshot,
       ) {
         if (snapshot.hasData) {
           return Expanded(
             child: ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
                     children: <Widget>[
@@ -105,15 +105,15 @@ Widget _buildList(BuildContext context) {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ContactExpert(
-                                        expertEntity: snapshot.data[index],
+                                        expertEntity: snapshot.data![index],
                                       )),
                             );
                           },
                           child: ListExpert(
-                            name: snapshot.data[index].fullName,
-                            photo: snapshot.data[index].photo,
-                            expert: snapshot.data[index].specialty != ''
-                                ? snapshot.data[index].specialty
+                            name: snapshot.data![index].fullName,
+                            photo: snapshot.data![index].photo,
+                            expert: snapshot.data![index].specialty != ''
+                                ? snapshot.data![index].specialty
                                 : '-',
                           )),
                       SizedBox(

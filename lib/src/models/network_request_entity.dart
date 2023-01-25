@@ -1,8 +1,8 @@
 class NetworkRequestEntity {
-  int networkRequestId;
-  int userBaseId;
-  int userRelationId;
-  int status;
+  int? networkRequestId;
+  int? userBaseId;
+  int? userRelationId;
+  int? status;
 
   NetworkRequestEntity(
       { this.networkRequestId, this.userBaseId,this.userRelationId,  this.status  });
@@ -19,7 +19,7 @@ class NetworkRequestEntity {
   Map<String, dynamic> toJson() =>
       {'networkRequestId': networkRequestId,'userBaseId': userBaseId, "userRelationId": userRelationId, "status": status};
   static List<NetworkRequestEntity> fromJSONList(List<dynamic> jsonList) {
-    List<NetworkRequestEntity> items = List<NetworkRequestEntity>();
+    List<NetworkRequestEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(NetworkRequestEntity.fromJson(json));
     });

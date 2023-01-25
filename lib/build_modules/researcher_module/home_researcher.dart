@@ -33,8 +33,8 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
     keepPage: true,
   );
 
-  File attachmentOneFile;
-  File attachmentTwoFile;
+  File? attachmentOneFile;
+  File? attachmentTwoFile;
   final TextEditingController _attachmentOneController =
       TextEditingController();
   final TextEditingController _attachmentTwoController =
@@ -44,11 +44,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
   final TextEditingController _observationController = TextEditingController();
   final GlobalKey<FormState> _formResearch = GlobalKey<FormState>();
   final GlobalKey<FormState> _formUpdateResearch = GlobalKey<FormState>();
-  int _expertId;
-  int _researchId;
+  int? _expertId;
+  int? _researchId;
   int _currentIndex = 0;
-  ExpertEntity expertSelected = ExpertEntity();
-  ResearchEntity _researchSelected;
+  ExpertEntity? expertSelected = ExpertEntity();
+  ResearchEntity? _researchSelected;
   bool isBusy = false;
   bool isUpdateComplete = false;
   bool hasDimensions = false;
@@ -58,18 +58,18 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
     super.initState();
   }
 
-  Future<List<ExpertEntity>> getNetworkByUserId =
+  Future<List<ExpertEntity>?> getNetworkByUserId =
       NetworkApiProvider.getNetworkByUserId();
-  Future<List<ResearchEntity>> getResearchByUserId =
+  Future<List<ResearchEntity>?> getResearchByUserId =
       ResearchApiProvider.getResearchByUserId();
-  Future<List<DimensionEntity>> getDimensions;
+  Future<List<DimensionEntity>?>? getDimensions;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(context) as PreferredSizeWidget?,
         drawer: _buildDrawer(),
         body: PageView(
           controller: _pageController,
@@ -88,7 +88,9 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                   future: getNetworkByUserId,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data.length <= 0) {
+                      List<ExpertEntity>? usuarios =
+                          snapshot.data as List<ExpertEntity>;
+                      if (usuarios.length <= 0) {
                         return Container(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Center(
@@ -100,12 +102,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 children: [
                                   TextSpan(
                                     text:
-                                        "Puedes selecionar el botón con icono ",
+                                        "Puedes seleccionar el botón con icono ",
                                   ),
                                   WidgetSpan(
                                     child: Icon(
                                       Icons.search,
-                                      color: Colors.pink[900],
                                     ),
                                   ),
                                   TextSpan(
@@ -119,11 +120,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         );
                       } else {
                         return ListView.builder(
-                            itemCount: snapshot.data.length,
+                            itemCount: usuarios.length,
                             itemBuilder: (context, index) {
-                              ExpertEntity element = snapshot.data[index];
+                              ExpertEntity element = usuarios[index];
                               return ListTile(
-                                leading: (element.photo.length <= 0)
+                                leading: (element.photo!.length <= 0)
                                     ? CircleAvatar(
                                         radius: 25,
                                         backgroundColor: Colors.amber,
@@ -131,7 +132,6 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                           onBuildLettersPicture(
                                               element.name, element.fullName),
                                           style: TextStyle(
-                                              color: Colors.pink[900],
                                               fontWeight: FontWeight.bold),
                                         ),
                                         //child: Image.asset("assets/programmer.png"),
@@ -150,11 +150,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(element.name +
+                                      Text(element.name! +
                                           ' ' +
-                                          element.fullName),
+                                          element.fullName!),
                                       Text(
-                                        element.specialty,
+                                        element.specialty!,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       )
@@ -188,7 +188,9 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                   future: getResearchByUserId,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data.length <= 0) {
+                      List<ResearchEntity>? investigaciones =
+                          snapshot.data as List<ResearchEntity>;
+                      if (investigaciones.length <= 0) {
                         return Container(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Center(
@@ -200,12 +202,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 children: [
                                   TextSpan(
                                     text:
-                                        "Puedes selecionar el botón con icono ",
+                                        "Puedes seleccionar el botón con icono ",
                                   ),
                                   WidgetSpan(
                                     child: Icon(
                                       Icons.add,
-                                      color: Colors.pink[900],
                                     ),
                                   ),
                                   TextSpan(
@@ -218,17 +219,16 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         );
                       } else {
                         return ListView.builder(
-                            itemCount: snapshot.data.length,
+                            itemCount: investigaciones.length,
                             itemBuilder: (context, index) {
-                              ResearchEntity element = snapshot.data[index];
+                              ResearchEntity element = investigaciones[index];
                               return ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.amber,
                                   child: Text(
                                     onBuildStatusResearch(element.status),
-                                    style: TextStyle(
-                                        color: Colors.pink[900],
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   //child: Image.asset("assets/programmer.png"),
                                 ),
@@ -239,14 +239,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(element.title),
+                                      Text(element.title!),
                                       Text(
-                                        element.speciality,
+                                        element.speciality!,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        element.authors,
+                                        element.authors!,
                                       )
                                     ],
                                   ),
@@ -267,12 +267,12 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         });
                                       });
                                       await ExpertApiProvider.getExpertById(
-                                              _researchSelected.expertId)
+                                              _researchSelected!.expertId)
                                           .then((valueAux) {
                                         print(valueAux);
                                         setState(() {
                                           expertSelected = valueAux;
-                                          print(expertSelected.fullName);
+                                          print(expertSelected!.fullName);
                                           isUpdateComplete = true;
                                           _pageController.jumpToPage(5);
                                         });
@@ -298,7 +298,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         });
                                       });
                                       await ExpertApiProvider.getExpertById(
-                                              _researchSelected.expertId)
+                                              _researchSelected!.expertId)
                                           .then((valueAux) {
                                         print(valueAux);
                                         setState(() {
@@ -326,12 +326,12 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         });
                                       });
                                       await ExpertApiProvider.getExpertById(
-                                              _researchSelected.expertId)
+                                              _researchSelected!.expertId)
                                           .then((valueAux) {
                                         print(valueAux);
                                         setState(() {
                                           expertSelected = valueAux;
-                                          print(expertSelected.fullName);
+                                          print(expertSelected!.fullName);
                                           isUpdateComplete = true;
                                           _pageController.jumpToPage(5);
                                         });
@@ -369,7 +369,6 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               floatingActionButton: FloatingActionButton(
                 child: Icon(
                   Icons.add,
-                  color: Colors.pink[900],
                 ),
                 onPressed: () {
                   onClearResearch();
@@ -383,10 +382,12 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                   future: getNetworkByUserId,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      List<ExpertEntity>? expertos =
+                          snapshot.data as List<ExpertEntity>;
                       return ListView.builder(
-                          itemCount: snapshot.data.length,
+                          itemCount: expertos.length,
                           itemBuilder: (context, index) {
-                            ExpertEntity element = snapshot.data[index];
+                            ExpertEntity element = expertos[index];
                             return RadioListTile(
                               groupValue: _expertId,
                               value: element.id,
@@ -397,7 +398,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
-                                      child: (element.photo.length <= 0)
+                                      child: (element.photo!.length <= 0)
                                           ? CircleAvatar(
                                               radius: 25,
                                               backgroundColor: Colors.amber,
@@ -406,7 +407,6 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     element.name,
                                                     element.fullName),
                                                 style: TextStyle(
-                                                    color: Colors.pink[900],
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -430,11 +430,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(element.name +
+                                          Text(element.name! +
                                               ' ' +
-                                              element.fullName),
+                                              element.fullName!),
                                           Text(
-                                            element.specialty,
+                                            element.specialty!,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           )
@@ -445,7 +445,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                   ],
                                 ),
                               ),
-                              onChanged: (value) {
+                              onChanged: (dynamic value) {
                                 setState(() {
                                   expertSelected = element;
                                   _expertId = value;
@@ -472,23 +472,19 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               bottomNavigationBar: Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
-                  color: Colors.amber,
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Siguiente",
                         style: TextStyle(
-                            color: Colors.pink[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Visibility(
                           visible: !isBusy,
                           child: Icon(
                             Icons.arrow_forward,
-                            color: Colors.pink[900],
                           )),
                       Visibility(
                         visible: isBusy,
@@ -501,9 +497,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         child: Container(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.pink[900],
-                          ),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
                     ],
@@ -516,7 +510,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                       if (_expertId == null) {
                         Dialogs.alert(context,
                             title: "Alerta",
-                            message: "Debe selecionar un experto");
+                            message: "Debe seleccionar un experto");
                       } else {
                         _pageController.jumpToPage(3);
                       }
@@ -533,7 +527,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                   onTap: () {
                     final FocusScopeNode focus = FocusScope.of(context);
                     if (!focus.hasPrimaryFocus && focus.hasFocus) {
-                      FocusManager.instance.primaryFocus.unfocus();
+                      FocusManager.instance.primaryFocus!.unfocus();
                     }
                   },
                   child: (_expertId != null)
@@ -549,13 +543,13 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              expertSelected.name +
+                                              expertSelected!.name! +
                                                   ' ' +
-                                                  expertSelected.fullName,
+                                                  expertSelected!.fullName!,
                                               style: TextStyle(fontSize: 25),
                                             ),
                                             Text(
-                                              expertSelected.specialty,
+                                              expertSelected!.specialty!,
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
@@ -567,16 +561,16 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
-                                      child: (expertSelected.photo.length <= 0)
+                                      child: (expertSelected!.photo!.length <=
+                                              0)
                                           ? CircleAvatar(
                                               radius: 50,
                                               backgroundColor: Colors.amber,
                                               child: Text(
                                                 onBuildLettersPicture(
-                                                    expertSelected.name,
-                                                    expertSelected.fullName),
+                                                    expertSelected!.name,
+                                                    expertSelected!.fullName),
                                                 style: TextStyle(
-                                                    color: Colors.pink[900],
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 40),
                                               ),
@@ -584,7 +578,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                             )
                                           : CircleAvatar(
                                               backgroundImage: NetworkImage(
-                                                  "${AppConfig.API_URL}public/${expertSelected.photo}"),
+                                                  "${AppConfig.API_URL}public/${expertSelected!.photo}"),
                                               backgroundColor: Colors.grey,
                                               radius: 50,
                                               //child: Image.asset("assets/programmer.png"),
@@ -621,7 +615,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                   controller:
                                                       _attachmentOneController,
                                                   validator: (val) {
-                                                    if (val.isEmpty)
+                                                    if (val!.isEmpty)
                                                       return 'Este campo es requerido';
                                                     return null;
                                                   },
@@ -633,30 +627,35 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     suffixIcon:
                                                         Icon(Icons.attach_file),
                                                     labelText:
-                                                        "Selecionar archivo(pdf,jpg,xls)",
+                                                        "Seleccionar archivo(pdf,jpg,xls)",
                                                     border:
                                                         OutlineInputBorder(),
                                                   ),
                                                   onTap: () async {
                                                     try {
-                                                      File file =
+                                                      FilePickerResult? rs =
                                                           await FilePicker
-                                                              .getFile(
-                                                        type: FileType.custom,
-                                                      );
-                                                      setState(() {
-                                                        attachmentOneFile =
-                                                            file;
-                                                        if (attachmentOneFile !=
-                                                            null) {
-                                                          _attachmentOneController
-                                                                  .text =
-                                                              "Archivo Selecionado";
-                                                        } else {
-                                                          _attachmentOneController
-                                                              .text = "";
-                                                        }
-                                                      });
+                                                              .platform
+                                                              .pickFiles();
+                                                      if (rs != null) {
+                                                        File file = File(rs
+                                                            .files
+                                                            .single
+                                                            .path!);
+                                                        setState(() {
+                                                          attachmentOneFile =
+                                                              file;
+                                                          if (attachmentOneFile !=
+                                                              null) {
+                                                            _attachmentOneController
+                                                                    .text =
+                                                                "Archivo Selecionado";
+                                                          } else {
+                                                            _attachmentOneController
+                                                                .text = "";
+                                                          }
+                                                        });
+                                                      }
                                                     } catch (e) {
                                                       setState(() {
                                                         attachmentOneFile =
@@ -670,7 +669,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     }
                                                   },
                                                   onChanged: (value) {
-                                                    _formResearch.currentState
+                                                    _formResearch.currentState!
                                                         .validate();
                                                   },
                                                 )),
@@ -701,7 +700,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                   controller:
                                                       _attachmentTwoController,
                                                   validator: (val) {
-                                                    if (val.isEmpty)
+                                                    if (val!.isEmpty)
                                                       return 'Este campo es requerido';
                                                     return null;
                                                   },
@@ -713,30 +712,35 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     suffixIcon:
                                                         Icon(Icons.attach_file),
                                                     labelText:
-                                                        "Selecionar archivo(pdf,jpg,xls)",
+                                                        "Seleccionar archivo(pdf,jpg,xls)",
                                                     border:
                                                         OutlineInputBorder(),
                                                   ),
                                                   onTap: () async {
                                                     try {
-                                                      File file =
+                                                      FilePickerResult? rs =
                                                           await FilePicker
-                                                              .getFile(
-                                                        type: FileType.custom,
-                                                      );
-                                                      setState(() {
-                                                        attachmentTwoFile =
-                                                            file;
-                                                        if (attachmentTwoFile !=
-                                                            null) {
-                                                          _attachmentTwoController
-                                                                  .text =
-                                                              "Archivo Selecionado";
-                                                        } else {
-                                                          _attachmentTwoController
-                                                              .text = "";
-                                                        }
-                                                      });
+                                                              .platform
+                                                              .pickFiles();
+                                                      if (rs != null) {
+                                                        File file = File(rs
+                                                            .files
+                                                            .single
+                                                            .path!);
+                                                        setState(() {
+                                                          attachmentTwoFile =
+                                                              file;
+                                                          if (attachmentTwoFile !=
+                                                              null) {
+                                                            _attachmentTwoController
+                                                                    .text =
+                                                                "Archivo Selecionado";
+                                                          } else {
+                                                            _attachmentTwoController
+                                                                .text = "";
+                                                          }
+                                                        });
+                                                      }
                                                     } catch (e) {
                                                       setState(() {
                                                         attachmentTwoFile =
@@ -750,7 +754,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     }
                                                   },
                                                   onChanged: (value) {
-                                                    _formResearch.currentState
+                                                    _formResearch.currentState!
                                                         .validate();
                                                   },
                                                 )),
@@ -766,7 +770,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 child: TextFormField(
                                   controller: _titleController,
                                   validator: (val) {
-                                    if (val.isEmpty)
+                                    if (val!.isEmpty)
                                       return 'Este campo es requerido';
                                     return null;
                                   },
@@ -779,7 +783,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
-                                    _formResearch.currentState.validate();
+                                    _formResearch.currentState!.validate();
                                   },
                                 ),
                               ),
@@ -788,7 +792,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 child: TextFormField(
                                   controller: _authorsController,
                                   validator: (val) {
-                                    if (val.isEmpty)
+                                    if (val!.isEmpty)
                                       return 'Este campo es requerido';
                                     return null;
                                   },
@@ -801,7 +805,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
-                                    _formResearch.currentState.validate();
+                                    _formResearch.currentState!.validate();
                                   },
                                 ),
                               ),
@@ -812,22 +816,20 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               bottomNavigationBar: Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
-                  color: Colors.amber,
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Siguiente",
                         style: TextStyle(
-                            color: Colors.pink[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Visibility(
                           visible: !isBusy,
-                          child: Icon(Icons.arrow_forward,
-                              color: Colors.pink[900])),
+                          child: Icon(
+                            Icons.arrow_forward,
+                          )),
                       Visibility(
                         visible: isBusy,
                         child: Padding(
@@ -839,9 +841,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         child: Container(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.pink[900],
-                          ),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
                     ],
@@ -849,40 +849,47 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                   onPressed: () async {
                     final FocusScopeNode focus = FocusScope.of(context);
                     if (!focus.hasPrimaryFocus && focus.hasFocus) {
-                      FocusManager.instance.primaryFocus.unfocus();
+                      FocusManager.instance.primaryFocus!.unfocus();
                     }
-                    if (_formResearch.currentState.validate() && !isBusy) {
+                    if (_formResearch.currentState!.validate() && !isBusy) {
                       setState(() {
                         isBusy = true;
                       });
-                      final session = await SessionManager.getInstance();
-                      final userId = session.getUserId();
-                      final request = ResearchEntity(
-                          expertId: expertSelected.id,
-                          speciality: expertSelected.specialty,
-                          researcherId: userId,
-                          status: 1,
-                          title: _titleController.text,
-                          authors: _authorsController.text,
-                          observation: "",
-                          attachmentTwoFile: attachmentTwoFile,
-                          attachmentOneFile: attachmentOneFile);
-                      final success =
-                          await ResearchApiProvider.postRegisterResearch(
-                              context, request);
-                      setState(() {
-                        isBusy = false;
-                      });
-                      if (success) {
-                        final session = await SessionManager.getInstance();
-                        final int researcherId = session.getResearchId();
+                      SessionManager? session =
+                          await SessionManager.getInstance();
+                      if (session != null) {
+                        final userId = session.getUserId();
+                        final request = ResearchEntity(
+                            expertId: expertSelected!.id,
+                            speciality: expertSelected!.specialty,
+                            researcherId: userId,
+                            status: 1,
+                            title: _titleController.text,
+                            authors: _authorsController.text,
+                            observation: "",
+                            attachmentTwoFile: attachmentTwoFile,
+                            attachmentOneFile: attachmentOneFile);
+                        final success =
+                            await ResearchApiProvider.postRegisterResearch(
+                                context, request);
                         setState(() {
-                          _researchId = researcherId;
-                          getDimensions =
-                              DimensionApiProvider.getDimensions(_researchId);
+                          isBusy = false;
                         });
+                        if (success) {
+                          SessionManager? session =
+                              await SessionManager.getInstance();
+                          if (session != null) {
+                            final int? researcherId = session.getResearchId();
+                            setState(() {
+                              _researchId = researcherId;
+                              getDimensions =
+                                  DimensionApiProvider.getDimensions(
+                                      _researchId);
+                            });
 
-                        _pageController.jumpToPage(4);
+                            _pageController.jumpToPage(4);
+                          }
+                        }
                       }
                     } else {
                       Dialogs.alert(context,
@@ -893,16 +900,13 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.pink[900],
                 child: Icon(
                   Icons.call,
-                  color: Colors.amber,
                 ),
                 onPressed: () async {
-                  if (await canLaunch("tel:${expertSelected.phone}")) {
-                    await launch("tel:${expertSelected.phone}");
-                  } else {
-                    throw 'Could not launch ${expertSelected.phone}';
+                  if (!await launchUrl(
+                      Uri.parse("tel:${expertSelected!.phone}"))) {
+                    throw 'Could not launch ${expertSelected!.phone}';
                   }
                 },
               ),
@@ -932,12 +936,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 children: [
                                   TextSpan(
                                     text:
-                                        "Puedes selecionar el botón con icono ",
+                                        "Puedes seleccionar el botón con icono ",
                                   ),
                                   WidgetSpan(
                                     child: Icon(
                                       Icons.playlist_add,
-                                      color: Colors.pink[900],
                                     ),
                                   ),
                                   TextSpan(
@@ -949,16 +952,16 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                           ),
                         );
                       } else {
-                        return GroupedListView<dynamic, String>(
+                        return GroupedListView<dynamic, String?>(
                           elements: element,
                           groupBy: (element) => element.name,
                           groupComparator: (value1, value2) =>
-                              value2.compareTo(value1),
+                              value2!.compareTo(value1!),
                           itemComparator: (item1, item2) =>
                               item1.variable.compareTo(item2.variable),
                           order: GroupedListOrder.ASC,
                           useStickyGroupSeparators: true,
-                          groupSeparatorBuilder: (String value) => Padding(
+                          groupSeparatorBuilder: (String? value) => Padding(
                             padding: const EdgeInsets.all(0),
                             child: Container(
                               color: Colors.pink[50],
@@ -966,13 +969,12 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 5.0),
                                 title: Text(
-                                  value,
+                                  value!,
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 trailing: IconButton(
-                                  color: Colors.pink[900],
                                   icon: Icon(Icons.add),
                                   onPressed: () async {
                                     DimensionEntity sEntity = DimensionEntity(
@@ -982,8 +984,8 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 AddDimensions(
-                                                    expertSelected.specialty,
-                                                    expertSelected.id,
+                                                    expertSelected!.specialty,
+                                                    expertSelected!.id,
                                                     sEntity,
                                                     _researchId))).then(
                                         (value) async {
@@ -1002,13 +1004,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         WidgetSpan(
                                           child: Icon(
                                             Icons.info_outline,
-                                            color: Colors.pink[900],
                                             size: 18,
                                           ),
                                         ),
                                         TextSpan(
                                           style: TextStyle(
-                                              color: Colors.pink[900],
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                           text:
@@ -1033,8 +1033,8 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 ViewCriterioResponse(
-                                                    expertSelected.specialty,
-                                                    expertSelected.id,
+                                                    expertSelected!.specialty,
+                                                    expertSelected!.id,
                                                     element,
                                                     _researchId,
                                                     _researchSelected)))
@@ -1066,7 +1066,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                 message:
                                                     "¿Está seguro de eliminar el indicador?")
                                             .then((value) async {
-                                          if (value) {
+                                          if (value!) {
                                             if (!isBusy) {
                                               setState(() {
                                                 isBusy = true;
@@ -1108,10 +1108,8 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.pink[900],
                 child: Icon(
                   Icons.playlist_add,
-                  color: Colors.amber,
                 ),
                 onPressed: () {
                   DimensionEntity sEntity =
@@ -1120,15 +1118,15 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => AddDimensions(
-                              expertSelected.specialty,
-                              expertSelected.id,
+                              expertSelected!.specialty,
+                              expertSelected!.id,
                               sEntity,
                               _researchId))).then((value) {
                     setState(() {
                       getDimensions =
                           DimensionApiProvider.getDimensions(_researchId);
-                      getDimensions.then((value) {
-                        if (value.length > 0) {
+                      getDimensions!.then((value) {
+                        if (value!.length > 0) {
                           hasDimensions = true;
                         } else {
                           hasDimensions = false;
@@ -1141,21 +1139,20 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               bottomNavigationBar: Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
-                  color: Colors.amber,
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Enviar a revisión  ",
                         style: TextStyle(
-                            color: Colors.pink[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Visibility(
                           visible: !isBusy,
-                          child: Icon(Icons.send, color: Colors.pink[900])),
+                          child: Icon(
+                            Icons.send,
+                          )),
                       Visibility(
                         visible: isBusy,
                         child: Padding(
@@ -1167,9 +1164,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         child: Container(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.pink[900],
-                          ),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
                     ],
@@ -1181,7 +1176,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                               message:
                                   "¿Está seguro de enviar a revisión la investigación?")
                           .then((value) async {
-                        if (value) {
+                        if (value!) {
                           setState(() {
                             isBusy = true;
                           });
@@ -1223,7 +1218,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                   onTap: () {
                     final FocusScopeNode focus = FocusScope.of(context);
                     if (!focus.hasPrimaryFocus && focus.hasFocus) {
-                      FocusManager.instance.primaryFocus.unfocus();
+                      FocusManager.instance.primaryFocus!.unfocus();
                     }
                   },
                   child: (isUpdateComplete)
@@ -1239,13 +1234,13 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              expertSelected.name +
+                                              expertSelected!.name! +
                                                   ' ' +
-                                                  expertSelected.fullName,
+                                                  expertSelected!.fullName!,
                                               style: TextStyle(fontSize: 25),
                                             ),
                                             Text(
-                                              expertSelected.specialty,
+                                              expertSelected!.specialty!,
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
@@ -1257,16 +1252,15 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
-                                      child: (expertSelected.photo.length <= 0)
+                                      child: (expertSelected!.photo!.length <=
+                                              0)
                                           ? CircleAvatar(
                                               radius: 50,
-                                              backgroundColor: Colors.amber,
                                               child: Text(
                                                 onBuildLettersPicture(
-                                                    expertSelected.name,
-                                                    expertSelected.fullName),
+                                                    expertSelected!.name,
+                                                    expertSelected!.fullName),
                                                 style: TextStyle(
-                                                    color: Colors.pink[900],
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 40),
                                               ),
@@ -1274,7 +1268,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                             )
                                           : CircleAvatar(
                                               backgroundImage: NetworkImage(
-                                                  "${AppConfig.API_URL}public/${expertSelected.photo}"),
+                                                  "${AppConfig.API_URL}public/${expertSelected!.photo}"),
                                               backgroundColor: Colors.grey,
                                               radius: 50,
                                               //child: Image.asset("assets/programmer.png"),
@@ -1311,7 +1305,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                   controller:
                                                       _attachmentOneController,
                                                   validator: (val) {
-                                                    if (val.isEmpty)
+                                                    if (val!.isEmpty)
                                                       return 'Este campo es requerido';
                                                     return null;
                                                   },
@@ -1323,30 +1317,36 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     suffixIcon:
                                                         Icon(Icons.attach_file),
                                                     labelText:
-                                                        "Selecionar archivo(pdf,jpg,xls)",
+                                                        "Seleccionar archivo(pdf,jpg,xls)",
                                                     border:
                                                         OutlineInputBorder(),
                                                   ),
                                                   onTap: () async {
                                                     try {
-                                                      File file =
+                                                      FilePickerResult? rs =
                                                           await FilePicker
-                                                              .getFile(
-                                                        type: FileType.custom,
-                                                      );
-                                                      setState(() {
-                                                        attachmentOneFile =
-                                                            file;
-                                                        if (attachmentOneFile !=
-                                                            null) {
-                                                          _attachmentOneController
-                                                                  .text =
-                                                              "Archivo Selecionado";
-                                                        } else {
-                                                          _attachmentOneController
-                                                              .text = "";
-                                                        }
-                                                      });
+                                                              .platform
+                                                              .pickFiles();
+                                                      if (rs != null) {
+                                                        File file = File(rs
+                                                            .files
+                                                            .single
+                                                            .path!);
+
+                                                        setState(() {
+                                                          attachmentOneFile =
+                                                              file;
+                                                          if (attachmentOneFile !=
+                                                              null) {
+                                                            _attachmentOneController
+                                                                    .text =
+                                                                "Archivo Selecionado";
+                                                          } else {
+                                                            _attachmentOneController
+                                                                .text = "";
+                                                          }
+                                                        });
+                                                      }
                                                     } catch (e) {
                                                       setState(() {
                                                         attachmentOneFile =
@@ -1387,7 +1387,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                   controller:
                                                       _attachmentTwoController,
                                                   validator: (val) {
-                                                    if (val.isEmpty)
+                                                    if (val!.isEmpty)
                                                       return 'Este campo es requerido';
                                                     return null;
                                                   },
@@ -1399,30 +1399,36 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                                     suffixIcon:
                                                         Icon(Icons.attach_file),
                                                     labelText:
-                                                        "Selecionar archivo(pdf,jpg,xls)",
+                                                        "Seleccionar archivo(pdf,jpg,xls)",
                                                     border:
                                                         OutlineInputBorder(),
                                                   ),
                                                   onTap: () async {
                                                     try {
-                                                      File file =
+                                                      FilePickerResult? rs =
                                                           await FilePicker
-                                                              .getFile(
-                                                        type: FileType.custom,
-                                                      );
-                                                      setState(() {
-                                                        attachmentTwoFile =
-                                                            file;
-                                                        if (attachmentTwoFile !=
-                                                            null) {
-                                                          _attachmentTwoController
-                                                                  .text =
-                                                              "Archivo Selecionado";
-                                                        } else {
-                                                          _attachmentTwoController
-                                                              .text = "";
-                                                        }
-                                                      });
+                                                              .platform
+                                                              .pickFiles();
+                                                      if (rs != null) {
+                                                        File file = File(rs
+                                                            .files
+                                                            .single
+                                                            .path!);
+                                                        print(file);
+                                                        setState(() {
+                                                          attachmentTwoFile =
+                                                              file;
+                                                          if (attachmentTwoFile !=
+                                                              null) {
+                                                            _attachmentTwoController
+                                                                    .text =
+                                                                "Archivo Selecionado";
+                                                          } else {
+                                                            _attachmentTwoController
+                                                                .text = "";
+                                                          }
+                                                        });
+                                                      }
                                                     } catch (e) {
                                                       setState(() {
                                                         attachmentTwoFile =
@@ -1448,7 +1454,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 child: TextFormField(
                                   controller: _titleController,
                                   validator: (val) {
-                                    if (val.isEmpty)
+                                    if (val!.isEmpty)
                                       return 'Este campo es requerido';
                                     return null;
                                   },
@@ -1468,7 +1474,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 child: TextFormField(
                                   controller: _authorsController,
                                   validator: (val) {
-                                    if (val.isEmpty)
+                                    if (val!.isEmpty)
                                       return 'Este campo es requerido';
                                     return null;
                                   },
@@ -1485,12 +1491,13 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                               ),
                               Visibility(
                                   visible:
-                                      (_researchSelected.observation.length >
+                                      (_researchSelected!.observation!.length >
                                           0),
                                   child: Divider()),
                               Visibility(
                                 visible:
-                                    (_researchSelected.observation.length > 0),
+                                    (_researchSelected!.observation!.length >
+                                        0),
                                 child: Container(
                                   padding: EdgeInsets.all(15),
                                   child: Text("Observaciones del experto"),
@@ -1498,7 +1505,8 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                               ),
                               Visibility(
                                 visible:
-                                    (_researchSelected.observation.length > 0),
+                                    (_researchSelected!.observation!.length >
+                                        0),
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   child: TextFormField(
@@ -1523,21 +1531,20 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               bottomNavigationBar: Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
-                  color: Colors.amber,
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Actualizar ",
                         style: TextStyle(
-                            color: Colors.pink[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Visibility(
                           visible: !isBusy,
-                          child: Icon(Icons.update, color: Colors.pink[900])),
+                          child: Icon(
+                            Icons.update,
+                          )),
                       Visibility(
                         visible: isBusy,
                         child: Padding(
@@ -1549,73 +1556,76 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         child: Container(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.pink[900],
-                          ),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
                     ],
                   ),
                   onPressed: () async {
-                    if (_formUpdateResearch.currentState.validate() &&
+                    if (_formUpdateResearch.currentState!.validate() &&
                         !isBusy) {
                       setState(() {
                         isBusy = true;
                       });
-                      final session = await SessionManager.getInstance();
-                      final userId = session.getUserId();
-                      final request = ResearchEntity(
-                          researchId: _researchSelected.researchId,
-                          expertId: expertSelected.id,
-                          speciality: expertSelected.specialty,
-                          researcherId: userId,
-                          status: 1,
-                          title: _titleController.text,
-                          authors: _authorsController.text,
-                          attachmentTwoFile: attachmentTwoFile,
-                          attachmentOneFile: attachmentOneFile,
-                          attachmentOne: _researchSelected.attachmentOne,
-                          attachmentTwo: _researchSelected.attachmentTwo,
-                          observation: _observationController.text);
-                      print(request.toJson());
-                      final success =
-                          await ResearchApiProvider.putUpdateResearch(
-                              context, request);
-                      setState(() {
-                        isBusy = false;
-                      });
-                      if (success) {
-                        final session = await SessionManager.getInstance();
-                        session.setResearchId(_researchSelected.researchId);
+                      SessionManager? session =
+                          await SessionManager.getInstance();
+                      if (session != null) {
+                        final userId = session.getUserId();
+                        final request = ResearchEntity(
+                            researchId: _researchSelected!.researchId,
+                            expertId: expertSelected!.id,
+                            speciality: expertSelected!.specialty,
+                            researcherId: userId,
+                            status: 1,
+                            title: _titleController.text,
+                            authors: _authorsController.text,
+                            attachmentTwoFile: attachmentTwoFile,
+                            attachmentOneFile: attachmentOneFile,
+                            attachmentOne: _researchSelected!.attachmentOne,
+                            attachmentTwo: _researchSelected!.attachmentTwo,
+                            observation: _observationController.text);
+                        print(request.toJson());
+                        final success =
+                            await ResearchApiProvider.putUpdateResearch(
+                                context, request);
                         setState(() {
-                          _researchId = _researchSelected.researchId;
-                          getDimensions =
-                              DimensionApiProvider.getDimensions(_researchId);
+                          isBusy = false;
                         });
-                        getDimensions.then((value) {
-                          if (value.length > 0) {
-                            hasDimensions = true;
-                          } else {
-                            hasDimensions = false;
+                        if (success) {
+                          SessionManager? session =
+                              await SessionManager.getInstance();
+                          if (session != null) {
+                            session
+                                .setResearchId(_researchSelected!.researchId);
+                            setState(() {
+                              _researchId = _researchSelected!.researchId;
+                              getDimensions =
+                                  DimensionApiProvider.getDimensions(
+                                      _researchId);
+                            });
+                            getDimensions!.then((value) {
+                              if (value!.length > 0) {
+                                hasDimensions = true;
+                              } else {
+                                hasDimensions = false;
+                              }
+                            });
+                            _pageController.jumpToPage(4);
                           }
-                        });
-                        _pageController.jumpToPage(4);
+                        }
                       }
                     }
                   },
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.pink[900],
                 child: Icon(
                   Icons.call,
-                  color: Colors.amber,
                 ),
                 onPressed: () async {
-                  if (await canLaunch("tel:${expertSelected.phone}")) {
-                    await launch("tel:${expertSelected.phone}");
-                  } else {
-                    throw 'Could not launch ${expertSelected.phone}';
+                  if (!await launchUrl(
+                      Uri.parse("tel:${expertSelected!.phone}"))) {
+                    throw 'Could not launch ${expertSelected!.phone}';
                   }
                 },
               ),
@@ -1628,6 +1638,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
   }
 
   Future<bool> _onBackPressed() async {
+    bool asdasd = false;
     switch (_currentIndex) {
       case 0:
       case 1:
@@ -1635,7 +1646,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                 title: "¿Estás seguro?",
                 message: 'Si aceptas la aplicación cerrará')
             .then((value) {
-          if (value) {
+          if (value!) {
             SystemChannels.platform.invokeMethod('SystemNavigator.pop');
           }
         });
@@ -1649,7 +1660,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                 message:
                     "¿Está seguro de cancelar el registro de la investigación?")
             .then((value) {
-          if (value) {
+          if (value!) {
             setState(() {
               getResearchByUserId = ResearchApiProvider.getResearchByUserId();
             });
@@ -1665,7 +1676,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
             _researchSelected = value;
           });
         });
-        await ExpertApiProvider.getExpertById(_researchSelected.expertId)
+        await ExpertApiProvider.getExpertById(_researchSelected!.expertId)
             .then((valueAux) {
           print(valueAux);
           setState(() {
@@ -1681,7 +1692,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                 message:
                     "¿Está seguro de salir de la actualización de la investigación?")
             .then((value) {
-          if (value) {
+          if (value!) {
             setState(() {
               getResearchByUserId = ResearchApiProvider.getResearchByUserId();
             });
@@ -1695,12 +1706,13 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                 message: 'Si aceptas la aplicación cerrará')
             .then((value) {
           print(value);
-          if (value) {
+          if (value!) {
             SystemChannels.platform.invokeMethod('SystemNavigator.pop');
           }
         });
         break;
     }
+    return asdasd;
   }
 
   onClearResearch() {
@@ -1718,20 +1730,20 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
     });
   }
 
-  onSetResearch(ResearchEntity researchEntity) {
+  onSetResearch(ResearchEntity? researchEntity) {
     setState(() {
       attachmentOneFile = null;
       attachmentTwoFile = null;
       _attachmentOneController.text = "Archivo selecionado";
       _attachmentTwoController.text = "Archivo selecionado";
-      _titleController.text = researchEntity.title;
-      _authorsController.text = researchEntity.authors;
-      _observationController.text = researchEntity.observation;
+      _titleController.text = researchEntity!.title!;
+      _authorsController.text = researchEntity.authors!;
+      _observationController.text = researchEntity.observation!;
       hasDimensions = false;
     });
   }
 
-  String onBuildStatusResearch(int status) {
+  String onBuildStatusResearch(int? status) {
     String statudStr = "";
     switch (status) {
       case 1:
@@ -1757,9 +1769,10 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
   }
 
   Widget onBuildSubtitleResearch(ResearchEntity research) {
+    Widget aaaaa;
     switch (research.status) {
       case 1:
-        return RichText(
+        aaaaa = RichText(
           text: TextSpan(style: TextStyle(color: Colors.grey), children: [
             WidgetSpan(
               child: Icon(
@@ -1773,15 +1786,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               child: Icon(
                 Icons.insert_invitation,
                 size: 16,
-                color: Colors.pink[900],
               ),
             ),
-            TextSpan(text: " ${onBuildStringToDate(research.updatedAt)}")
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
           ]),
         );
         break;
       case 2:
-        return RichText(
+        aaaaa = RichText(
           text: TextSpan(style: TextStyle(color: Colors.grey), children: [
             WidgetSpan(
               child: Icon(
@@ -1795,15 +1807,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               child: Icon(
                 Icons.insert_invitation,
                 size: 16,
-                color: Colors.pink[900],
               ),
             ),
-            TextSpan(text: " ${onBuildStringToDate(research.updatedAt)}")
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
           ]),
         );
         break;
       case 3:
-        return RichText(
+        aaaaa = RichText(
           text: TextSpan(style: TextStyle(color: Colors.grey), children: [
             WidgetSpan(
               child: Icon(
@@ -1817,15 +1828,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               child: Icon(
                 Icons.insert_invitation,
                 size: 16,
-                color: Colors.pink[900],
               ),
             ),
-            TextSpan(text: " ${onBuildStringToDate(research.updatedAt)}")
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
           ]),
         );
         break;
       case 4:
-        return RichText(
+        aaaaa = RichText(
           text: TextSpan(style: TextStyle(color: Colors.grey), children: [
             WidgetSpan(
               child: Icon(
@@ -1839,15 +1849,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               child: Icon(
                 Icons.insert_invitation,
                 size: 16,
-                color: Colors.pink[900],
               ),
             ),
-            TextSpan(text: " ${onBuildStringToDate(research.updatedAt)}")
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
           ]),
         );
         break;
       case 5:
-        return RichText(
+        aaaaa = RichText(
           text: TextSpan(style: TextStyle(color: Colors.grey), children: [
             WidgetSpan(
               child: Icon(
@@ -1861,15 +1870,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               child: Icon(
                 Icons.insert_invitation,
                 size: 16,
-                color: Colors.pink[900],
               ),
             ),
-            TextSpan(text: " ${onBuildStringToDate(research.updatedAt)}")
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
           ]),
         );
         break;
       case 6:
-        return RichText(
+        aaaaa = RichText(
           text: TextSpan(style: TextStyle(color: Colors.grey), children: [
             WidgetSpan(
               child: Icon(
@@ -1883,14 +1891,17 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
               child: Icon(
                 Icons.insert_invitation,
                 size: 16,
-                color: Colors.pink[900],
               ),
             ),
-            TextSpan(text: " ${onBuildStringToDate(research.updatedAt)}")
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
           ]),
         );
         break;
+      default:
+        aaaaa = Container();
+        break;
     }
+    return aaaaa;
   }
 
   String onBuildStringToDate(String date) {
@@ -1909,37 +1920,32 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
   }
 
   Widget _buildAppBar(context) {
+    Widget asdasdasdas;
     switch (_currentIndex) {
       case 0:
         {
-          return AppBar(
-            backgroundColor: Colors.white,
+          asdasdasdas = AppBar(
             centerTitle: true,
             title: Text(
               "Mi Red",
-              style: TextStyle(color: Colors.pink[900]),
             ),
           );
         }
         break;
       case 1:
         {
-          return AppBar(
-            backgroundColor: Colors.white,
+          asdasdasdas = AppBar(
             centerTitle: true,
             title: Text(
               "Mis Investigaciones",
-              style: TextStyle(color: Colors.pink[900]),
             ),
           );
         }
         break;
       case 2:
         {
-          return AppBar(
-            backgroundColor: Colors.white,
+          asdasdasdas = AppBar(
             leading: BackButton(
-              color: Colors.pink[900],
               onPressed: () {
                 onChangePage(1);
               },
@@ -1947,23 +1953,20 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
             centerTitle: true,
             title: Text(
               "Seleciona un experto",
-              style: TextStyle(color: Colors.pink[900]),
             ),
           );
         }
         break;
       case 3:
-        return AppBar(
-          backgroundColor: Colors.white,
+        asdasdasdas = AppBar(
           leading: BackButton(
-            color: Colors.pink[900],
             onPressed: () {
               Dialogs.confirm(context,
                       title: "Mensaje de Confirmación",
                       message:
                           "¿Está seguro de cancelar el registro de la investigación?")
                   .then((value) {
-                if (value) {
+                if (value!) {
                   setState(() {
                     getResearchByUserId =
                         ResearchApiProvider.getResearchByUserId();
@@ -1976,31 +1979,30 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
           centerTitle: true,
           title: Text(
             "Nueva investigación",
-            style: TextStyle(color: Colors.pink[900]),
           ),
         );
         break;
       case 4:
-        return AppBar(
-          backgroundColor: Colors.white,
+        asdasdasdas = AppBar(
           leading: BackButton(
-            color: Colors.pink[900],
             onPressed: () async {
               // enviar a editar
               await ResearchApiProvider.getResearchById(_researchId)
                   .then((value) {
                 onClearResearch();
-                onSetResearch(value);
-                setState(() {
-                  _researchSelected = value;
-                });
+                if (value != null) {
+                  onSetResearch(value);
+                  setState(() {
+                    _researchSelected = value;
+                  });
+                }
               });
-              await ExpertApiProvider.getExpertById(_researchSelected.expertId)
+              await ExpertApiProvider.getExpertById(_researchSelected!.expertId)
                   .then((valueAux) {
                 print(valueAux);
                 setState(() {
                   expertSelected = valueAux;
-                  print(expertSelected.fullName);
+                  print(expertSelected!.fullName);
                   isUpdateComplete = true;
                   _pageController.jumpToPage(5);
                 });
@@ -2010,15 +2012,12 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
           centerTitle: true,
           title: Text(
             "Dimensiones",
-            style: TextStyle(color: Colors.pink[900]),
           ),
         );
         break;
       case 5:
-        return AppBar(
-          backgroundColor: Colors.white,
+        asdasdasdas = AppBar(
           leading: BackButton(
-            color: Colors.pink[900],
             onPressed: () {
               // enviar a editar
               Dialogs.confirm(context,
@@ -2026,7 +2025,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                       message:
                           "¿Está seguro de salir de la actualización de la investigación?")
                   .then((value) {
-                if (value) {
+                if (value!) {
                   setState(() {
                     getResearchByUserId =
                         ResearchApiProvider.getResearchByUserId();
@@ -2039,7 +2038,6 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
           centerTitle: true,
           title: Text(
             "Editar dimensiones",
-            style: TextStyle(color: Colors.pink[900]),
           ),
           actions: [
             IconButton(
@@ -2050,7 +2048,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                         title: "Confirmación",
                         message: "¿Está seguro de eliminar esta investigación?")
                     .then((value) {
-                  if (value) {
+                  if (value!) {
                     print(_researchId);
                     ResearchApiProvider.postDeleteResearch(context, _researchId)
                         .then((valueAux) {
@@ -2072,10 +2070,14 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
           ],
         );
         break;
+      default:
+        asdasdasdas = Container();
+        break;
     }
+    return asdasdasdas;
   }
 
-  Widget _buildNavigationBar() {
+  Widget? _buildNavigationBar() {
     switch (_currentIndex) {
       case 0:
       case 1:
@@ -2085,14 +2087,11 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.supervised_user_circle),
-              title: Text(
-                "Mi red",
-                textAlign: TextAlign.center,
-              ),
+              label: "Mi red",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.folder_shared),
-              title: Text("Mis Investigaciones"),
+              label: "Mis Investigaciones",
             )
           ],
         );
@@ -2104,13 +2103,13 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
     }
   }
 
-  Widget _buildDrawer() {
+  Widget? _buildDrawer() {
     switch (_currentIndex) {
       case 0:
       case 1:
         return Theme(
           data: Theme.of(context).copyWith(
-            canvasColor: Colors.pink[900],
+            canvasColor: Color.fromRGBO(136, 14, 79, 1),
           ),
           child: Drawer(
             child: ScrollConfiguration(
@@ -2122,14 +2121,15 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                     future: obtenerUsuario(),
                     builder: (_, snapshot) {
                       if (snapshot.hasData) {
-                        final ExpertEntity oUser = snapshot.data;
+                        final ExpertEntity oUser =
+                            snapshot.data as ExpertEntity;
                         return DrawerHeader(
                           padding: EdgeInsets.only(top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                child: (oUser.photo.length <= 0)
+                                child: (oUser.photo!.length <= 0)
                                     ? CircleAvatar(
                                         radius: 50,
                                         backgroundColor: Colors.amber,
@@ -2137,7 +2137,6 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                           onBuildLettersPicture(
                                               oUser.name, oUser.fullName),
                                           style: TextStyle(
-                                              color: Colors.pink[900],
                                               fontWeight: FontWeight.bold,
                                               fontSize: 40),
                                         ),
@@ -2155,7 +2154,7 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                 padding: EdgeInsets.all(5),
                                 child: RichText(
                                   text: TextSpan(
-                                    text: "Hola \n",
+                                    text: "Hola, ",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -2163,11 +2162,19 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            "${oUser.name.split(" ")[0]} ${oUser.fullName.split(" ")[0]}",
+                                            "${oUser.name!.split(" ")[0]} ${oUser.fullName!.split(" ")[0]} " +
+                                                "\n",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.normal,
-                                          fontSize: 18,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "ORCID:${oUser.orcid!}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
                                         ),
                                       )
                                     ],
@@ -2194,13 +2201,15 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
                       ),
                       title: Text(
                         "Tutorial",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
                       ),
                       onTap: () async {
-                        if (await canLaunch(AppConfig.TUTORIAL_URL)) {
-                          await launch(AppConfig.TUTORIAL_URL);
-                        } else {
-                          throw 'Could not launch  ';
+                        if (!await launchUrl(
+                            Uri.parse(AppConfig.TUTORIAL_URL))) {
+                          throw 'Could not launch ${expertSelected!.phone}';
                         }
                       },
                     ),
@@ -2249,10 +2258,12 @@ class _HomeResearcherModuleState extends State<HomeResearcherModule> {
 }
 
 Future obtenerUsuario() async {
-  final session = await SessionManager.getInstance();
-  ExpertEntity oUser =
-      await ExpertApiProvider.getExpertById(session.getUserId());
-  return oUser;
+  SessionManager? session = await SessionManager.getInstance();
+  if (session != null) {
+    ExpertEntity? oUser =
+        await ExpertApiProvider.getExpertById(session.getUserId());
+    return oUser;
+  }
 }
 
 class MyBehavior extends ScrollBehavior {

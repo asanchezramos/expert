@@ -9,39 +9,42 @@ import '../models/expert_entity.dart';
 class ResourceApiProvider {
   static final HttpManager httpManager = HttpManager();
 
-  static Future<List<ResourceEntity>> getResources(int userId) async {
-    try {
-      if(userId == null){
-        final session = await SessionManager.getInstance();
-         userId = session.getUserId();
-      }
-      print(userId);
-      final responseData = await httpManager.get("mobile/resource-user-post/$userId");
+  static Future<List<ResourceEntity>?> getResources(int? userId) async {
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      try {
+        if (userId == null) {
+          userId = session.getUserId();
+        }
+        print(userId);
+        final responseData =
+            await httpManager.get("mobile/resource-user-post/$userId");
 
-      return ResourceEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
-      return null;
+        return ResourceEntity.fromJSONList(responseData["data"]);
+      } catch (e) { 
+        return null;
+      }
     }
   }
-  static Future<bool> createResource(
-      BuildContext context,
-      ResourceEntity netReqEntity) async {
+
+  static Future<bool?> createResource(
+      BuildContext context, ResourceEntity netReqEntity) async {
     try {
       FormData formData = new FormData.fromMap(netReqEntity.toJson());
-      final responseData = await httpManager.postForm("mobile/resource-user-post", formData);
+      final responseData =
+          await httpManager.postForm("mobile/resource-user-post", formData);
       return true;
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return null;
     }
   }
-  static Future<bool> deleteResource(int resourceUserId) async {
+
+  static Future<bool?> deleteResource(int? resourceUserId) async {
     try {
-      final responseData = await httpManager.delete("mobile/resource-user/$resourceUserId");
+      final responseData =
+          await httpManager.delete("mobile/resource-user/$resourceUserId");
       return true;
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return null;
     }
   }

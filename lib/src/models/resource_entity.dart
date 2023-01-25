@@ -1,12 +1,12 @@
 import 'dart:io';
 
 class ResourceEntity {
-  int resourceUserId;
-  int expertId;
-  String title;
-  String subtitle;
-  String link;
-  String updatedAt;
+  int? resourceUserId;
+  int? expertId;
+  String? title;
+  String? subtitle;
+  String? link;
+  String? updatedAt;
 
   ResourceEntity(
       { this.resourceUserId,
@@ -37,7 +37,7 @@ class ResourceEntity {
         "updatedAt": updatedAt
       };
   static List<ResourceEntity> fromJSONList(List<dynamic> jsonList) {
-    List<ResourceEntity> items = List<ResourceEntity>();
+    List<ResourceEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(ResourceEntity.fromJson(json));
     });

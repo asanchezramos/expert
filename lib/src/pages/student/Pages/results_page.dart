@@ -7,7 +7,7 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ResultExpertPage extends StatelessWidget {
-  const ResultExpertPage({Key key}) : super(key: key);
+  const ResultExpertPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -34,12 +34,12 @@ class ResultExpertPage extends StatelessWidget {
 
 Widget _buildList(BuildContext context) {
   final Responsive responsive = Responsive.of(context);
-  return FutureBuilder<List<SolicitudeEntity>>(
+  return FutureBuilder<List<SolicitudeEntity>?>(
       future: SolicitudeApiProvider.getSolicitudesByUser(),
       builder: (BuildContext context,
-          AsyncSnapshot<List<SolicitudeEntity>> snapshot) {
+          AsyncSnapshot<List<SolicitudeEntity>?> snapshot) {
         if (snapshot.hasData) {
-          final items = snapshot.data;
+          final items = snapshot.data!;
           if (items.length == 0) {
             return Text("No hay respuestas");
           }

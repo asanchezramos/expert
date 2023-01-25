@@ -6,7 +6,7 @@ class Responsive {
   final double width, height, inch;
 
   Responsive(
-      {@required this.width, @required this.height, @required this.inch});
+      {required this.width, required this.height, required this.inch});
 
       factory Responsive.of(BuildContext context){
         final MediaQueryData data = MediaQuery.of(context);

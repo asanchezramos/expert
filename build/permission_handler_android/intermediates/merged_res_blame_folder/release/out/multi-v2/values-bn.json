@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\permission_handler_android\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-bn\\values-bn.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\tjcri\\.gradle\\caches\\transforms-2\\files-2.1\\4015117274c60000742beeb2017954f0\\core-1.6.0\\res\\values-bn\\values-bn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\tjcri\\Documents\\Github\\expert\\build\\permission_handler_android\\intermediates\\res\\merged\\release\\values-bn\\values-bn.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\tjcri\\.gradle\\caches\\transforms-2\\files-2.1\\4015117274c60000742beeb2017954f0\\core-1.6.0\\res\\values-bn\\values-bn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

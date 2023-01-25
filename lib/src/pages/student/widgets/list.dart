@@ -2,12 +2,12 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ListExpert extends StatelessWidget {
-  const ListExpert({Key key, this.name, this.expert, this.photo})
+  const ListExpert({Key? key, this.name, this.expert, this.photo})
       : super(key: key);
 
-  final String name;
-  final String expert;
-  final String photo;
+  final String? name;
+  final String? expert;
+  final String? photo;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ListExpert extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 30),
             child: photo != ""
                 ? Image.network(
-                    photo,
+                    photo!,
                   )
                 : SizedBox(),
           ),
@@ -47,12 +47,12 @@ class ListExpert extends StatelessWidget {
 }
 
 class ListStudent extends StatelessWidget {
-  const ListStudent({Key key, this.name, this.expert, this.photo})
+  const ListStudent({Key? key, this.name, this.expert, this.photo})
       : super(key: key);
 
-  final String name;
-  final String expert;
-  final String photo;
+  final String? name;
+  final String? expert;
+  final String? photo;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class ListStudent extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 30),
             child: photo != ""
                 ? Image.network(
-                    photo,
+                    photo!,
                   )
                 : SizedBox(),
           ),

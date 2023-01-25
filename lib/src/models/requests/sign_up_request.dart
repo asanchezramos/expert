@@ -1,15 +1,16 @@
 import 'dart:io';
 
 class SignUpRequest {
-  String name;
-  String fullName;
-  File file;
-  String email;
-  String password;
-  String username;
-  String phone;
-  String role;
-  String specialty;
+  String? name;
+  String? fullName;
+  File? file;
+  String? email;
+  String? password;
+  String? username;
+  String? phone;
+  String? role;
+  String? specialty;
+  String? orcid;
 
   SignUpRequest({
     this.email,
@@ -20,6 +21,7 @@ class SignUpRequest {
     this.file,
     this.specialty,
     this.phone,
+    this.orcid
   });
 
   Map<String, dynamic> toJson() => {
@@ -31,5 +33,6 @@ class SignUpRequest {
         'phone': phone,
         'role': role,
         'specialty': specialty,
+        'orcid':orcid
       };
 }

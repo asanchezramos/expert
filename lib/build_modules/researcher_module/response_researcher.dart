@@ -12,8 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ResponseResearcher extends StatefulWidget {
-  ExpertEntity _expertEntity;
-  ResearchEntity _researchEntity;
+  ExpertEntity? _expertEntity;
+  ResearchEntity? _researchEntity;
   ResponseResearcher(this._researchEntity,this._expertEntity);
   @override
   _ResponseResearcherState createState() => _ResponseResearcherState();
@@ -27,7 +27,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      _comentario.text = widget._researchEntity.observation;
+      _comentario.text = widget._researchEntity!.observation!;
     });
   }
   @override
@@ -39,10 +39,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: Colors.white,
-        ),
+      appBar: AppBar( 
         title: Text("Respuesta de revisión"),
         centerTitle: true,
       ),
@@ -57,13 +54,13 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
                       child: Column(
                         children: [
                           Text(
-                            widget._expertEntity.name +
+                            widget._expertEntity!.name! +
                                 ' ' +
-                                widget._expertEntity.fullName,
+                                widget._expertEntity!.fullName!,
                             style: TextStyle(fontSize: 25),
                           ),
                           Text(
-                            widget._expertEntity.specialty,
+                            widget._expertEntity!.specialty!,
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
@@ -75,16 +72,15 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
-                    child: (widget._expertEntity.photo.length <= 0)
+                    child: (widget._expertEntity!.photo!.length <= 0)
                         ? CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.amber,
                       child: Text(
                         onBuildLettersPicture(
-                            widget._expertEntity.name,
-                            widget._expertEntity.fullName),
-                        style: TextStyle(
-                            color: Colors.pink[900],
+                            widget._expertEntity!.name,
+                            widget._expertEntity!.fullName),
+                        style: TextStyle( 
                             fontWeight: FontWeight.bold,
                             fontSize: 40),
                       ),
@@ -92,7 +88,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
                     )
                         : CircleAvatar(
                       backgroundImage: NetworkImage(
-                          "${AppConfig.API_URL}public/${widget._expertEntity.photo}"),
+                          "${AppConfig.API_URL}public/${widget._expertEntity!.photo}"),
                       backgroundColor: Colors.grey,
                       radius: 50,
                       //child: Image.asset("assets/programmer.png"),
@@ -112,7 +108,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
                   embeddedImageStyle: QrEmbeddedImageStyle(
                     size: Size(40, 40),
                   ),
-                  data: "${widget._researchEntity.researchId}",
+                  data: "${widget._researchEntity!.researchId}",
                   version: QrVersions.auto,
                   gapless: false,
                   size: 200.0,
@@ -123,7 +119,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
               child: Text(
-                "\"${widget._researchEntity.title}\"",
+                "\"${widget._researchEntity!.title}\"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -135,7 +131,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
               child: Text(
-                "Autores: ${widget._researchEntity.authors}",
+                "Autores: ${widget._researchEntity!.authors}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -154,7 +150,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
                   ),
                   Expanded(
                     flex:2,
-                    child: Text("Validado ${onBuildStringToDate(widget._researchEntity.updatedAt)}", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                    child: Text("Validado ${onBuildStringToDate(widget._researchEntity!.updatedAt!)}", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                   )
                 ],
               ),
@@ -179,21 +175,18 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        color: Colors.amber,
+      bottomNavigationBar: Container( 
         width: double.infinity,
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FlatButton.icon(
-              color: Colors.amber,
-              icon: Icon(Icons.cloud_download, color: Colors.pink[900],),
+            ElevatedButton.icon( 
+              icon: Icon(Icons.cloud_download, ),
               label: Text(
                 "Descargar certificado validez",
-                style: TextStyle(
-                    color: Colors.pink[900],
+                style: TextStyle( 
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
@@ -201,11 +194,11 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
                 setState(() {
                   isBusyOne = true;
                 });
-                print(widget._researchEntity.researchId);
-                String oRutaCertificate = await ResearchApiProvider.getCertificateByResearchId(widget._researchEntity.researchId);
+                print(widget._researchEntity!.researchId);
+                String? oRutaCertificate = await ResearchApiProvider.getCertificateByResearchId(widget._researchEntity!.researchId);
 
                 try {
-                  var data = await http.get("${AppConfig.API_URL}public/${oRutaCertificate}");
+                  var data = await http.get(Uri.parse("${AppConfig.API_URL}public/${oRutaCertificate}"));
                   var bytes = data.bodyBytes;
                   var dir = await getApplicationDocumentsDirectory();
                   print(dir.path);
@@ -232,7 +225,7 @@ class _ResponseResearcherState extends State<ResponseResearcher> {
               child: Container(
                 height: 20,
                 width: 20,
-                child: CircularProgressIndicator(backgroundColor: Colors.pink[900],),
+                child: CircularProgressIndicator( ),
               ),
             )
           ],

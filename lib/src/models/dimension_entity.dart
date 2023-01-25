@@ -1,9 +1,9 @@
 class DimensionEntity {
-  int dimensionId;
-  int researchId;
-  String name;
-  String variable;
-  String status;
+  int? dimensionId;
+  int? researchId;
+  String? name;
+  String? variable;
+  String? status;
 
   DimensionEntity(
       {this.dimensionId, this.researchId,this.name, this.variable, this.status  });
@@ -26,7 +26,7 @@ class DimensionEntity {
     "status": status,
   };
   static List<DimensionEntity> fromJSONList(List<dynamic> jsonList) {
-    List<DimensionEntity> items = List<DimensionEntity>();
+    List<DimensionEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(DimensionEntity.fromJson(json));
     });

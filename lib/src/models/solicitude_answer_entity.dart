@@ -1,10 +1,10 @@
 class SolicitudeAnswerEntity {
-  int id;
-  String fullName;
-  String photo;
-  String specialty;
-  String file;
-  String comments;
+  int? id;
+  String? fullName;
+  String? photo;
+  String? specialty;
+  String? file;
+  String? comments;
 
   SolicitudeAnswerEntity({
     this.id,
@@ -27,7 +27,7 @@ class SolicitudeAnswerEntity {
   }
 
   static List<SolicitudeAnswerEntity> fromJSONList(List<dynamic> jsonList) {
-    List<SolicitudeAnswerEntity> items = List<SolicitudeAnswerEntity>();
+    List<SolicitudeAnswerEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(SolicitudeAnswerEntity.fromJson(json));
     });

@@ -1,11 +1,11 @@
 class CriterioResponseEntity {
-  int criterioResponseId;
-  int expertId;
-  int criterioId;
-  int researchId;
-  int dimensionId;
-  String status;
-  String updateAt;
+  int? criterioResponseId;
+  int? expertId;
+  int? criterioId;
+  int? researchId;
+  int? dimensionId;
+  String? status;
+  String? updateAt;
 
   CriterioResponseEntity(
       {this.criterioResponseId, this.criterioId,this.researchId, this.dimensionId, this.status, this.updateAt,this.expertId});
@@ -30,7 +30,7 @@ class CriterioResponseEntity {
         "status": status,
       };
   static List<CriterioResponseEntity> fromJSONList(List<dynamic> jsonList) {
-    List<CriterioResponseEntity> items = List<CriterioResponseEntity>();
+    List<CriterioResponseEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(CriterioResponseEntity.fromJson(json));
     });

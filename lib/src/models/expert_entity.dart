@@ -1,14 +1,15 @@
 class ExpertEntity {
-  int id;
-  String name;
-  String fullName;
-  String specialty;
-  int status;
-  String photo;
-  String phone;
+  int? id;
+  String? name;
+  String? fullName;
+  String? specialty;
+  int? status;
+  String? photo;
+  String? phone;
+  String? orcid;
 
   ExpertEntity(
-      {this.id, this.name,this.fullName, this.specialty, this.status, this.photo, this.phone});
+      {this.id, this.name,this.fullName, this.specialty, this.status, this.photo, this.phone, this.orcid});
 
   factory ExpertEntity.fromJson(Map<String, dynamic> json) {
     return ExpertEntity(
@@ -19,11 +20,12 @@ class ExpertEntity {
       status: json['status'] ?? 0,
       photo: json['photo'] ?? "",
       phone: json['phone'] ?? "",
+      orcid: json['orcid'] ?? ""
     );
   }
 
   static List<ExpertEntity> fromJSONList(List<dynamic> jsonList) {
-    List<ExpertEntity> items = List<ExpertEntity>();
+    List<ExpertEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(ExpertEntity.fromJson(json));
     });

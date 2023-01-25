@@ -1,4 +1,4 @@
-#Mon Nov 16 19:37:38 COT 2020
-base.0=C\:\\Users\\teocp\\OneDrive\\Documentos\\GitHub\\expert\\build\\app\\intermediates\\transforms\\r8\\release\\0\\classes.dex
-path.0=classes.dex
+#Wed Jan 25 07:41:54 COT 2023
+base.0=C\:\\Users\\tjcri\\Documents\\Github\\expert\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
 renamed.0=classes.dex
+path.0=classes.dex

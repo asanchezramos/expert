@@ -12,7 +12,7 @@ import 'home_page.dart';
 import 'student/Pages/list_experts.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -27,8 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void redirectToPage() async {
     Widget nextPage = HomePage();
-    final token = await TokenManager.getInstance().getToken();
-    final session = await SessionManager.getInstance();
+    final token = await TokenManager.getInstance()!.getToken();
+    final session = await (SessionManager.getInstance() as FutureOr<SessionManager>);
     final role = session.getRole();
     if (token != null && role != null) {
       if (role == "U") {

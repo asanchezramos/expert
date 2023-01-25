@@ -10,24 +10,21 @@ class _WpComboEspecialidadState extends State<WpComboEspecialidad> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Selecionar Especialidad"),
-        leading: BackButton(
-          color: Colors.white,
-        ),
+        title: Text("Seleccionar Especialidad"), 
       ),
       body: FutureBuilder(
         future: onLoadRedResults(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+          List<dynamic> aaa = snapshot.data as List<dynamic>;
             return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: aaa.length ,
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.amber,
                       child: Icon(
-                        Icons.check_circle,
-                        color: Colors.pink[900],
+                        Icons.check_circle, 
                       ),
                       //child: Image.asset("assets/programmer.png"),
                     ),
@@ -35,12 +32,12 @@ class _WpComboEspecialidadState extends State<WpComboEspecialidad> {
                     title: Container(
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
-                        snapshot.data[index]["especialidad"],
+                        aaa[index]["especialidad"],
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(snapshot.data[index]["especialidad"]);
+                      Navigator.of(context).pop(aaa[index]["especialidad"]);
                     },
                   );
                 });
@@ -56,10 +53,11 @@ class _WpComboEspecialidadState extends State<WpComboEspecialidad> {
     );
   }
 
-  Future onLoadRedResults() async {
+  Future<List<dynamic>> onLoadRedResults() async {
     final List<dynamic> _listRed = [
-      {"especialidad": "Software"},
-      {"especialidad": "Redes Neuronales"}
+      {"especialidad": "Desarrollo de software"},
+      {"especialidad": "Gestión estratégica de tecnologías"},
+      {"especialidad": "Desarrollo de sistemas inteligentes"}
     ];
     return _listRed;
   }

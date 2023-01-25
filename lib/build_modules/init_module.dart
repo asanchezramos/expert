@@ -22,7 +22,7 @@ class _InitModuleState extends State<InitModule> {
   bool isSelecion = false;
   bool isLoadingComplete = false;
   bool isRememberSession = false;
-  Timer _timer;
+  late Timer _timer;
   @override
   void initState() {
     // TODO: implement initState
@@ -39,32 +39,38 @@ class _InitModuleState extends State<InitModule> {
   }
 
   onValidateSession() async {
-    final session = await SessionManager.getInstance();
-    bool validate = session.getRememberId();
-    if(validate){
-      String role =  session.getRole();
-      if(role == 'U'){
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    HomeResearcherModule()));
-      } else{
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => HomeExpertModule()));
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      bool validate = session.getRememberId()!;
+      if (validate) {
+        String? role = session.getRole();
+        if (role == 'U') {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeResearcherModule()));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeExpertModule()));
+        }
       }
     }
   }
 
-  Future<bool> _onBackPressed() {
-    Dialogs.confirm(context,title: "¿Estás seguro?", message: 'Si aceptas la aplicación cerrará').then((value) {
-      if(value){
+  Future<bool> _onBackPressed() async {
+    Dialogs.confirm(context,
+            title: "¿Estás seguro?",
+            message: 'Si aceptas la aplicación cerrará')
+        .then((value) {
+      if (value!) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
       }
     });
+    return false;
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -96,7 +102,6 @@ class _InitModuleState extends State<InitModule> {
                           "Juicio de Experto",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.pink[900],
                               fontWeight: FontWeight.bold,
                               letterSpacing: 6,
                               fontSize: 30),
@@ -111,7 +116,8 @@ class _InitModuleState extends State<InitModule> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                         child: Text(
                           "¿No sabes cuál elegir?",
                           textAlign: TextAlign.center,
@@ -119,17 +125,14 @@ class _InitModuleState extends State<InitModule> {
                         ),
                       ),
                       Container(
-                        child: OutlineButton(
-                          highlightedBorderColor: Colors.amber,
+                        child: TextButton(
                           child: Text("Ver el tutorial aquí"),
                           onPressed: () async {
-                            if (await canLaunch(AppConfig.TUTORIAL_URL)) {
-                            await launch(AppConfig.TUTORIAL_URL);
-                            } else {
-                            throw 'Could not launch  ';
-                            }
+                            if (!await launchUrl(Uri.parse(AppConfig.TUTORIAL_URL))) {
+                              throw 'Could not launch $AppConfig.TUTORIAL_URL';
+                            } 
                           },
-                        ) ,
+                        ),
                       ),
                     ],
                   )),
@@ -141,23 +144,19 @@ class _InitModuleState extends State<InitModule> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: OutlineButton.icon(
-                        highlightedBorderColor: Colors.amber,
-                        padding: EdgeInsets.all(20),
+                      child: OutlinedButton.icon(  
                         icon: Icon(
                           Icons.supervised_user_circle,
-                          color: Colors.pink[900],
                         ),
                         label: Text(
                           "Experto",
-                          style: TextStyle(color: Colors.pink[900]),
                         ),
                         onPressed: () {
                           setState(() {
                             isSelecion = true;
                           });
                           _timer =
-                          new Timer(const Duration(milliseconds: 400), () {
+                              new Timer(const Duration(milliseconds: 400), () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -171,23 +170,19 @@ class _InitModuleState extends State<InitModule> {
                       width: 20,
                     ),
                     Expanded(
-                      child: OutlineButton.icon(
-                        highlightedBorderColor: Colors.amber,
-                        padding: EdgeInsets.all(20),
+                      child: OutlinedButton.icon( 
                         icon: Icon(
                           Icons.featured_play_list,
-                          color: Colors.pink[900],
                         ),
                         label: Text(
                           "Investigador",
-                          style: TextStyle(color: Colors.pink[900]),
                         ),
                         onPressed: () {
                           setState(() {
                             isSelecion = true;
                           });
                           _timer =
-                          new Timer(const Duration(milliseconds: 400), () {
+                              new Timer(const Duration(milliseconds: 400), () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -222,7 +217,7 @@ class _PermissionState extends State<PermissionWidget> {
   _PermissionState(this._permission);
 
   final Permission _permission;
-  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
+  PermissionStatus? _permissionStatus;
 
   @override
   void initState() {
@@ -267,7 +262,7 @@ class _PermissionState extends State<PermissionWidget> {
   }
 
   void checkServiceStatus(BuildContext context, Permission permission) async {
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text((await permission.status).toString()),
     ));
   }

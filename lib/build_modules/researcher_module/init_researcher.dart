@@ -20,7 +20,7 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
   final TextEditingController _pass = TextEditingController();
   bool isBusy = false;
   bool _obscureText = true;
-  bool checkboxValueSession = false;
+  bool? checkboxValueSession = false;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -38,15 +38,12 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
     return WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
+          appBar: AppBar( 
             centerTitle: true,
             title: Text(
-              "Investigador",
-              style: TextStyle(color: Colors.pink[900]),
+              "Investigador", 
             ),
-            leading: BackButton(
-              color: Colors.pink[900],
+            leading: BackButton( 
               onPressed: () {
                 FocusScope.of(context).unfocus();
                 Navigator.pushReplacement(
@@ -72,7 +69,7 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
             onTap: () {
               final FocusScopeNode focus = FocusScope.of(context);
               if (!focus.hasPrimaryFocus && focus.hasFocus) {
-                FocusManager.instance.primaryFocus.unfocus();
+                FocusManager.instance.primaryFocus!.unfocus();
               }
             },
             child: Form(
@@ -88,8 +85,9 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                           text: "¡Hola investigador!",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(136, 14, 79, 1),
                               fontSize: 20,
-                              color: Colors.pink[900]),
+                            ),
                           children: [
                             TextSpan(
                               text:
@@ -107,7 +105,7 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                     child: TextFormField(
                       controller: _email,
                       validator: (val) {
-                        if (val.isEmpty) return 'Este campo es requerido';
+                        if (val!.isEmpty) return 'Este campo es requerido';
                         return null;
                       },
                       keyboardType: TextInputType.emailAddress,
@@ -125,7 +123,7 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                     child: TextFormField(
                       controller: _pass,
                       validator: (val) {
-                        if (val.isEmpty) return 'Este campo es requerido';
+                        if (val!.isEmpty) return 'Este campo es requerido';
                         return null;
                       },
                       keyboardType: TextInputType.visiblePassword,
@@ -152,20 +150,14 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                       'Mantener sesión abierta',
                       style: TextStyle(fontSize: 14.0),
                     ),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    activeColor: Colors.pink[900],
+                    controlAffinity: ListTileControlAffinity.leading, 
                     contentPadding: EdgeInsets.zero,
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     height: 50,
-                    child: OutlineButton(
-                      color: Colors.amber,
-                      highlightedBorderColor: Colors.amber,
-                      focusColor: Colors.amber,
-                      hoverColor: Colors.amber,
-                      highlightColor: Colors.amber,
-                      textColor: Colors.pink[900],
+                    child: OutlinedButton(
+                   
                       child: Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +183,7 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                       ),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        if (_form.currentState.validate() && !isBusy) {
+                        if (_form.currentState!.validate() && !isBusy) {
                           setState(() {
                             isBusy = true;
                           });
@@ -208,13 +200,15 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                             isBusy = false;
                           });
                           if (success) {
-                            final session = await SessionManager.getInstance();
-                            await session.setRememberId(checkboxValueSession);
+                            SessionManager? session = await SessionManager.getInstance() ;
+                            if(session != null){
+                              await session.setRememberId(checkboxValueSession);
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         HomeResearcherModule()));
+                            }
                           }
                         } else {
                           return null;
@@ -225,7 +219,7 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     height: 50,
-                    child: FlatButton(
+                    child: ElevatedButton(
                       child: Text(
                         "¿Olvidaste tu contraseña?",
                         style: TextStyle(decoration: TextDecoration.underline),
@@ -250,9 +244,10 @@ class _InitResearcherModuleState extends State<InitResearcherModule> {
         ));
   }
 
-  Future<bool> _onBackPressed() {
+  Future<bool> _onBackPressed() async{
     FocusScope.of(context).unfocus();
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => InitModule()));
+        return false;
   }
 }

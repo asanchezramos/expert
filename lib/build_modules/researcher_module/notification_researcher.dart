@@ -10,22 +10,20 @@ class _NotificationResearcherState extends State<NotificationResearcher> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notificaciones"),
-        leading: BackButton(
-          color: Colors.white,
-        ),
+        title: Text("Notificaciones"), 
       ),
       body: FutureBuilder(
         future: onLoadRedResults(),
         builder: (context, snapshot) {
           if(snapshot.hasData){
+            List<dynamic> aaa = snapshot.data as List<dynamic>;
             return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: aaa.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.amber,
-                      child: Icon(Icons.notification_important, color: Colors.pink[900],),
+                      child: Icon(Icons.notification_important,  ),
                       //child: Image.asset("assets/programmer.png"),
                     ),
                     title: Container(
@@ -34,8 +32,8 @@ class _NotificationResearcherState extends State<NotificationResearcher> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(snapshot.data[index]["nombre"]),
-                          Text(snapshot.data[index]["especialidad"], style: TextStyle(fontWeight: FontWeight.bold),)
+                          Text(aaa[index]["nombre"]),
+                          Text(aaa[index]["especialidad"], style: TextStyle(fontWeight: FontWeight.bold),)
                         ],
                       ),
                     ),

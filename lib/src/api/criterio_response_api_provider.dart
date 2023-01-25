@@ -9,12 +9,11 @@ import '../managers/http_manager.dart';
 class CriterioResponseApiProvider {
   static final HttpManager httpManager = HttpManager();
 
-  static Future<List<CriterioResponseEntity>> getCriterios(int researchId) async {
+  static Future<List<CriterioResponseEntity>?> getCriterios(int? researchId) async {
     try {
       final responseData = await httpManager.get("mobile/criterio-response-get/$researchId");
       return CriterioResponseEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return null;
     }
   }

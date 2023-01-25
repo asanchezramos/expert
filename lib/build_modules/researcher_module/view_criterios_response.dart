@@ -10,11 +10,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ViewCriterioResponse extends StatefulWidget {
-  String speciality;
-  int expertId;
+  String? speciality;
+  int? expertId;
   DimensionEntity dimension;
-  int _researchId;
-  ResearchEntity _researchSelected;
+  int? _researchId;
+  ResearchEntity? _researchSelected;
   ViewCriterioResponse(
       this.speciality, this.expertId, this.dimension, this._researchId,this._researchSelected);
   @override
@@ -25,9 +25,9 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
   final TextEditingController _dimensionController = TextEditingController();
   final TextEditingController _variableController = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  String sDimensionFinal = "";
-  String sVariableFinal = "";
-  List<CriterioResponseEntity> _criteriosResponse = List();
+  String? sDimensionFinal = "";
+  String? sVariableFinal = "";
+  List<CriterioResponseEntity>? _criteriosResponse = [];
   bool isBusy = false;
   bool isEdit = false;
   @override
@@ -37,8 +37,8 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
     setState(() {
       sDimensionFinal =  widget.dimension.name;
       sVariableFinal =  widget.dimension.variable;
-      _dimensionController.text = widget.dimension.name;
-      _variableController.text = widget.dimension.variable;
+      _dimensionController.text = widget.dimension.name!;
+      _variableController.text = widget.dimension.variable!;
       CriterioResponseApiProvider.getCriterios(widget._researchId)
           .then((value) {
         setState(() {
@@ -51,22 +51,17 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
+      appBar: AppBar( 
         title: Text(
-          isEdit ? "Revisión de dimensión" : "Revisión de dimensión",
-          style: TextStyle(color: Colors.pink[900]),
+          isEdit ? "Revisión de dimensión" : "Revisión de dimensión", 
         ),
-        centerTitle: true,
-        leading: BackButton(
-          color: Colors.pink[900],
-        ),
+        centerTitle: true, 
       ),
       body: GestureDetector(
         onTap: () {
           final FocusScopeNode focus = FocusScope.of(context);
           if (!focus.hasPrimaryFocus && focus.hasFocus) {
-            FocusManager.instance.primaryFocus.unfocus();
+            FocusManager.instance.primaryFocus!.unfocus();
           }
         },
         child: Padding(
@@ -80,7 +75,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
                     child: TextFormField(
                       controller: _dimensionController,
                       validator: (val) {
-                        if (val.isEmpty) return 'Este campo es requerido';
+                        if (val!.isEmpty) return 'Este campo es requerido';
                         return null;
                       },
                       readOnly:   isEdit  ,
@@ -92,7 +87,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value) {
-                        _form.currentState.validate();
+                        _form.currentState!.validate();
                       },
                     ),
                   ),
@@ -102,7 +97,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
                     child: TextFormField(
                       controller: _variableController,
                       validator: (val) {
-                        if (val.isEmpty) return 'Este campo es requerido';
+                        if (val!.isEmpty) return 'Este campo es requerido';
                         return null;
                       },
                       minLines: 3,
@@ -116,7 +111,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value) {
-                        _form.currentState.validate();
+                        _form.currentState!.validate();
                       },
                     ),
                   ),
@@ -140,19 +135,19 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
                         widget.speciality, widget.expertId),
                     builder: (_, snapshot) {
                       if (snapshot.hasData) {
-                        print(snapshot.data.length);
+                        List<CriterioEntity>? criterios =snapshot.data as List<CriterioEntity>; 
                         return ListView.builder(
                             physics: ClampingScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: snapshot.data.length,
+                            itemCount: criterios.length,
                             itemBuilder: (context, index) {
-                              CriterioEntity element = snapshot.data[index];
+                              CriterioEntity element = criterios[index];
                               return ListTile(
                                 leading: Icon(
                                   Icons.filter_tilt_shift,
                                   color: Colors.green,
                                 ),
-                                title: Text(element.name),
+                                title: Text(element.name!),
                                 subtitle: onBuildSubtitleDimension(widget.dimension,element,index),
                               );
                             });
@@ -174,21 +169,20 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
       ),
       bottomSheet: Container(
         width: double.infinity,
+        padding: EdgeInsets.all(5),
         height: 50,
-        child: FlatButton(
-          color: Colors.amber,
+        child: ElevatedButton( 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Modificar ",
-                  style: TextStyle(
-                    color: Colors.pink[900],
+                  style: TextStyle( 
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
               Visibility(
-                  visible: !isBusy,child: Icon(Icons.cached ,color: Colors.pink[900])),
+                  visible: !isBusy,child: Icon(Icons.cached  )),
               Visibility(
                 visible: isBusy,
                 child: Padding(
@@ -200,7 +194,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
                 child: Container(
                   height: 20,
                   width: 20,
-                  child: CircularProgressIndicator(backgroundColor: Colors.pink[900],),
+                  child: CircularProgressIndicator( ),
                 ),
               ),
             ],
@@ -215,7 +209,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
               oMessage = "¿Está seguro de editar la variable?";
             }
             Dialogs.confirm(context,title: "Confirmación",message: oMessage).then((value) async {
-              if(value){
+              if(value!){
                 setState(() {
                   isBusy = true;
                 });
@@ -247,12 +241,12 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
       ),
     );
   }
-  onFindCriterioResponse(int criterioId, int dimensionId){
-    int index =  _criteriosResponse.indexWhere((element) => element.criterioId == criterioId && element.dimensionId == dimensionId );
+  onFindCriterioResponse(int? criterioId, int? dimensionId){
+    int index =  _criteriosResponse!.indexWhere((element) => element.criterioId == criterioId && element.dimensionId == dimensionId );
     if(index == -1){
       return null;
     } else {
-      return _criteriosResponse[index];
+      return _criteriosResponse![index];
     }
   }
   onGetStatusDimension(CriterioResponseEntity criterioResponse){
@@ -269,7 +263,7 @@ class _ViewCriterioResponseState extends State<ViewCriterioResponse> {
   }
 
   Widget onBuildSubtitleDimension(DimensionEntity dimension, CriterioEntity criterio, int indexDimension ){
-    final CriterioResponseEntity criterioResponse = onFindCriterioResponse(criterio.criterioId,dimension.dimensionId);
+    final CriterioResponseEntity? criterioResponse = onFindCriterioResponse(criterio.criterioId,dimension.dimensionId);
     if(criterioResponse != null){
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,

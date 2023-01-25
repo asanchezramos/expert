@@ -9,8 +9,8 @@ import 'package:expert/src/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 
 class ResponseExpert extends StatefulWidget {
-  final ExpertEntity expertSelected;
-  final ResearchEntity researchSelected;
+  final ExpertEntity? expertSelected;
+  final ResearchEntity? researchSelected;
   final int applicable;
   ResponseExpert(this.researchSelected,this.expertSelected,this.applicable);
   @override
@@ -26,9 +26,9 @@ bool hasFirma = false;
   void initState() {
     // TODO: implement initState
     super.initState();
-     SigningApiProvider.getSigningByExpert(widget.researchSelected.expertId).then((value) {
+     SigningApiProvider.getSigningByExpert(widget.researchSelected!.expertId).then((value) {
       setState(() {
-        if(value.length > 0){
+        if(value!.length > 0){
           hasFirma = true;
         }  else {
           hasFirma = false;
@@ -45,17 +45,14 @@ bool hasFirma = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: Colors.white,
-        ),
+      appBar: AppBar( 
         title: Text("Respuesta de revisión"),
       ),
       body: GestureDetector(
         onTap: () {
           final FocusScopeNode focus = FocusScope.of(context);
           if (!focus.hasPrimaryFocus && focus.hasFocus) {
-            FocusManager.instance.primaryFocus.unfocus();
+            FocusManager.instance.primaryFocus!.unfocus();
           }
         },
         child: Form(
@@ -71,13 +68,13 @@ bool hasFirma = false;
                           child: Column(
                             children: [
                               Text(
-                                widget.expertSelected.name +
+                                widget.expertSelected!.name! +
                                     ' ' +
-                                    widget.expertSelected.fullName,
+                                    widget.expertSelected!.fullName!,
                                 style: TextStyle(fontSize: 25),
                               ),
                               Text(
-                                widget.expertSelected.specialty,
+                                widget.expertSelected!.specialty!,
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
@@ -89,16 +86,15 @@ bool hasFirma = false;
                       ),
                       Container(
                         padding: EdgeInsets.all(10),
-                        child: (widget.expertSelected.photo.length <= 0)
+                        child: (widget.expertSelected!.photo!.length <= 0)
                             ? CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.amber,
                           child: Text(
                             onBuildLettersPicture(
-                                widget.expertSelected.name,
-                                widget.expertSelected.fullName),
-                            style: TextStyle(
-                                color: Colors.pink[900],
+                                widget.expertSelected!.name,
+                                widget.expertSelected!.fullName),
+                            style: TextStyle( 
                                 fontWeight: FontWeight.bold,
                                 fontSize: 40),
                           ),
@@ -106,7 +102,7 @@ bool hasFirma = false;
                         )
                             : CircleAvatar(
                           backgroundImage: NetworkImage(
-                              "${AppConfig.API_URL}public/${widget.expertSelected.photo}"),
+                              "${AppConfig.API_URL}public/${widget.expertSelected!.photo}"),
                           backgroundColor: Colors.grey,
                           radius: 50,
                           //child: Image.asset("assets/programmer.png"),
@@ -124,7 +120,7 @@ bool hasFirma = false;
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                   child: Text(
-                    "\"${widget.researchSelected.title}\"",
+                    "\"${widget.researchSelected!.title}\"",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -136,7 +132,7 @@ bool hasFirma = false;
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                   child: Text(
-                    "Autores: ${widget.researchSelected.authors}",
+                    "Autores: ${widget.researchSelected!.authors}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -162,7 +158,7 @@ bool hasFirma = false;
                   child: TextFormField(
                     controller: _comentario,
                     validator: (val) {
-                      if (val.isEmpty) return 'Este campo es requerido';
+                      if (val!.isEmpty) return 'Este campo es requerido';
                       return null;
                     },
                     minLines: 3,
@@ -186,15 +182,14 @@ bool hasFirma = false;
       ),
       bottomSheet: Container(
         width: double.infinity, 
-        child: FlatButton(
-          color: Colors.amber,
+        child: ElevatedButton( 
           child: Container(
             height: 50,
         child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Enviar revisión", style: TextStyle(fontSize: 18, color: Colors.pink[900]),),
+            Text("Enviar revisión", style: TextStyle(fontSize: 18,  ),),
             Visibility(
               visible: isBusy,
               child: Padding(
@@ -206,7 +201,7 @@ bool hasFirma = false;
               child: Container(
                 height: 20,
                 width: 20,
-                child: CircularProgressIndicator(backgroundColor: Colors.pink[900],),
+                child: CircularProgressIndicator( ),
               ),
             ),
           ],
@@ -218,14 +213,14 @@ bool hasFirma = false;
               Dialogs.alert(context,title: "No tiene firma digital", message: "En el menú podrá encontrar la opcion apra que suba su firma digital");
             return;
             }
-            if (_form.currentState.validate() && !isBusy) {
+            if (_form.currentState!.validate() && !isBusy) {
               Dialogs.confirm(context,title: "Confirmación", message: "¿Está seguro que desea enviar revisión?").then((value) async {
-                if(value){
+                if(value!){
                   setState(() {
                     isBusy = true;
                   });
                   final request = ResearchEntity(
-                      researchId: widget.researchSelected.researchId,
+                      researchId: widget.researchSelected!.researchId,
                       status: ongetStatus(),
                       observation: _comentario.text
                   );

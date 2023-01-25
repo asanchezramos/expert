@@ -10,7 +10,7 @@ class FindResearcher extends SearchDelegate{
     // TODO: implement buildActions
     return [
       IconButton(
-        icon: Icon(Icons.clear, color: Colors.pink[900],),
+        icon: Icon(Icons.clear, ),
         onPressed: () {
           query = '';
         },
@@ -23,7 +23,7 @@ class FindResearcher extends SearchDelegate{
     // TODO: implement buildLeading
     return IconButton(
       icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow, color: Colors.pink[900], progress: transitionAnimation),
+          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
       onPressed: () {
         close(context, null);
       },
@@ -39,18 +39,19 @@ class FindResearcher extends SearchDelegate{
       future: ExpertApiProvider.getFindExpert(param),
       builder: (context, snapshot) {
         if(snapshot.hasData){
+          List<ExpertEntity>? expertos = snapshot.data as List<ExpertEntity>;
           return ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: expertos.length,
               itemBuilder: (context, index) {
-                ExpertEntity element = snapshot.data[index];
+                ExpertEntity element =expertos[index];
                 return ListTile(
                   contentPadding: EdgeInsets.only(left: 20,top: 10,bottom: 10,right: 20),
-                  leading: (element.photo.length <= 0) ? CircleAvatar(
+                  leading: (element.photo!.length <= 0) ? CircleAvatar(
                     radius: 25,
                     backgroundColor: Colors.amber,
                     child:  Text(
                       onBuildLettersPicture(element.name , element.fullName),
-                      style: TextStyle(color: Colors.pink[900], fontWeight: FontWeight.bold),
+                      style: TextStyle( fontWeight: FontWeight.bold),
                     ),
                     //child: Image.asset("assets/programmer.png"),
                   ) :
@@ -65,16 +66,16 @@ class FindResearcher extends SearchDelegate{
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(element.name + ' ' + element.fullName),
+                        Text(element.name! + ' ' + element.fullName!),
                         Text(
-                          element.specialty,
+                          element.specialty!,
                           style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                         )
                       ],
                     ),
                   ),
-                  trailing: Icon(Icons.arrow_forward, color: Colors.pink[900],) ,
+                  trailing: Icon(Icons.arrow_forward,  ) ,
                   onTap: () {
                     Navigator.push(
                         context,
@@ -101,18 +102,19 @@ class FindResearcher extends SearchDelegate{
       future: ExpertApiProvider.getFindExpert(" "),
       builder: (context, snapshot) {
         if(snapshot.hasData){
+          List<ExpertEntity>? expertosfirst = snapshot.data as List<ExpertEntity>;
           return ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: expertosfirst.length,
               itemBuilder: (context, index) {
-                ExpertEntity element = snapshot.data[index];
+                ExpertEntity element = expertosfirst[index];
                 return ListTile(
                   contentPadding: EdgeInsets.only(left: 20,top: 10,bottom: 10,right: 20),
-                  leading: (element.photo.length <= 0) ? CircleAvatar(
+                  leading: (element.photo!.length <= 0) ? CircleAvatar(
                     radius: 25,
                     backgroundColor: Colors.amber,
                     child:  Text(
                       onBuildLettersPicture(element.name , element.fullName),
-                      style: TextStyle(color: Colors.pink[900], fontWeight: FontWeight.bold),
+                      style: TextStyle( fontWeight: FontWeight.bold),
                     ),
                     //child: Image.asset("assets/programmer.png"),
                   ) :
@@ -127,16 +129,19 @@ class FindResearcher extends SearchDelegate{
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(element.name + ' ' + element.fullName),
+                        Text(element.name! + ' ' + element.fullName!),
                         Text(
-                          element.specialty,
+                          element.specialty!,
                           style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                        )
+                        ),
+                        Text("ORCID: ${element.orcid}",
+                          style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
                       ],
                     ),
                   ),
-                  trailing: Icon(Icons.arrow_forward, color: Colors.pink[900],) ,
+                  trailing: Icon(Icons.arrow_forward,  ) ,
                   onTap: () {
                     Navigator.push(
                         context,

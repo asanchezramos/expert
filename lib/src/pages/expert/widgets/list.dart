@@ -2,10 +2,10 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ListExpert extends StatelessWidget {
-  const ListExpert({Key key, this.name, this.expert}) : super(key: key);
+  const ListExpert({Key? key, this.name, this.expert}) : super(key: key);
 
-  final String name;
-  final String expert;
+  final String? name;
+  final String? expert;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,10 @@ class ListExpert extends StatelessWidget {
 }
 
 class ListStatus extends StatelessWidget {
-  const ListStatus({Key key, this.name, this.status}) : super(key: key);
+  const ListStatus({Key? key, this.name, this.status}) : super(key: key);
 
-  final String name;
-  final String status;
+  final String? name;
+  final String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,8 @@ class ListStatus extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(name, style: TextStyle(fontSize: responsive.ip(2))),
-                Text(status,
+                Text(name!, style: TextStyle(fontSize: responsive.ip(2))),
+                Text(status!,
                     style: TextStyle(
                         fontSize: responsive.ip(2), color: Colors.green[300]))
               ]),

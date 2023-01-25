@@ -9,12 +9,11 @@ import '../models/expert_entity.dart';
 class DimensionApiProvider {
   static final HttpManager httpManager = HttpManager();
 
-  static Future<List<DimensionEntity>> getDimensions(int researchId) async {
+  static Future<List<DimensionEntity>?> getDimensions(int? researchId) async {
     try {
       final responseData = await httpManager.get("mobile/dimension/$researchId");
       return DimensionEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return null;
     }
   }
@@ -35,7 +34,7 @@ class DimensionApiProvider {
 
   static Future<bool> postDeleteDimension(
       BuildContext context,
-      int dimensionId,
+      int? dimensionId,
       ) async {
     try {
       var s = await httpManager.delete("mobile/dimension-delete/$dimensionId");

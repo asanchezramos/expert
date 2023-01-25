@@ -1,13 +1,13 @@
 class UserSolicitudeEntity {
-  int id;
-  String fullName;
-  String specialty;
-  int status;
-  String photo;
-  String phone;
-  String repository;
-  String investigation;
-  int solicitudeId;
+  int? id;
+  String? fullName;
+  String? specialty;
+  int? status;
+  String? photo;
+  String? phone;
+  String? repository;
+  String? investigation;
+  int? solicitudeId;
 
   UserSolicitudeEntity({
     this.id,
@@ -46,7 +46,7 @@ class UserSolicitudeEntity {
   }
 
   static List<UserSolicitudeEntity> fromJSONList(List<dynamic> jsonList) {
-    List<UserSolicitudeEntity> items = List<UserSolicitudeEntity>();
+    List<UserSolicitudeEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(UserSolicitudeEntity.fromJson(json));
     });

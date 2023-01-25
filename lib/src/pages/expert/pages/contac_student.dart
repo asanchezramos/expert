@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactStudent extends StatelessWidget {
-  const ContactStudent({Key key, this.userSolicitudeEntity}) : super(key: key);
-  final UserSolicitudeEntity userSolicitudeEntity;
+  const ContactStudent({Key? key, this.userSolicitudeEntity}) : super(key: key);
+  final UserSolicitudeEntity? userSolicitudeEntity;
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -48,24 +48,22 @@ class ContactStudent extends StatelessWidget {
 }
 
 class DataExpert extends StatefulWidget {
-  const DataExpert({Key key, this.userSolicitudeEntity}) : super(key: key);
+  const DataExpert({Key? key, this.userSolicitudeEntity}) : super(key: key);
 
-  final UserSolicitudeEntity userSolicitudeEntity;
+  final UserSolicitudeEntity? userSolicitudeEntity;
 
   @override
   _DataExpertState createState() => _DataExpertState();
 }
 
 class _DataExpertState extends State<DataExpert> {
-  void _downloadFile(String url, String filename) async {
+  void _downloadFile(String? url, String filename) async {
     if (url == "") {
       Dialogs.alert(context,
           title: "Aviso", message: "No hay archivo para descargar");
       return;
     }
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
+    if (!await launchUrl(Uri.parse(url!))) {
       throw 'Could not launch $url';
     }
   }
@@ -77,16 +75,16 @@ class _DataExpertState extends State<DataExpert> {
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
 
-    return FutureBuilder<UserSolicitudeEntity>(
+    return FutureBuilder<UserSolicitudeEntity?>(
         future: SolicitudeApiProvider.getUserSolicitudeDetailByExpert(
-          widget.userSolicitudeEntity.solicitudeId,
+          widget.userSolicitudeEntity!.solicitudeId,
         ),
         builder: (
           BuildContext context,
-          AsyncSnapshot<UserSolicitudeEntity> snapshot,
+          AsyncSnapshot<UserSolicitudeEntity?> snapshot,
         ) {
           if (snapshot.hasData) {
-            UserSolicitudeEntity userData = snapshot.data;
+            UserSolicitudeEntity userData = snapshot.data!;
             return Padding(
               padding: const EdgeInsets.all(
                 20,
@@ -102,12 +100,12 @@ class _DataExpertState extends State<DataExpert> {
                           height: responsive.hp(2.0),
                         ),
                         Text(
-                          'Estudiante: ' + userData.fullName,
+                          'Estudiante: ' + userData.fullName!,
                           style: TextStyle(fontSize: responsive.ip(1.7)),
                         ),
                         Text(
                           'Especialidad: ' +
-                              widget.userSolicitudeEntity.specialty,
+                              widget.userSolicitudeEntity!.specialty!,
                           style: TextStyle(fontSize: responsive.ip(1.7)),
                         ),
                         SizedBox(
@@ -267,7 +265,7 @@ class _DataExpertState extends State<DataExpert> {
                         width: responsive.wp(25),
                         child: userData.photo != ""
                             ? Image.network(
-                                userData.photo,
+                                userData.photo!,
                               )
                             : SizedBox(),
                       ),
@@ -283,9 +281,10 @@ class _DataExpertState extends State<DataExpert> {
                                   builder: (context) => AlertDialog(
                                         title: Text('Contactar'),
                                         content: Text('Teléfono: ' +
-                                            widget.userSolicitudeEntity.phone),
+                                            widget
+                                                .userSolicitudeEntity!.phone!),
                                         actions: <Widget>[
-                                          FlatButton(
+                                          ElevatedButton(
                                             child: Text('ok'),
                                             onPressed: () {
                                               Navigator.of(context).pop();

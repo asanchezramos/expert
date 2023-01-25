@@ -41,32 +41,34 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
   String radioItem = '';
   int _currentIndex = 0;
   bool isUpdateComplete = false;
-  ExpertEntity expertSelected = ExpertEntity();
-  ResearchEntity _researchSelected = ResearchEntity();
-  List<CriterioResponseEntity> _criteriosResponse = List();
+  ExpertEntity? expertSelected = ExpertEntity();
+  ResearchEntity? _researchSelected = ResearchEntity();
+  List<CriterioResponseEntity>? _criteriosResponse = [];
 
   bool isBusy = false;
   bool isBusyOne = false;
   bool isBusyTwo = false;
-  Future<List<CriterioEntity>> getCriterio;
-  Future<List<ExpertEntity>> getNetworkByUserId =
-  NetworkApiProvider.getNetworkExpert();
-  Future<List<ResearchEntity>> getResearchByUserId =
-  ResearchApiProvider.getResearchByExpertId();
-  Future<List<DimensionEntity>> getDimensions;
-  List<FocusNode> _focusNodes = List<FocusNode>.generate(1, (int index) => FocusNode());
+  Future<List<CriterioEntity>?>? getCriterio;
+  Future<List<ExpertEntity>?> getNetworkByUserId =
+      NetworkApiProvider.getNetworkExpert();
+  Future<List<ResearchEntity>?> getResearchByUserId =
+      ResearchApiProvider.getResearchByExpertId();
+  Future<List<DimensionEntity>?>? getDimensions;
+  List<FocusNode> _focusNodes =
+      List<FocusNode>.generate(1, (int index) => FocusNode());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(context) as PreferredSizeWidget?,
         drawer: _buildDrawer(),
         body: PageView(
           controller: _pageController,
@@ -79,14 +81,17 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                   future: getNetworkByUserId,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if(snapshot.data.length <= 0) {
+                      List<ExpertEntity>? aaa =
+                          snapshot.data as List<ExpertEntity>;
+                      if (aaa.length <= 0) {
                         return Container(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Center(
-                            child:RichText(
+                            child: RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                style: TextStyle(color: Colors.black,fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
                                 children: [
                                   TextSpan(
                                     text: "No tienes contactos en tu red",
@@ -98,41 +103,43 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                         );
                       } else {
                         return ListView.builder(
-                            itemCount: snapshot.data.length,
+                            itemCount: aaa.length,
                             itemBuilder: (context, index) {
-                              ExpertEntity element = snapshot.data[index];
+                              ExpertEntity element = aaa[index];
                               return ListTile(
-                                leading: (element.photo.length <= 0)
+                                leading: (element.photo!.length <= 0)
                                     ? CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: Colors.amber,
-                                  child: Text(
-                                    onBuildLettersPicture(
-                                        element.name, element.fullName),
-                                    style: TextStyle(
-                                        color: Colors.pink[900],
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  //child: Image.asset("assets/programmer.png"),
-                                )
+                                        radius: 25,
+                                        backgroundColor: Colors.amber,
+                                        child: Text(
+                                          onBuildLettersPicture(
+                                              element.name, element.fullName),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        //child: Image.asset("assets/programmer.png"),
+                                      )
                                     : CircleAvatar(
-                                  backgroundImage:
-                                  NetworkImage("${AppConfig.API_URL}public/${element.photo}"),
-                                  backgroundColor: Colors.grey,
-                                  radius: 25,
-                                  //child: Image.asset("assets/programmer.png"),
-                                ),
+                                        backgroundImage: NetworkImage(
+                                            "${AppConfig.API_URL}public/${element.photo}"),
+                                        backgroundColor: Colors.grey,
+                                        radius: 25,
+                                        //child: Image.asset("assets/programmer.png"),
+                                      ),
                                 title: Container(
                                   padding: EdgeInsets.symmetric(vertical: 15),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(element.name + ' ' + element.fullName),
+                                      Text(element.name! +
+                                          ' ' +
+                                          element.fullName!),
                                       Text(
                                         "Investigador ",
-                                        style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   ),
@@ -140,7 +147,6 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                               );
                             });
                       }
-
                     } else {
                       return Container(
                         child: Center(
@@ -163,17 +169,21 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                   future: getResearchByUserId,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if(snapshot.data.length <= 0) {
+                      List<ResearchEntity>? vvv =
+                          snapshot.data as List<ResearchEntity>;
+                      if (vvv.length <= 0) {
                         return Container(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Center(
-                            child:RichText(
+                            child: RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                style: TextStyle(color: Colors.black,fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
                                 children: [
                                   TextSpan(
-                                    text: "No cuentas con investigaciones para revisión",
+                                    text:
+                                        "No cuentas con investigaciones para revisión",
                                   ),
                                 ],
                               ),
@@ -182,15 +192,16 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                         );
                       } else {
                         return ListView.builder(
-                            itemCount: snapshot.data.length,
+                            itemCount: vvv.length,
                             itemBuilder: (context, index) {
-                              ResearchEntity element = snapshot.data[index];
+                              ResearchEntity element = vvv[index];
                               return ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.amber,
                                   child: Text(
                                     onBuildStatusResearch(element.status),
-                                    style: TextStyle(color: Colors.pink[900],fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   //child: Image.asset("assets/programmer.png"),
                                 ),
@@ -198,43 +209,48 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                                   padding: EdgeInsets.symmetric(vertical: 15),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(element.title),
+                                      Text(element.title!),
                                       Text(
-                                        element.speciality,
-                                        style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        element.speciality!,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        element.authors,
+                                        element.authors!,
                                       )
                                     ],
                                   ),
                                 ),
                                 subtitle: onBuildSubtitleResearch(element),
                                 onTap: () async {
-
-                                  switch(element.status){
+                                  switch (element.status) {
                                     case 1:
-                                    //editar research
+                                      //editar research
 
                                       break;
                                     case 6:
                                       Dialogs.alert(
                                         context,
                                         title: "Enviado a corregir",
-                                        message: "Podrás revisar esta investigación cuando se corrija",
+                                        message:
+                                            "Podrás revisar esta investigación cuando se corrija",
                                       );
                                       break;
                                     case 5:
                                     case 2:
-                                      await ResearchApiProvider.getResearchById(element.researchId).then((value) {
+                                      await ResearchApiProvider.getResearchById(
+                                              element.researchId)
+                                          .then((value) {
                                         setState(() {
                                           _researchSelected = value;
                                         });
                                       });
-                                      await ExpertApiProvider.getExpertById(_researchSelected.expertId).then((valueAux) {
+                                      await ExpertApiProvider.getExpertById(
+                                              _researchSelected!.expertId)
+                                          .then((valueAux) {
                                         setState(() {
                                           expertSelected = valueAux;
                                           _pageController.jumpToPage(2);
@@ -269,259 +285,300 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                   onTap: () {
                     final FocusScopeNode focus = FocusScope.of(context);
                     if (!focus.hasPrimaryFocus && focus.hasFocus) {
-                      FocusManager.instance.primaryFocus.unfocus();
+                      FocusManager.instance.primaryFocus!.unfocus();
                     }
                   },
-                  child:  isUpdateComplete ? ListView(
-                    children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      expertSelected.name +
-                                          ' ' +
-                                          expertSelected.fullName,
-                                      style: TextStyle(fontSize: 25),
-                                    ),
-                                    Text(
-                                      expertSelected.specialty,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                padding: EdgeInsets.all(10),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              child: (expertSelected.photo.length <= 0)
-                                  ? CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.amber,
-                                child: Text(
-                                  onBuildLettersPicture(
-                                      expertSelected.name,
-                                      expertSelected.fullName),
-                                  style: TextStyle(
-                                      color: Colors.pink[900],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 40),
-                                ),
-                                //child: Image.asset("assets/programmer.png"),
-                              )
-                                  : CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "${AppConfig.API_URL}public/${expertSelected.photo}"),
-                                backgroundColor: Colors.grey,
-                                radius: 50,
-                                //child: Image.asset("assets/programmer.png"),
-                              ),
-                            )
-                          ],
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                      ),
-                      Divider(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                        child: Text(
-                          "\"${_researchSelected.title}\"",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                        child: Text(
-                          "Autores: ${_researchSelected.authors}",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              fontStyle: FontStyle.italic
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                      ),
-                      Divider(),
-                      Container(
-                        child: Column(
+                  child: isUpdateComplete
+                      ? ListView(
                           children: [
                             Container(
                               child: Row(
                                 children: [
                                   Expanded(
-                                    flex: 1,
                                     child: Container(
-                                      padding: EdgeInsets.all(15),
-                                      child: Text(
-                                        "Instrumento",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            expertSelected!.name! +
+                                                ' ' +
+                                                expertSelected!.fullName!,
+                                            style: TextStyle(fontSize: 25),
+                                          ),
+                                          Text(
+                                            expertSelected!.specialty!,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
                                       ),
+                                      padding: EdgeInsets.all(10),
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 2,
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: (expertSelected!.photo!.length <= 0)
+                                        ? CircleAvatar(
+                                            radius: 50,
+                                            backgroundColor: Colors.amber,
+                                            child: Text(
+                                              onBuildLettersPicture(
+                                                  expertSelected!.name,
+                                                  expertSelected!.fullName),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 40),
+                                            ),
+                                            //child: Image.asset("assets/programmer.png"),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                "${AppConfig.API_URL}public/${expertSelected!.photo}"),
+                                            backgroundColor: Colors.grey,
+                                            radius: 50,
+                                            //child: Image.asset("assets/programmer.png"),
+                                          ),
+                                  )
+                                ],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                            ),
+                            Divider(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Text(
+                                "\"${_researchSelected!.title}\"",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Text(
+                                "Autores: ${_researchSelected!.authors}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                            ),
+                            Divider(),
+                            Container(
+                              child: Column(
+                                children: [
+                                  Container(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: FlatButton.icon(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  isBusyOne = true;
-                                                });
-                                                try {
-                                                  var data = await http.get("${AppConfig.API_URL}public/${_researchSelected.attachmentOne}");
-                                                  var bytes = data.bodyBytes;
-                                                  var dir = await getApplicationDocumentsDirectory();
-                                                  print(dir.path);
-                                                  File file = File("/storage/emulated/0/Download/${_researchSelected.attachmentOne}");
-                                                  await file.writeAsBytes(bytes);
-                                                  setState(() {
-                                                    isBusyOne = false;
-                                                  });
-                                                  Dialogs.alert(context,title: "Éxito",message: "El archivo se guardó en descargas");
-                                                } catch (e) {
-                                                  setState(() {
-                                                    isBusyOne = false;
-                                                  });
-                                                  Dialogs.alert(context,title: "Error",message: "No se pudo guardar el archivo");
-                                                }
-                                              },
-                                              icon: Icon(Icons.cloud_download),
-                                              label: Text("Descargar")),
-                                        ),
-                                        Visibility(
-                                          visible: isBusyOne,
-                                          child: Padding(padding: EdgeInsets.all(10),),
-                                        ),
-                                        Visibility(
-                                          visible: isBusyOne,
+                                        Expanded(
+                                          flex: 1,
                                           child: Container(
-                                              height: 20,
-                                              width: 20,
-                                              child: CircularProgressIndicator()),
-                                        )
+                                            padding: EdgeInsets.all(15),
+                                            child: Text(
+                                              "Instrumento",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: ElevatedButton.icon(
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        isBusyOne = true;
+                                                      });
+                                                      try {
+                                                        var data = await http
+                                                            .get(Uri.parse(
+                                                                "${AppConfig.API_URL}public/${_researchSelected!.attachmentOne}"));
+                                                        var bytes =
+                                                            data.bodyBytes;
+                                                        var dir =
+                                                            await getApplicationDocumentsDirectory();
+                                                        print(dir.path);
+                                                        File file = File(
+                                                            "/storage/emulated/0/Download/${_researchSelected!.attachmentOne}");
+                                                        await file.writeAsBytes(
+                                                            bytes);
+                                                        setState(() {
+                                                          isBusyOne = false;
+                                                        });
+                                                        Dialogs.alert(context,
+                                                            title: "Éxito",
+                                                            message:
+                                                                "El archivo se guardó en descargas");
+                                                      } catch (e) {
+                                                        setState(() {
+                                                          isBusyOne = false;
+                                                        });
+                                                        Dialogs.alert(context,
+                                                            title: "Error",
+                                                            message:
+                                                                "No se pudo guardar el archivo");
+                                                      }
+                                                    },
+                                                    icon: Icon(
+                                                        Icons.cloud_download),
+                                                    label: Text("Descargar")),
+                                              ),
+                                              Visibility(
+                                                visible: isBusyOne,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                ),
+                                              ),
+                                              Visibility(
+                                                visible: isBusyOne,
+                                                child: Container(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator()),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            padding: EdgeInsets.all(15),
+                                            child: Text(
+                                              "Investigación",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: ElevatedButton.icon(
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        isBusyTwo = true;
+                                                      });
+                                                      try {
+                                                        var data = await http
+                                                            .get(Uri.parse(
+                                                                "${AppConfig.API_URL}public/${_researchSelected!.attachmentTwo}"));
+                                                        var bytes =
+                                                            data.bodyBytes;
+                                                        var dir =
+                                                            await getApplicationDocumentsDirectory();
+                                                        print(dir.path);
+                                                        File file = File(
+                                                            "/storage/emulated/0/Download/${_researchSelected!.attachmentTwo}");
+                                                        await file.writeAsBytes(
+                                                            bytes);
+                                                        setState(() {
+                                                          isBusyTwo = false;
+                                                        });
+                                                        Dialogs.alert(context,
+                                                            title: "Éxito",
+                                                            message:
+                                                                "El archivo se guardó en descargas");
+                                                      } catch (e) {
+                                                        setState(() {
+                                                          isBusyTwo = false;
+                                                        });
+                                                        Dialogs.alert(context,
+                                                            title: "Error",
+                                                            message:
+                                                                "No se pudo guardar el archivo");
+                                                      }
+                                                    },
+                                                    icon: Icon(
+                                                        Icons.cloud_download),
+                                                    label: Text("Descargar")),
+                                              ),
+                                              Visibility(
+                                                visible: isBusyTwo,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                ),
+                                              ),
+                                              Visibility(
+                                                visible: isBusyTwo,
+                                                child: Container(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator()),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      padding: EdgeInsets.all(15),
-                                      child: Text(
-                                        "Investigación",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: FlatButton.icon(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  isBusyTwo = true;
-                                                });
-                                                try {
-                                                  var data = await http.get("${AppConfig.API_URL}public/${_researchSelected.attachmentTwo}");
-                                                  var bytes = data.bodyBytes;
-                                                  var dir = await getApplicationDocumentsDirectory();
-                                                  print(dir.path);
-                                                  File file = File("/storage/emulated/0/Download/${_researchSelected.attachmentTwo}");
-                                                  await file.writeAsBytes(bytes);
-                                                  setState(() {
-                                                    isBusyTwo = false;
-                                                  });
-                                                  Dialogs.alert(context,title: "Éxito",message: "El archivo se guardó en descargas");
-                                                } catch (e) {
-                                                  setState(() {
-                                                    isBusyTwo = false;
-                                                  });
-                                                  Dialogs.alert(context,title: "Error",message: "No se pudo guardar el archivo");
-                                                }
-                                              },
-                                              icon: Icon(Icons.cloud_download),
-                                              label: Text("Descargar")),
-                                        ),
-                                        Visibility(
-                                          visible: isBusyTwo,
-                                          child: Padding(padding: EdgeInsets.all(10),),
-                                        ),
-                                        Visibility(
-                                          visible: isBusyTwo,
-                                          child: Container(
-                                              height: 20,
-                                              width: 20,
-                                              child: CircularProgressIndicator()),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
-                        ),
-                      ),
-                    ],
-                  ) : Container(child: Center(child: CircularProgressIndicator(),),)
-              ) ,
+                        )
+                      : Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )),
               bottomNavigationBar: Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
-                  color: Colors.amber,
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Siguiente",
                         style: TextStyle(
-                            color: Colors.pink[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Visibility(
-                          visible: !isBusy,child: Icon(Icons.arrow_forward,color: Colors.pink[900])),
+                          visible: !isBusy,
+                          child: Icon(
+                            Icons.arrow_forward,
+                          )),
                       Visibility(
                         visible: isBusy,
                         child: Padding(
@@ -533,7 +590,7 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                         child: Container(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(backgroundColor: Colors.pink[900],),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
                     ],
@@ -543,19 +600,25 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                       isBusy = true;
                     });
                     final request = ResearchEntity(
-                        researchId: _researchSelected.researchId,
+                        researchId: _researchSelected!.researchId,
                         status: 5,
-                        observation: ""
-                    );
-                    await ResearchApiProvider.putUpdateResearchRevision(context, request);
+                        observation: "");
+                    await ResearchApiProvider.putUpdateResearchRevision(
+                        context, request);
 
-                    await CriterioResponseApiProvider.getCriterios(_researchSelected.researchId).then((value) {
+                    await CriterioResponseApiProvider.getCriterios(
+                            _researchSelected!.researchId)
+                        .then((value) {
                       setState(() {
-                        getCriterio = CriterioApiProvider.getCriterios(_researchSelected.speciality, _researchSelected.expertId);
+                        getCriterio = CriterioApiProvider.getCriterios(
+                            _researchSelected!.speciality,
+                            _researchSelected!.expertId);
                         _criteriosResponse = value;
-                        getDimensions = DimensionApiProvider.getDimensions(_researchSelected.researchId);
-                        getDimensions.then((value) {
-                          _focusNodes =  List<FocusNode>.generate(value.length, (int index) => FocusNode());
+                        getDimensions = DimensionApiProvider.getDimensions(
+                            _researchSelected!.researchId);
+                        getDimensions!.then((value) {
+                          _focusNodes = List<FocusNode>.generate(
+                              value!.length, (int index) => FocusNode());
                         });
                       });
                     });
@@ -564,7 +627,6 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                     setState(() {
                       isBusy = false;
                     });
-
                   },
                 ),
               ),
@@ -572,26 +634,30 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
             Scaffold(
               body: RefreshIndicator(
                 onRefresh: () async {
-                  await CriterioResponseApiProvider.getCriterios(_researchSelected.researchId).then((value) {
-                  setState(() {
-                    _criteriosResponse = value;
-                    getDimensions = DimensionApiProvider.getDimensions(_researchSelected.researchId);
+                  await CriterioResponseApiProvider.getCriterios(
+                          _researchSelected!.researchId)
+                      .then((value) {
+                    setState(() {
+                      _criteriosResponse = value;
+                      getDimensions = DimensionApiProvider.getDimensions(
+                          _researchSelected!.researchId);
+                    });
                   });
-                });
                 },
                 child: FutureBuilder(
                   future: getDimensions,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      dynamic element =  snapshot.data;
-                      if(element.length <= 0) {
+                      dynamic element = snapshot.data;
+                      if (element.length <= 0) {
                         return Container(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Center(
-                            child:RichText(
+                            child: RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                style: TextStyle(color: Colors.black,fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
                                 children: [
                                   TextSpan(
                                     text: "No se encontraron dimensiones",
@@ -602,24 +668,27 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                           ),
                         );
                       } else {
-                        return GroupedListView<dynamic,String>(
+                        return GroupedListView<dynamic, String?>(
                           elements: element,
-
                           groupBy: (element) => element.name,
                           groupComparator: (value1, value2) =>
-                              value2.compareTo(value1),
+                              value2!.compareTo(value1!),
                           itemComparator: (item1, item2) =>
                               item1.variable.compareTo(item2.variable),
                           order: GroupedListOrder.ASC,
                           useStickyGroupSeparators: true,
-                          groupSeparatorBuilder: (String value) => Padding(
+                          groupSeparatorBuilder: (String? value) => Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               child: ListTile(
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 5.0),
-                                title: Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-
+                                title: Text(
+                                  value!,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ),
@@ -640,28 +709,42 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                                       ),
                                       FutureBuilder(
                                         future: getCriterio,
-                                        builder: (_, snapshot){
-                                          if(snapshot.hasData){
+                                        builder: (_, snapshot) {
+                                          if (snapshot.hasData) {
+                                            List<CriterioEntity>? fff = snapshot
+                                                .data as List<CriterioEntity>;
                                             return ListView.builder(
-                                                physics: ClampingScrollPhysics(),
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 shrinkWrap: true,
-                                                itemCount: snapshot.data.length,
-                                                itemBuilder: (context, index){
-                                                  CriterioEntity elementCriterio = snapshot.data[index];
+                                                itemCount: fff.length,
+                                                itemBuilder: (context, index) {
+                                                  CriterioEntity
+                                                      elementCriterio =
+                                                      fff[index];
                                                   return ListTile(
-                                                    leading: Icon( Icons.filter_tilt_shift ,color: Colors.green,),
-                                                    title: Text(elementCriterio.name),
-                                                    subtitle:onBuildSubtitleDimension(element,elementCriterio,0)
-
-                                                  );
-                                                }
-
-                                            );
+                                                      leading: Icon(
+                                                        Icons.filter_tilt_shift,
+                                                        color: Colors.green,
+                                                      ),
+                                                      title: Text(
+                                                          elementCriterio
+                                                              .name!),
+                                                      subtitle:
+                                                          onBuildSubtitleDimension(
+                                                              element,
+                                                              elementCriterio,
+                                                              0));
+                                                });
                                           } else {
-                                            return Container(child: Center(child: CircularProgressIndicator(),),);
+                                            return Container(
+                                              child: Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
                                           }
                                         },
-
                                       ),
                                     ],
                                   ),
@@ -684,21 +767,20 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
               bottomNavigationBar: Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
-                  color: Colors.amber,
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       Text(
                         " Siguientes ",
                         style: TextStyle(
-                            color: Colors.pink[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Visibility(
-                          visible: !isBusy,child: Icon(Icons.arrow_forward,color: Colors.pink[900])),
+                          visible: !isBusy,
+                          child: Icon(
+                            Icons.arrow_forward,
+                          )),
                       Visibility(
                         visible: isBusy,
                         child: Padding(
@@ -710,39 +792,40 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                         child: Container(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(backgroundColor: Colors.pink[900],),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
                     ],
                   ),
-                  onPressed: ()  {
+                  onPressed: () {
                     setState(() {
                       isBusy = true;
                     });
-                    Future.delayed(const Duration(milliseconds: 200), () async{
-                      int isApplicate = await  onValidateIsApplicate();
+                    Future.delayed(const Duration(milliseconds: 200), () async {
+                      int isApplicate = await onValidateIsApplicate();
                       print(isApplicate);
-                      if(isApplicate != null){
+                      if (isApplicate != null) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => ResponseExpert(_researchSelected,expertSelected,isApplicate))).then((value) {
-                                  if(value != null){
-                                    setState(() {
-                                      getResearchByUserId =
-                                          ResearchApiProvider.getResearchByExpertId();
-                                    });
-                                    onChangePage(1);
-                                  }
+                                builder: (BuildContext context) =>
+                                    ResponseExpert(
+                                        _researchSelected,
+                                        expertSelected,
+                                        isApplicate))).then((value) {
+                          if (value != null) {
+                            setState(() {
+                              getResearchByUserId =
+                                  ResearchApiProvider.getResearchByExpertId();
+                            });
+                            onChangePage(1);
+                          }
                         });
-
                       }
                       setState(() {
                         isBusy = false;
                       });
-
                     });
-
                   },
                 ),
               ),
@@ -753,58 +836,61 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
       ),
     );
   }
-   onValidateIsApplicate() async {
-    int validateResp;
+
+  onValidateIsApplicate() async {
+    int? validateResp;
     int dimensionLength = 0;
-    await getDimensions.then((value) {
-      dimensionLength =  value.length;
+    await getDimensions!.then((value) {
+      dimensionLength = value!.length;
     });
-    await getCriterio.then((value) {
-      dimensionLength =  value.length * dimensionLength;
+    await getCriterio!.then((value) {
+      dimensionLength = value!.length * dimensionLength;
     });
-    int criterioResponseLength = _criteriosResponse.length;
-    if(criterioResponseLength < dimensionLength){
-      Dialogs.alert(context, title: "Alerta", message: "Debe calificar todos los criterios");
+    int criterioResponseLength = _criteriosResponse!.length;
+    if (criterioResponseLength < dimensionLength) {
+      Dialogs.alert(context,
+          title: "Alerta", message: "Debe calificar todos los criterios");
       validateResp = null;
     } else {
       int validate = 0;
       int invalidate = 0;
-      _criteriosResponse.forEach((element) {
-        switch(element.status){
+      _criteriosResponse!.forEach((element) {
+        switch (element.status) {
           case 'A':
-            validate = validate +1;
+            validate = validate + 1;
             break;
           case 'R':
-            invalidate = invalidate +1;
+            invalidate = invalidate + 1;
             break;
-            default:
-              break;
+          default:
+            break;
         }
       });
 
-
-      if(validate == _criteriosResponse.length){
+      if (validate == _criteriosResponse!.length) {
         validateResp = 1;
-      } else if(invalidate == _criteriosResponse.length){
+      } else if (invalidate == _criteriosResponse!.length) {
         validateResp = 2;
       } else {
         validateResp = 3;
       }
-
     }
     return validateResp;
   }
-  onFindCriterioResponse(int criterioId, int dimensionId){
-    int index =  _criteriosResponse.indexWhere((element) => element.criterioId == criterioId && element.dimensionId == dimensionId );
-    if(index == -1){
+
+  onFindCriterioResponse(int? criterioId, int? dimensionId) {
+    int index = _criteriosResponse!.indexWhere((element) =>
+        element.criterioId == criterioId && element.dimensionId == dimensionId);
+    if (index == -1) {
       return null;
     } else {
-      return _criteriosResponse[index];
+      return _criteriosResponse![index];
     }
   }
-  onGetStatusDimension(CriterioResponseEntity criterioResponse){
-    String statusStr= "";
-    switch(criterioResponse.status){
+
+  onGetStatusDimension(CriterioResponseEntity criterioResponse) {
+    String statusStr = "";
+    switch (criterioResponse.status) {
       case "A":
         statusStr = "Aprobado";
         break;
@@ -814,46 +900,56 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
     }
     return statusStr;
   }
-  Widget onBuildSubtitleDimension(DimensionEntity dimension, CriterioEntity criterio, int indexDimension ){
-    final CriterioResponseEntity criterioResponse = onFindCriterioResponse(criterio.criterioId,dimension.dimensionId);
-    if(criterioResponse != null){ 
+
+  Widget onBuildSubtitleDimension(
+      DimensionEntity dimension, CriterioEntity criterio, int indexDimension) {
+    final CriterioResponseEntity? criterioResponse =
+        onFindCriterioResponse(criterio.criterioId, dimension.dimensionId);
+    if (criterioResponse != null) {
       return Focus(
         focusNode: _focusNodes[indexDimension],
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
-              child: RichText(
-                text: TextSpan(
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                child: RichText(
+              text: TextSpan(
+                  style: TextStyle(fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: onGetStatusDimension(criterioResponse) ,
-                      style: TextStyle(color: (criterioResponse.status == 'R') ? Colors.red:Colors.green),
+                      text: onGetStatusDimension(criterioResponse),
+                      style: TextStyle(
+                          color: (criterioResponse.status == 'R')
+                              ? Colors.red
+                              : Colors.green),
                     )
-                  ]
-                ),
-              )
-            ),
+                  ]),
+            )),
             Spacer(),
             Visibility(
               visible: (criterioResponse.status == 'R'),
               child: IconButton(
-                icon: Icon(Icons.check,color: Colors.green,),
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
                 onPressed: () async {
                   final netReqEntity = CriterioResponseEntity(
-                    criterioResponseId: criterioResponse.criterioResponseId,
+                      criterioResponseId: criterioResponse.criterioResponseId,
                       criterioId: criterio.criterioId,
                       dimensionId: dimension.dimensionId,
-                      expertId: expertSelected.id,
-                      researchId: _researchSelected.researchId,
-                      status: "A"
-                  );
-                  await CriterioResponseApiProvider.putUpdateCriterioResponse(context, netReqEntity);
-                  await CriterioResponseApiProvider.getCriterios(_researchSelected.researchId).then((value) {
+                      expertId: expertSelected!.id,
+                      researchId: _researchSelected!.researchId,
+                      status: "A");
+                  await CriterioResponseApiProvider.putUpdateCriterioResponse(
+                      context, netReqEntity);
+                  await CriterioResponseApiProvider.getCriterios(
+                          _researchSelected!.researchId)
+                      .then((value) {
                     setState(() {
                       _criteriosResponse = value;
-                      getDimensions = DimensionApiProvider.getDimensions(_researchSelected.researchId);
+                      getDimensions = DimensionApiProvider.getDimensions(
+                          _researchSelected!.researchId);
                     });
                   });
 
@@ -873,21 +969,27 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
             Visibility(
               visible: (criterioResponse.status == 'A'),
               child: IconButton(
-                icon: Icon(Icons.close,color: Colors.red,),
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
                 onPressed: () async {
                   final netReqEntity = CriterioResponseEntity(
                       criterioResponseId: criterioResponse.criterioResponseId,
                       criterioId: criterio.criterioId,
                       dimensionId: dimension.dimensionId,
-                      expertId: expertSelected.id,
-                      researchId: _researchSelected.researchId,
-                      status: "R"
-                  );
-                  await CriterioResponseApiProvider.putUpdateCriterioResponse(context, netReqEntity);
-                  await CriterioResponseApiProvider.getCriterios(_researchSelected.researchId).then((value) {
+                      expertId: expertSelected!.id,
+                      researchId: _researchSelected!.researchId,
+                      status: "R");
+                  await CriterioResponseApiProvider.putUpdateCriterioResponse(
+                      context, netReqEntity);
+                  await CriterioResponseApiProvider.getCriterios(
+                          _researchSelected!.researchId)
+                      .then((value) {
                     setState(() {
                       _criteriosResponse = value;
-                      getDimensions = DimensionApiProvider.getDimensions(_researchSelected.researchId);
+                      getDimensions = DimensionApiProvider.getDimensions(
+                          _researchSelected!.researchId);
                     });
                   });
                 },
@@ -902,36 +1004,39 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-
             Expanded(
                 child: RichText(
-                  text: TextSpan(
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      children: [
-                        TextSpan(
-                          text: "En revisión " ,
-                          style: TextStyle(color: Colors.deepOrange),
-                        )
-                      ]
-                  ),
-                )
-            ),
+              text: TextSpan(
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                      text: "En revisión ",
+                      style: TextStyle(color: Colors.deepOrange),
+                    )
+                  ]),
+            )),
             Spacer(),
             IconButton(
-              icon: Icon(Icons.check,color: Colors.green,),
+              icon: Icon(
+                Icons.check,
+                color: Colors.green,
+              ),
               onPressed: () async {
                 final netReqEntity = CriterioResponseEntity(
-                  criterioId: criterio.criterioId,
-                  dimensionId: dimension.dimensionId,
-                  expertId: expertSelected.id,
-                  researchId: _researchSelected.researchId,
-                  status: "A"
-                );
-                await CriterioResponseApiProvider.postRegisterCriterioResponse(context, netReqEntity);
-                await CriterioResponseApiProvider.getCriterios(_researchSelected.researchId).then((value) {
+                    criterioId: criterio.criterioId,
+                    dimensionId: dimension.dimensionId,
+                    expertId: expertSelected!.id,
+                    researchId: _researchSelected!.researchId,
+                    status: "A");
+                await CriterioResponseApiProvider.postRegisterCriterioResponse(
+                    context, netReqEntity);
+                await CriterioResponseApiProvider.getCriterios(
+                        _researchSelected!.researchId)
+                    .then((value) {
                   setState(() {
                     _criteriosResponse = value;
-                    getDimensions = DimensionApiProvider.getDimensions(_researchSelected.researchId);
+                    getDimensions = DimensionApiProvider.getDimensions(
+                        _researchSelected!.researchId);
                   });
                 });
               },
@@ -940,20 +1045,26 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
               padding: EdgeInsets.all(20),
             ),
             IconButton(
-              icon: Icon(Icons.close,color: Colors.red,),
+              icon: Icon(
+                Icons.close,
+                color: Colors.red,
+              ),
               onPressed: () async {
                 final netReqEntity = CriterioResponseEntity(
                     criterioId: criterio.criterioId,
                     dimensionId: dimension.dimensionId,
-                    expertId: expertSelected.id,
-                    researchId: _researchSelected.researchId,
-                    status: "R"
-                );
-                await CriterioResponseApiProvider.postRegisterCriterioResponse(context, netReqEntity);
-                await CriterioResponseApiProvider.getCriterios(_researchSelected.researchId).then((value) {
+                    expertId: expertSelected!.id,
+                    researchId: _researchSelected!.researchId,
+                    status: "R");
+                await CriterioResponseApiProvider.postRegisterCriterioResponse(
+                    context, netReqEntity);
+                await CriterioResponseApiProvider.getCriterios(
+                        _researchSelected!.researchId)
+                    .then((value) {
                   setState(() {
                     _criteriosResponse = value;
-                    getDimensions = DimensionApiProvider.getDimensions(_researchSelected.researchId);
+                    getDimensions = DimensionApiProvider.getDimensions(
+                        _researchSelected!.researchId);
                   });
                 });
               },
@@ -965,40 +1076,50 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
   }
 
   Future<bool> _onBackPressed() async {
-    switch(_currentIndex){
+    switch (_currentIndex) {
       case 0:
       case 1:
-        Dialogs.confirm(context,title: "¿Estás seguro?", message: 'Si aceptas la aplicación cerrará').then((value) {
-          if(value){
+        Dialogs.confirm(context,
+                title: "¿Estás seguro?",
+                message: 'Si aceptas la aplicación cerrará')
+            .then((value) {
+          if (value!) {
             SystemChannels.platform.invokeMethod('SystemNavigator.pop');
           }
         });
         break;
       case 2:
-        Dialogs.confirm(context,title:"Mensaje de Confirmación",message:"¿Está seguro de salir de la revisión de la investigación?").then((value) {
-          if(value){
+        Dialogs.confirm(context,
+                title: "Mensaje de Confirmación",
+                message:
+                    "¿Está seguro de salir de la revisión de la investigación?")
+            .then((value) {
+          if (value!) {
             setState(() {
-              getResearchByUserId =
-                  ResearchApiProvider.getResearchByExpertId();
+              getResearchByUserId = ResearchApiProvider.getResearchByExpertId();
             });
             onChangePage(1);
           }
         });
         break;
       case 3:
-
         onChangePage(2);
         break;
       default:
-        Dialogs.confirm(context,title: "¿Estás seguro?", message: 'Si aceptas la aplicación cerrará').then((value) {
+        Dialogs.confirm(context,
+                title: "¿Estás seguro?",
+                message: 'Si aceptas la aplicación cerrará')
+            .then((value) {
           print(value);
-          if(value){
+          if (value!) {
             SystemChannels.platform.invokeMethod('SystemNavigator.pop');
           }
         });
         break;
     }
+    return true;
   }
+
   String onBuildLettersPicture(firstLetterAux, secondLetterAux) {
     String fistLetter = "";
     String lastLetter = "";
@@ -1013,9 +1134,10 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
     String oChars = "$fistLetter$lastLetter";
     return oChars;
   }
-  String onBuildStatusResearch(int status){
+
+  String onBuildStatusResearch(int? status) {
     String statudStr = "";
-    switch(status){
+    switch (status) {
       case 1:
         statudStr = "CR";
         break;
@@ -1037,118 +1159,148 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
     }
     return statudStr;
   }
-  Widget onBuildSubtitleResearch( ResearchEntity research){
-    switch(research.status){
+
+  Widget onBuildSubtitleResearch(ResearchEntity research) {
+    Widget widgetaux;
+    switch (research.status) {
       case 1:
-        return RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.grey),
-              children: [
-                WidgetSpan(
-                  child: Icon(Icons.watch_later, size: 16, color: Colors.orange,),
-                ),
-                TextSpan(text:" Creado   -   "),
-                WidgetSpan(
-                  child: Icon(Icons.insert_invitation, size: 16, color: Colors.pink[900],),
-                ),
-                TextSpan(text:" ${onBuildStringToDate(research.updatedAt)}")
-              ]
-          ),
+        widgetaux = RichText(
+          text: TextSpan(style: TextStyle(color: Colors.grey), children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.watch_later,
+                size: 16,
+                color: Colors.orange,
+              ),
+            ),
+            TextSpan(text: " Creado   -   "),
+            WidgetSpan(
+              child: Icon(
+                Icons.insert_invitation,
+                size: 16,
+              ),
+            ),
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
+          ]),
         );
         break;
       case 2:
-        return RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.grey),
-              children: [
-                WidgetSpan(
-                  child: Icon(Icons.mail_outline, size: 16, color: Colors.green,),
-                ),
-                TextSpan(text:" Por revisar   -   "),
-                WidgetSpan(
-                  child: Icon(Icons.insert_invitation, size: 16, color: Colors.pink[900],),
-                ),
-                TextSpan(text:" ${onBuildStringToDate(research.updatedAt)}")
-              ]
-          ),
+        widgetaux = RichText(
+          text: TextSpan(style: TextStyle(color: Colors.grey), children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.mail_outline,
+                size: 16,
+                color: Colors.green,
+              ),
+            ),
+            TextSpan(text: " Por revisar   -   "),
+            WidgetSpan(
+              child: Icon(
+                Icons.insert_invitation,
+                size: 16,
+              ),
+            ),
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
+          ]),
         );
         break;
       case 3:
-
-        return RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.grey),
-              children: [
-                WidgetSpan(
-                  child: Icon(Icons.check_circle_outline, size: 16, color: Colors.green,),
-                ),
-                TextSpan(text:" Aprobado   -   "),
-                WidgetSpan(
-                  child: Icon(Icons.insert_invitation, size: 16, color: Colors.pink[900],),
-                ),
-                TextSpan(text:" ${onBuildStringToDate(research.updatedAt)}")
-              ]
-          ),
+        widgetaux = RichText(
+          text: TextSpan(style: TextStyle(color: Colors.grey), children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.check_circle_outline,
+                size: 16,
+                color: Colors.green,
+              ),
+            ),
+            TextSpan(text: " Aprobado   -   "),
+            WidgetSpan(
+              child: Icon(
+                Icons.insert_invitation,
+                size: 16,
+              ),
+            ),
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
+          ]),
         );
         break;
       case 4:
-
-        return RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.grey),
-              children: [
-                WidgetSpan(
-                  child: Icon(Icons.remove_circle_outline, size: 16, color: Colors.red,),
-                ),
-                TextSpan(text:" Rechazado   -   "),
-                WidgetSpan(
-                  child: Icon(Icons.insert_invitation, size: 16, color: Colors.pink[900],),
-                ),
-                TextSpan(text:" ${onBuildStringToDate(research.updatedAt)}")
-              ]
-          ),
+        widgetaux = RichText(
+          text: TextSpan(style: TextStyle(color: Colors.grey), children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.remove_circle_outline,
+                size: 16,
+                color: Colors.red,
+              ),
+            ),
+            TextSpan(text: " Rechazado   -   "),
+            WidgetSpan(
+              child: Icon(
+                Icons.insert_invitation,
+                size: 16,
+              ),
+            ),
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
+          ]),
         );
         break;
       case 5:
-        return RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.grey),
-              children: [
-                WidgetSpan(
-                  child: Icon(Icons.alarm, size: 16, color: Colors.red,),
-                ),
-                TextSpan(text:" Revisando   -   "),
-                WidgetSpan(
-                  child: Icon(Icons.insert_invitation, size: 16, color: Colors.pink[900],),
-                ),
-                TextSpan(text:" ${onBuildStringToDate(research.updatedAt)}")
-              ]
-          ),
+        widgetaux = RichText(
+          text: TextSpan(style: TextStyle(color: Colors.grey), children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.alarm,
+                size: 16,
+                color: Colors.red,
+              ),
+            ),
+            TextSpan(text: " Revisando   -   "),
+            WidgetSpan(
+              child: Icon(
+                Icons.insert_invitation,
+                size: 16,
+              ),
+            ),
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
+          ]),
         );
         break;
       case 6:
-        return RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.grey),
-              children: [
-                WidgetSpan(
-                  child: Icon(Icons.cached, size: 16, color: Colors.red,),
-                ),
-                TextSpan(text:" Enviado a corregir   -   "),
-                WidgetSpan(
-                  child: Icon(Icons.insert_invitation, size: 16, color: Colors.pink[900],),
-                ),
-                TextSpan(text:" ${onBuildStringToDate(research.updatedAt)}")
-              ]
-          ),
+        widgetaux = RichText(
+          text: TextSpan(style: TextStyle(color: Colors.grey), children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.cached,
+                size: 16,
+                color: Colors.red,
+              ),
+            ),
+            TextSpan(text: " Enviado a corregir   -   "),
+            WidgetSpan(
+              child: Icon(
+                Icons.insert_invitation,
+                size: 16,
+              ),
+            ),
+            TextSpan(text: " ${onBuildStringToDate(research.updatedAt!)}")
+          ]),
         );
         break;
+      default:
+        widgetaux = Container();
+        break;
     }
+    return widgetaux;
   }
-  String onBuildStringToDate(String date){
+
+  String onBuildStringToDate(String date) {
     DateTime parsedDate = DateTime.parse(date);
-    return new  DateFormat('dd/MM/yyyy').format(parsedDate);
+    return new DateFormat('dd/MM/yyyy').format(parsedDate);
   }
+
   onTapItemBar(index) {
     setState(() {
       _currentIndex = index;
@@ -1160,10 +1312,11 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
   }
 
   Widget _buildAppBar(context) {
+    Widget auxWidget;
     switch (_currentIndex) {
       case 0:
         {
-          return AppBar(
+          auxWidget = AppBar(
             actions: [
               IconButton(
                 icon: Icon(Icons.markunread_mailbox),
@@ -1174,42 +1327,41 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                           builder: (BuildContext context) =>
                               NotificationExpert())).then((value) {
                     setState(() {
-                      getNetworkByUserId = NetworkApiProvider.getNetworkExpert();
+                      getNetworkByUserId =
+                          NetworkApiProvider.getNetworkExpert();
                     });
                   });
                 },
               )
             ],
-            backgroundColor: Colors.white,
             centerTitle: true,
             title: Text(
               "Mi Red",
-              style: TextStyle(color: Colors.pink[900]),
             ),
           );
         }
         break;
       case 1:
         {
-          return AppBar(
-            backgroundColor: Colors.white,
+          auxWidget = AppBar(
             centerTitle: true,
             title: Text(
               "Mis Revisiones",
-              style: TextStyle(color: Colors.pink[900]),
             ),
           );
         }
         break;
       case 2:
         {
-          return AppBar(
-            backgroundColor: Colors.white,
+          auxWidget = AppBar(
             leading: BackButton(
-              color: Colors.pink[900],
               onPressed: () {
-                Dialogs.confirm(context,title:"Mensaje de Confirmación",message:"¿Está seguro de salir de la revisión de la investigación?").then((value) {
-                  if(value){
+                Dialogs.confirm(context,
+                        title: "Mensaje de Confirmación",
+                        message:
+                            "¿Está seguro de salir de la revisión de la investigación?")
+                    .then((value) {
+                  if (value!) {
                     setState(() {
                       getResearchByUserId =
                           ResearchApiProvider.getResearchByExpertId();
@@ -1217,22 +1369,18 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                     onChangePage(1);
                   }
                 });
-
               },
             ),
             centerTitle: true,
             title: Text(
               "Datos de la investigación",
-              style: TextStyle(color: Colors.pink[900]),
             ),
           );
         }
         break;
       case 3:
-        return AppBar(
-          backgroundColor: Colors.white,
+        auxWidget = AppBar(
           leading: BackButton(
-            color: Colors.pink[900],
             onPressed: () {
               onChangePage(2);
             },
@@ -1240,14 +1388,17 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
           centerTitle: true,
           title: Text(
             "Revisión de dimensiones",
-            style: TextStyle(color: Colors.pink[900]),
           ),
         );
         break;
+      default:
+        auxWidget = Container();
+        break;
     }
+    return auxWidget;
   }
 
-  Widget _buildNavigationBar() {
+  Widget? _buildNavigationBar() {
     switch (_currentIndex) {
       case 0:
       case 1:
@@ -1257,14 +1408,11 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.supervised_user_circle),
-              title: Text(
-                "Mi red",
-                textAlign: TextAlign.center,
-              ),
+              label: "Mi red",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.folder_shared),
-              title: Text("Mis Revisiones"),
+              label: "Mis Revisiones",
             )
           ],
         );
@@ -1276,71 +1424,74 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
     }
   }
 
-  Widget _buildDrawer()  {
-
+  Widget? _buildDrawer() {
     switch (_currentIndex) {
       case 0:
       case 1:
         return Theme(
           data: Theme.of(context).copyWith(
-            canvasColor: Colors.pink[900],
+            canvasColor: Color.fromRGBO(136, 14, 79,
+                1), //This will change the drawer background to blue.
+            //other styles
           ),
           child: Drawer(
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: FutureBuilder(
                 future: obtenerUsuario(),
-                builder: (_,snapshot){
-                  if(snapshot.hasData){
-                    final ExpertEntity oUser = snapshot.data;
-                    return  ListView(
+                builder: (_, snapshot) {
+                  if (snapshot.hasData) {
+                    final ExpertEntity oUser = snapshot.data as ExpertEntity;
+                    return ListView(
                       children: [
-
                         DrawerHeader(
                           padding: EdgeInsets.only(top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                child: (oUser.photo.length <= 0)
+                                child: (oUser.photo!.length <= 0)
                                     ? CircleAvatar(
-                                  radius: 50,
-                                  backgroundColor: Colors.amber,
-                                  child: Text(
-                                    onBuildLettersPicture(
-                                        oUser.name,
-                                        oUser.fullName),
-                                    style: TextStyle(
-                                        color: Colors.pink[900],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 40),
-                                  ),
-                                  //child: Image.asset("assets/programmer.png"),
-                                )
+                                        radius: 50,
+                                        child: Text(
+                                          onBuildLettersPicture(
+                                              oUser.name, oUser.fullName),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 40),
+                                        ),
+                                        //child: Image.asset("assets/programmer.png"),
+                                      )
                                     : CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      "${AppConfig.API_URL}public/${oUser.photo}"),
-                                  backgroundColor: Colors.grey,
-                                  radius: 50,
-                                  //child: Image.asset("assets/programmer.png"),
-                                ),
+                                        backgroundImage: NetworkImage(
+                                            "${AppConfig.API_URL}public/${oUser.photo}"),
+                                        backgroundColor: Colors.grey,
+                                        radius: 50,
+                                        //child: Image.asset("assets/programmer.png"),
+                                      ),
                               ),
                               Container(
                                 padding: EdgeInsets.all(5),
                                 child: RichText(
                                   text: TextSpan(
-                                    text: "Hola \n",
+                                    text: "Hola,",
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontSize: 14,
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: "${oUser.name.split(" ")[0]} ${oUser.fullName.split(" ")[0]}",
+                                        text:
+                                            "${oUser.name!.split(" ")[0]} ${oUser.fullName!.split(" ")[0]}" + "\n",
                                         style: TextStyle(
-                                          color: Colors.white,
                                           fontWeight: FontWeight.normal,
-                                          fontSize: 18,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "ORCID:${oUser.orcid!}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 16,
                                         ),
                                       )
                                     ],
@@ -1358,17 +1509,18 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                             ),
                             title: Text(
                               "Mi perfil",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                             onTap: () async {
                               Navigator.of(context).pop();
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) => ExpertProfile(oUser))).then((value) {
-
-                              });
-
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ExpertProfile(oUser)))
+                                  .then((value) {});
                             },
                           ),
                         ),
@@ -1380,13 +1532,14 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                             ),
                             title: Text(
                               "Tutorial",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                             onTap: () async {
-                              if (await canLaunch(AppConfig.TUTORIAL_URL)) {
-                                await launch(AppConfig.TUTORIAL_URL);
-                              } else {
-                                throw 'Could not launch  ';
+                              if (!await launchUrl(
+                                  Uri.parse(AppConfig.TUTORIAL_URL))) {
+                                throw 'Could not launch ${AppConfig.TUTORIAL_URL}';
                               }
                             },
                           ),
@@ -1399,21 +1552,20 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                             ),
                             title: Text(
                               "Firma Digital",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                             onTap: () async {
                               Navigator.of(context).pop();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (BuildContext context) => FirmaExperto())).then((value) {
-
-                              });
-
+                                      builder: (BuildContext context) =>
+                                          FirmaExperto())).then((value) {});
                             },
                           ),
                         ),
-
                         Container(
                           child: ListTile(
                             leading: Icon(
@@ -1422,7 +1574,9 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                             ),
                             title: Text(
                               "Cerrar sesión",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                             onTap: () async {
                               await AuthApiProvider.logout(context);
@@ -1430,14 +1584,16 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
                           ),
                         )
                       ],
-                    )
-                  ;
+                    );
                   } else {
-                    return Container(child: Center(child: CircularProgressIndicator(),),);
+                    return Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
                   }
                 },
               ),
-
             ),
           ),
         );
@@ -1448,11 +1604,16 @@ class _HomeExpertModuleState extends State<HomeExpertModule> {
     }
   }
 }
+
 Future obtenerUsuario() async {
-  final session = await SessionManager.getInstance();
-  ExpertEntity oUser = await ExpertApiProvider.getExpertById(session.getUserId());
-  return oUser;
+  SessionManager? session = await SessionManager.getInstance();
+  if (session != null) {
+    ExpertEntity? oUser =
+        await ExpertApiProvider.getExpertById(session.getUserId());
+    return oUser;
+  }
 }
+
 class MyBehavior extends ScrollBehavior {
   // quita el efecto de brillo del scroll
   @override

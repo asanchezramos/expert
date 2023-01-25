@@ -1,11 +1,11 @@
 import 'dart:io';
 
 class SigningEntity {
-  int signingId;
-  int expertId;
-  String link;
-  File fileSigning;
-  String updatedAt;
+  int? signingId;
+  int? expertId;
+  String? link;
+  File? fileSigning;
+  String? updatedAt;
 
   SigningEntity(
       { this.signingId,
@@ -31,7 +31,7 @@ class SigningEntity {
         "link": link
       };
   static List<SigningEntity> fromJSONList(List<dynamic> jsonList) {
-    List<SigningEntity> items = List<SigningEntity>();
+    List<SigningEntity> items = [];
     jsonList.forEach((dynamic json) {
       items.add(SigningEntity.fromJson(json));
     });

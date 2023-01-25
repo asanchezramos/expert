@@ -6,7 +6,7 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ResultStudentPage extends StatelessWidget {
-  const ResultStudentPage({Key key}) : super(key: key);
+  const ResultStudentPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +34,12 @@ class ResultStudentPage extends StatelessWidget {
 
 Widget _buildList(BuildContext context) {
   final Responsive responsive = Responsive.of(context);
-  return FutureBuilder<List<SolicitudeEntity>>(
+  return FutureBuilder<List<SolicitudeEntity>?>(
       future: SolicitudeApiProvider.getSolicitudesByExpert(),
       builder: (BuildContext context,
-          AsyncSnapshot<List<SolicitudeEntity>> snapshot) {
+          AsyncSnapshot<List<SolicitudeEntity>?> snapshot) {
         if (snapshot.hasData) {
-          final items = snapshot.data;
+          final items = snapshot.data!;
           if (items.length == 0) {
             return Text("No hay solicitudes");
           }

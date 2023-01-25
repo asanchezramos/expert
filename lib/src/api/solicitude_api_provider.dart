@@ -11,54 +11,56 @@ import '../models/solicitude_entity.dart';
 class SolicitudeApiProvider {
   static final HttpManager httpManager = HttpManager();
 
-  static Future<List<SolicitudeEntity>> getSolicitudesByUser() async {
-    try {
-      final session = await SessionManager.getInstance();
-      final userId = session.getUserId();
-      final responseData =
-          await httpManager.get("mobile/solicitude/user/$userId");
-      return SolicitudeEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
-      return null;
+  static Future<List<SolicitudeEntity>?> getSolicitudesByUser() async {
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      try {
+        final userId = session.getUserId();
+        final responseData =
+            await httpManager.get("mobile/solicitude/user/$userId");
+        return SolicitudeEntity.fromJSONList(responseData["data"]);
+      } catch (e) {
+        return null;
+      }
     }
   }
 
-  static Future<List<SolicitudeEntity>> getSolicitudesByExpert() async {
-    try {
-      final session = await SessionManager.getInstance();
-      final userId = session.getUserId();
-      final responseData =
-          await httpManager.get("mobile/solicitude/expert/$userId");
-      return SolicitudeEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
-      return null;
+  static Future<List<SolicitudeEntity>?> getSolicitudesByExpert() async {
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      try {
+        final userId = session.getUserId();
+        final responseData =
+            await httpManager.get("mobile/solicitude/expert/$userId");
+        return SolicitudeEntity.fromJSONList(responseData["data"]);
+      } catch (e) {
+        return null;
+      }
     }
   }
 
-  static Future<List<UserSolicitudeEntity>>
+  static Future<List<UserSolicitudeEntity>?>
       getAllUserSolicitudesByExpert() async {
-    try {
-      final session = await SessionManager.getInstance();
-      final userId = session.getUserId();
-      final responseData =
-          await httpManager.get("mobile/solicitude-user/$userId");
-      return UserSolicitudeEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
-      return null;
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      try {
+        final userId = session.getUserId();
+        final responseData =
+            await httpManager.get("mobile/solicitude-user/$userId");
+        return UserSolicitudeEntity.fromJSONList(responseData["data"]);
+      } catch (e) {
+        return null;
+      }
     }
   }
 
-  static Future<UserSolicitudeEntity> getUserSolicitudeDetailByExpert(
+  static Future<UserSolicitudeEntity?> getUserSolicitudeDetailByExpert(
       solicitudeId) async {
     try {
       final responseData =
           await httpManager.get("mobile/solicitude-user-expert/$solicitudeId");
       return UserSolicitudeEntity.fromJson2(responseData["data"][0]);
     } catch (e) {
-      print("Error ${e.message}");
       return null;
     }
   }
@@ -67,46 +69,48 @@ class SolicitudeApiProvider {
     SolicitudeRequest solicitudeRequest,
     BuildContext context,
   ) async {
-    try {
-      final session = await SessionManager.getInstance();
-      solicitudeRequest.userId = session.getUserId();
-      FormData formData = new FormData.fromMap(solicitudeRequest.toJson());
-      final repository = solicitudeRequest.repository;
-      final investigation = solicitudeRequest.investigation;
+    SessionManager? session = await SessionManager.getInstance();
+    if (session != null) {
+      try {
+        solicitudeRequest.userId = session.getUserId();
+        FormData formData = new FormData.fromMap(solicitudeRequest.toJson());
+        final repository = solicitudeRequest.repository;
+        final investigation = solicitudeRequest.investigation;
 
-      if (repository != null) {
-        final multiPartFile = await MultipartFile.fromFile(
-          repository.path,
-          filename: repository.path.split('/').last,
-        );
-        formData.files.add(MapEntry('repository', multiPartFile));
-      }
-      if (investigation != null) {
-        final multiPartFile = await MultipartFile.fromFile(
-          investigation.path,
-          filename: investigation.path.split('/').last,
-        );
-        formData.files.add(MapEntry('investigation', multiPartFile));
-      }
+        if (repository != null) {
+          final multiPartFile = await MultipartFile.fromFile(
+            repository.path,
+            filename: repository.path.split('/').last,
+          );
+          formData.files.add(MapEntry('repository', multiPartFile));
+        }
+        if (investigation != null) {
+          final multiPartFile = await MultipartFile.fromFile(
+            investigation.path,
+            filename: investigation.path.split('/').last,
+          );
+          formData.files.add(MapEntry('investigation', multiPartFile));
+        }
 
-      await httpManager.postForm("mobile/solicitude", formData);
-      return true;
-    } catch (e) {
-      print("Error ${e.message}");
-      Dialogs.alert(context, title: "Error", message: e.message);
+        await httpManager.postForm("mobile/solicitude", formData);
+        return true;
+      } catch (e) {
+        Dialogs.alert(context, title: "Error", message: "");
+        return false;
+      }
+    } else {
       return false;
     }
   }
 
   static Future<bool> updateSolicitudeStatus(
-    int solicitudeId,
+    int? solicitudeId,
     String status,
   ) async {
     try {
       await httpManager.put("mobile/solicitude/$solicitudeId/$status");
       return true;
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return false;
     }
   }

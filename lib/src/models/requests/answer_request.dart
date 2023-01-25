@@ -1,9 +1,9 @@
 import 'dart:io';
 
 class AnswerRequest {
-  String comments;
-  File file;
-  int solicitudeId;
+  String? comments;
+  File? file;
+  int? solicitudeId;
   AnswerRequest({
     this.comments,
     this.file,

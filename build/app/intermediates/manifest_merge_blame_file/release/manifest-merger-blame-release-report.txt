@@ -1,14 +1,14 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.example.expert"
-4    android:versionCode="3"
-5    android:versionName="1.0.2" >
+4    android:versionCode="7"
+5    android:versionName="1.0.7" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="18"
-8-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml
-9        android:targetSdkVersion="28" />
-9-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml
+8        android:minSdkVersion="23"
+8-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="33" />
+9-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml
 10    <!--
 11         io.flutter.app.FlutterApplication is an android.app.Application that
 12         calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -17,134 +17,164 @@
 15         FlutterApplication and put your custom class here.
 16    -->
 17    <uses-permission android:name="android.permission.INTERNET" />
-17-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:8:5-66
-17-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:8:22-64
+17-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:8:5-66
+17-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:8:22-64
 18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-18-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:9:5-81
-18-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:9:22-78
+18-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:9:5-81
+18-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:9:22-78
 19    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-19-->[:file_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\file_picker\intermediates\library_manifest\release\AndroidManifest.xml:7:5-80
-19-->[:file_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\file_picker\intermediates\library_manifest\release\AndroidManifest.xml:7:22-77
-20    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-20-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:8:5-83
-20-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:8:22-80
-21
-22    <application
-22-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:10:5-48:19
-23        android:name="io.flutter.app.FlutterApplication"
-23-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:11:9-57
-24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-24-->[androidx.core:core:1.1.0] C:\Users\teocp\.gradle\caches\transforms-2\files-2.1\a528b13ac93e64cafa3d0480e2c93207\core-1.1.0\AndroidManifest.xml:24:18-86
-25        android:icon="@mipmap/launcher_icon"
-25-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:13:9-45
-26        android:label="Juicio de Experto" >
-26-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:12:9-42
-27        <activity
-27-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:14:9-42:20
-28            android:name="com.example.expert.MainActivity"
-28-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:15:13-41
-29            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-29-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:18:13-163
-30            android:hardwareAccelerated="true"
-30-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:19:13-47
-31            android:launchMode="singleTop"
-31-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:16:13-43
-32            android:theme="@style/LaunchTheme"
-32-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:17:13-47
-33            android:windowSoftInputMode="adjustResize" >
-33-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:20:13-55
-34
-35            <!--
-36                 Specifies an Android theme to apply to this Activity as soon as
-37                 the Android process has started. This theme is visible to the user
-38                 while the Flutter UI initializes. After that, this theme continues
-39                 to determine the Window background behind the Flutter UI.
-40            -->
-41            <meta-data
-41-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:25:13-28:17
-42                android:name="io.flutter.embedding.android.NormalTheme"
-42-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:26:15-70
-43                android:resource="@style/NormalTheme" />
-43-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:27:15-52
-44            <!--
-45                 Displays an Android View that continues showing the launch screen
-46                 Drawable until Flutter paints its first frame, then this splash
-47                 screen fades out. A splash screen is useful to avoid any visual
-48                 gap between the end of Android's launch screen and the painting of
-49                 Flutter's first frame.
-50            -->
-51            <meta-data
-51-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:34:13-37:17
-52                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-52-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:35:15-79
-53                android:resource="@drawable/launch_background" />
-53-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:36:15-61
-54
-55            <intent-filter>
-55-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:38:13-41:29
-56                <action android:name="android.intent.action.MAIN" />
-56-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:39:17-68
-56-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:39:25-66
-57
-58                <category android:name="android.intent.category.LAUNCHER" />
-58-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:40:17-76
-58-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:40:27-74
-59            </intent-filter>
-60        </activity>
-61        <!--
-62             Don't delete the meta-data below.
-63             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-64        -->
-65        <meta-data
-65-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:45:9-47:33
-66            android:name="flutterEmbedding"
-66-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:46:13-44
-67            android:value="2" />
-67-->C:\Users\teocp\OneDrive\Documentos\GitHub\expert\android\app\src\main\AndroidManifest.xml:47:13-30
+19-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:10:5-80
+19-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:10:22-77
+20
+21    <queries>
+21-->[:file_picker] C:\Users\tjcri\Documents\Github\expert\build\file_picker\intermediates\merged_manifest\release\AndroidManifest.xml:9:5-15:15
+22        <intent>
+22-->[:file_picker] C:\Users\tjcri\Documents\Github\expert\build\file_picker\intermediates\merged_manifest\release\AndroidManifest.xml:10:9-14:18
+23            <action android:name="android.intent.action.GET_CONTENT" />
+23-->[:file_picker] C:\Users\tjcri\Documents\Github\expert\build\file_picker\intermediates\merged_manifest\release\AndroidManifest.xml:11:13-72
+23-->[:file_picker] C:\Users\tjcri\Documents\Github\expert\build\file_picker\intermediates\merged_manifest\release\AndroidManifest.xml:11:21-69
+24
+25            <data android:mimeType="*/*" />
+25-->[:file_picker] C:\Users\tjcri\Documents\Github\expert\build\file_picker\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-44
+25-->[:file_picker] C:\Users\tjcri\Documents\Github\expert\build\file_picker\intermediates\merged_manifest\release\AndroidManifest.xml:13:19-41
+26        </intent>
+27    </queries>
+28
+29    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+29-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:8:5-83
+29-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:8:22-80
+30
+31    <application
+32        android:name="android.app.Application"
+32-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:12:9-42
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.8.0] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\1b284f61a129f12474bd9b9c661fc8f7\core-1.8.0\AndroidManifest.xml:24:18-86
+34        android:extractNativeLibs="false"
+35        android:icon="@mipmap/launcher_icon"
+35-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:14:9-45
+36        android:label="Juicio de Experto" >
+36-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:13:9-42
+37        <activity
+37-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:15:9-44:20
+38            android:name="com.example.expert.MainActivity"
+38-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:16:13-41
+39            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+39-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:20:13-163
+40            android:exported="true"
+40-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:18:13-36
+41            android:hardwareAccelerated="true"
+41-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:21:13-47
+42            android:launchMode="singleTop"
+42-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:17:13-43
+43            android:theme="@style/LaunchTheme"
+43-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:19:13-47
+44            android:windowSoftInputMode="adjustResize" >
+44-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:22:13-55
+45
+46            <!--
+47                 Specifies an Android theme to apply to this Activity as soon as
+48                 the Android process has started. This theme is visible to the user
+49                 while the Flutter UI initializes. After that, this theme continues
+50                 to determine the Window background behind the Flutter UI.
+51            -->
+52            <meta-data
+52-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:27:13-30:17
+53                android:name="io.flutter.embedding.android.NormalTheme"
+53-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:28:15-70
+54                android:resource="@style/NormalTheme" />
+54-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:29:15-52
+55            <!--
+56                 Displays an Android View that continues showing the launch screen
+57                 Drawable until Flutter paints its first frame, then this splash
+58                 screen fades out. A splash screen is useful to avoid any visual
+59                 gap between the end of Android's launch screen and the painting of
+60                 Flutter's first frame.
+61            -->
+62            <meta-data
+62-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:36:13-39:17
+63                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+63-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:37:15-79
+64                android:resource="@drawable/launch_background" />
+64-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:38:15-61
+65
+66            <intent-filter>
+66-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:40:13-43:29
+67                <action android:name="android.intent.action.MAIN" />
+67-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:41:17-68
+67-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:41:25-66
 68
-69        <provider
-69-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:11:9-19:20
-70            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-70-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:12:13-82
-71            android:authorities="com.example.expert.flutter.image_provider"
-71-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:13:13-74
-72            android:exported="false"
-72-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:14:13-37
-73            android:grantUriPermissions="true" >
-73-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:15:13-47
-74            <meta-data
-74-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:16:13-18:75
-75                android:name="android.support.FILE_PROVIDER_PATHS"
-75-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:17:17-67
-76                android:resource="@xml/flutter_image_picker_file_paths" />
-76-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:18:17-72
-77        </provider>
-78        <provider
-78-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:12:9-21:20
-79            android:name="androidx.core.content.FileProvider"
-79-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:13:13-62
-80            android:authorities="com.example.expert.fileProvider"
-80-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:14:13-64
-81            android:exported="false"
-81-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:15:13-37
-82            android:grantUriPermissions="true" >
-82-->[:open_file] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\open_file\intermediates\library_manifest\release\AndroidManifest.xml:16:13-47
-83            <meta-data
-83-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:16:13-18:75
-84                android:name="android.support.FILE_PROVIDER_PATHS"
-84-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:17:17-67
-85                android:resource="@xml/filepaths" />
-85-->[:image_picker] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:18:17-72
-86        </provider>
-87
-88        <activity
-88-->[:url_launcher] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\url_launcher\intermediates\library_manifest\release\AndroidManifest.xml:8:9-11:74
-89            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-89-->[:url_launcher] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\url_launcher\intermediates\library_manifest\release\AndroidManifest.xml:9:13-74
-90            android:exported="false"
-90-->[:url_launcher] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\url_launcher\intermediates\library_manifest\release\AndroidManifest.xml:10:13-37
-91            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-91-->[:url_launcher] C:\Users\teocp\OneDrive\Documentos\GitHub\expert\build\url_launcher\intermediates\library_manifest\release\AndroidManifest.xml:11:13-71
-92    </application>
-93
-94</manifest>
+69                <category android:name="android.intent.category.LAUNCHER" />
+69-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:42:17-76
+69-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:42:27-74
+70            </intent-filter>
+71        </activity>
+72        <!--
+73             Don't delete the meta-data below.
+74             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+75        -->
+76        <meta-data
+76-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:47:9-49:33
+77            android:name="flutterEmbedding"
+77-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:48:13-44
+78            android:value="2" />
+78-->C:\Users\tjcri\Documents\Github\expert\android\app\src\main\AndroidManifest.xml:49:13-30
+79
+80        <provider
+80-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:8:9-16:20
+81            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+81-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-82
+82            android:authorities="com.example.expert.flutter.image_provider"
+82-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:10:13-74
+83            android:exported="false"
+83-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:11:13-37
+84            android:grantUriPermissions="true" >
+84-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:12:13-47
+85            <meta-data
+85-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-15:75
+86                android:name="android.support.FILE_PROVIDER_PATHS"
+86-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:14:17-67
+87                android:resource="@xml/flutter_image_picker_file_paths" />
+87-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:15:17-72
+88        </provider>
+89        <provider
+89-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:12:9-21:20
+90            android:name="com.crazecoder.openfile.FileProvider"
+90-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-64
+91            android:authorities="com.example.expert.fileProvider.com.crazecoder.openfile"
+91-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:14:13-88
+92            android:exported="false"
+92-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:15:13-37
+93            android:grantUriPermissions="true" >
+93-->[:open_file] C:\Users\tjcri\Documents\Github\expert\build\open_file\intermediates\merged_manifest\release\AndroidManifest.xml:16:13-47
+94            <meta-data
+94-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-15:75
+95                android:name="android.support.FILE_PROVIDER_PATHS"
+95-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:14:17-67
+96                android:resource="@xml/filepaths" />
+96-->[:image_picker_android] C:\Users\tjcri\Documents\Github\expert\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:15:17-72
+97        </provider>
+98
+99        <activity
+99-->[:url_launcher_android] C:\Users\tjcri\Documents\Github\expert\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:8:9-11:74
+100            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+100-->[:url_launcher_android] C:\Users\tjcri\Documents\Github\expert\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-74
+101            android:exported="false"
+101-->[:url_launcher_android] C:\Users\tjcri\Documents\Github\expert\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:10:13-37
+102            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+102-->[:url_launcher_android] C:\Users\tjcri\Documents\Github\expert\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:11:13-71
+103
+104        <uses-library
+104-->[androidx.window:window:1.0.0-beta04] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\4e19ff293091278e5296f45bbb1aafc8\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+105            android:name="androidx.window.extensions"
+105-->[androidx.window:window:1.0.0-beta04] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\4e19ff293091278e5296f45bbb1aafc8\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+106            android:required="false" />
+106-->[androidx.window:window:1.0.0-beta04] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\4e19ff293091278e5296f45bbb1aafc8\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+107        <uses-library
+107-->[androidx.window:window:1.0.0-beta04] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\4e19ff293091278e5296f45bbb1aafc8\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+108            android:name="androidx.window.sidecar"
+108-->[androidx.window:window:1.0.0-beta04] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\4e19ff293091278e5296f45bbb1aafc8\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+109            android:required="false" />
+109-->[androidx.window:window:1.0.0-beta04] C:\Users\tjcri\.gradle\caches\transforms-2\files-2.1\4e19ff293091278e5296f45bbb1aafc8\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+110    </application>
+111
+112</manifest>

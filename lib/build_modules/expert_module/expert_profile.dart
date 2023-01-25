@@ -20,26 +20,20 @@ class ExpertProfile extends StatefulWidget {
 class _ExpertProfileState extends State<ExpertProfile> {
   bool isBusy = false;
 
-  Future<List<ResourceEntity>> getNetworkByUserId =
+  Future<List<ResourceEntity>?> getNetworkByUserId =
       ResourceApiProvider.getResources(null);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: BackButton(
-          color: Colors.pink[900],
-        ),
         title: Text(
           "Mi Perfil",
-          style: TextStyle(color: Colors.pink[900]),
         ),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add,
-          color: Colors.pink[900],
         ),
         onPressed: () {
           Navigator.push(
@@ -56,7 +50,7 @@ class _ExpertProfileState extends State<ExpertProfile> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            getNetworkByUserId =  ResourceApiProvider.getResources(null);
+            getNetworkByUserId = ResourceApiProvider.getResources(null);
           });
         },
         child: ListView(
@@ -67,31 +61,28 @@ class _ExpertProfileState extends State<ExpertProfile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  (widget.expert.photo.length <= 0)
+                  (widget.expert.photo!.length <= 0)
                       ? CircleAvatar(
-                    radius: 80,
-                    backgroundColor: Colors.amber,
-                    child: Text(
-                      onBuildLettersPicture(
-                          widget.expert.name, widget.expert.fullName),
-                      style: TextStyle(
-                          color: Colors.pink[900],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 60),
-                    ),
-                    //child: Image.asset("assets/programmer.png"),
-                  )
+                          radius: 80,
+                          child: Text(
+                            onBuildLettersPicture(
+                                widget.expert.name, widget.expert.fullName),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 60),
+                          ),
+                          //child: Image.asset("assets/programmer.png"),
+                        )
                       : CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "${AppConfig.API_URL}public/${widget.expert.photo}"),
-                    backgroundColor: Colors.grey,
-                    radius: 80,
-                    //child: Image.asset("assets/programmer.png"),
-                  ),
+                          backgroundImage: NetworkImage(
+                              "${AppConfig.API_URL}public/${widget.expert.photo}"),
+                          backgroundColor: Colors.grey,
+                          radius: 80,
+                          //child: Image.asset("assets/programmer.png"),
+                        ),
                   Container(
                     padding: EdgeInsets.only(top: 20, bottom: 5),
                     child: Text(
-                      widget.expert.name + ' ' + widget.expert.fullName,
+                      widget.expert.name! + ' ' + widget.expert.fullName!,
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 30,
@@ -101,7 +92,17 @@ class _ExpertProfileState extends State<ExpertProfile> {
                   Container(
                     padding: EdgeInsets.only(top: 5, bottom: 20),
                     child: Text(
-                      widget.expert.specialty,
+                      widget.expert.specialty!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 5, bottom: 20),
+                    child: Text(
+                      "ORCID:${widget.expert.orcid!}",
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 20,
@@ -114,17 +115,19 @@ class _ExpertProfileState extends State<ExpertProfile> {
             Container(
               child: RichText(
                 text: TextSpan(
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                     children: [
                       WidgetSpan(
-                        child: Icon(Icons.recent_actors, size: 20, color: Colors.pink[900],),
+                        child: Icon(
+                          Icons.recent_actors,
+                          size: 20,
+                        ),
                       ),
-                      TextSpan(
-                          text:
-                          " Mis recursos"
-                      )
-                    ]
-                ),
+                      TextSpan(text: " Mis recursos")
+                    ]),
               ),
             ),
             Divider(),
@@ -132,15 +135,17 @@ class _ExpertProfileState extends State<ExpertProfile> {
               future: getNetworkByUserId,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  List<ResourceEntity>? aaa =
+                      snapshot.data as List<ResourceEntity>;
                   return ListView.builder(
-                    itemCount: snapshot.data.length,
+                    itemCount: aaa.length,
                     physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      final ResourceEntity element = snapshot.data[index];
+                      final ResourceEntity element = aaa[index];
                       return ListTile(
-                        title: Text(element.title),
-                        subtitle: Text(element.subtitle),
+                        title: Text(element.title!),
+                        subtitle: Text(element.subtitle!),
                         trailing: Container(
                           width: 100,
                           child: Row(
@@ -148,13 +153,11 @@ class _ExpertProfileState extends State<ExpertProfile> {
                               IconButton(
                                 icon: Icon(
                                   Icons.link,
-                                  color: Colors.pink[900],
                                 ),
                                 onPressed: () async {
-                                  if (await canLaunch(element.link)) {
-                                    await launch(element.link);
-                                  } else {
-                                    throw 'Could not launch $element.link';
+                                  if (!await launchUrl(
+                                      Uri.parse(element.link!))) {
+                                    throw 'Could not launch ${element.link!}';
                                   }
                                 },
                               ),
@@ -164,18 +167,28 @@ class _ExpertProfileState extends State<ExpertProfile> {
                                   color: Colors.red,
                                 ),
                                 onPressed: () async {
-                                  Dialogs.confirm(context,title: "Confirmación", message: "¿Está seguro que desea eliminar el recurso?").then((value) async  {
-                                    if(value){
-                                      final success = await ResourceApiProvider.deleteResource(element.resourceUserId);
-                                      if(success){
+                                  Dialogs.confirm(context,
+                                          title: "Confirmación",
+                                          message:
+                                              "¿Está seguro que desea eliminar el recurso?")
+                                      .then((value) async {
+                                    if (value!) {
+                                      bool? success = await ResourceApiProvider
+                                              .deleteResource(
+                                                  element.resourceUserId) ??
+                                          false;
+                                      if (success) {
                                         setState(() {
-                                          getNetworkByUserId = ResourceApiProvider.getResources(null);
+                                          getNetworkByUserId =
+                                              ResourceApiProvider.getResources(
+                                                  null);
                                         });
-                                        Dialogs.alert(context,title: "Éxito", message: "Recurso eliminado");
+                                        Dialogs.alert(context,
+                                            title: "Éxito",
+                                            message: "Recurso eliminado");
                                       }
                                     }
                                   });
-
                                 },
                               )
                             ],

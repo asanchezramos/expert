@@ -5,12 +5,11 @@ import '../managers/http_manager.dart';
 class CriterioApiProvider {
   static final HttpManager httpManager = HttpManager();
 
-  static Future<List<CriterioEntity>> getCriterios(String speciality,int expertId) async {
+  static Future<List<CriterioEntity>?> getCriterios(String? speciality,int? expertId) async {
     try {
       final responseData = await httpManager.get("mobile/criterio/$speciality/$expertId");
       return CriterioEntity.fromJSONList(responseData["data"]);
-    } catch (e) {
-      print("Error ${e.message}");
+    } catch (e) { 
       return null;
     }
   }

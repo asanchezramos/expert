@@ -7,14 +7,14 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class RegisterExpertPage extends StatefulWidget {
-  const RegisterExpertPage({Key key}) : super(key: key);
+  const RegisterExpertPage({Key? key}) : super(key: key);
 
   @override
   _RegisterExpertPageState createState() => _RegisterExpertPageState();
 }
 
 class _RegisterExpertPageState extends State<RegisterExpertPage> {
-  Future<String> imageFilePath;
+  Future<String?>? imageFilePath;
   pickImageFromGallery() {
     setState(() {
       imageFilePath = FilePickerManager.pickImageFromGallery();
@@ -40,12 +40,12 @@ class _RegisterExpertPageState extends State<RegisterExpertPage> {
   }
 
   Widget _logo() {
-    return FutureBuilder<String>(
+    return FutureBuilder<String?>(
       future: imageFilePath,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return _buildLogo(snapshot.data);
+          return _buildLogo(snapshot.data!);
         } else if (snapshot.error != null) {
           return const Text(
             'No se pudo abrir la galería',
@@ -108,8 +108,8 @@ class _RegisterExpertPageState extends State<RegisterExpertPage> {
 // }
 
 class FormExpertRegister extends StatefulWidget {
-  final Future<String> imageFilePath;
-  const FormExpertRegister({Key key, this.imageFilePath}) : super(key: key);
+  final Future<String?>? imageFilePath;
+  const FormExpertRegister({Key? key, this.imageFilePath}) : super(key: key);
 
   @override
   _FormExpertRegisterState createState() => _FormExpertRegisterState();
@@ -145,7 +145,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
             TextFormField(
               controller: _email,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -159,7 +159,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
             TextFormField(
               controller: _fullName,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -169,7 +169,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
             TextFormField(
               controller: _specialty,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -179,7 +179,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
             TextFormField(
               controller: _phone,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -192,7 +192,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
             TextFormField(
               controller: _pass,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               obscureText: true,
@@ -207,7 +207,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
               controller: _confirmPass,
               obscureText: true,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 if (val != _pass.text) return 'Not Match';
                 return null;
               },
@@ -220,7 +220,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
             ),
             InkWell(
               onTap: () async {
-                if (_form.currentState.validate() && !isBusy) {
+                if (_form.currentState!.validate() && !isBusy) {
                   setState(() {
                     isBusy = true;
                   });
@@ -273,7 +273,7 @@ class _FormExpertRegisterState extends State<FormExpertRegister> {
 }
 
 class ReturnLoginExpert extends StatelessWidget {
-  const ReturnLoginExpert({Key key}) : super(key: key);
+  const ReturnLoginExpert({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

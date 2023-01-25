@@ -1,11 +1,11 @@
 import 'dart:io';
 
 class SolicitudeRequest {
-  File repository;
-  File investigation;
-  int userId;
-  int expertId;
-  String status;
+  File? repository;
+  File? investigation;
+  int? userId;
+  int? expertId;
+  String? status;
   SolicitudeRequest({
     this.repository,
     this.investigation,

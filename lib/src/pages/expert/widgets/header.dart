@@ -2,7 +2,7 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key key, @required this.texto }) : super(key: key);
+  const Header({Key? key, required this.texto }) : super(key: key);
 
   final String texto;
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'list_students.dart';
 
 class LoginExpertPage extends StatelessWidget {
-  const LoginExpertPage({Key key}) : super(key: key);
+  const LoginExpertPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class LoginExpertPage extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
-  const Logo({Key key}) : super(key: key);
+  const Logo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class Logo extends StatelessWidget {
 }
 
 class FormExpert extends StatefulWidget {
-  const FormExpert({Key key}) : super(key: key);
+  const FormExpert({Key? key}) : super(key: key);
 
   @override
   _FormExpertState createState() => _FormExpertState();
@@ -90,7 +90,7 @@ class _FormExpertState extends State<FormExpert> {
             TextFormField(
               controller: _email,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -104,7 +104,7 @@ class _FormExpertState extends State<FormExpert> {
               controller: _pass,
               obscureText: true,
               validator: (val) {
-                if (val.isEmpty) return 'Este campo es requerido';
+                if (val!.isEmpty) return 'Este campo es requerido';
                 return null;
               },
               decoration: InputDecoration(
@@ -116,7 +116,7 @@ class _FormExpertState extends State<FormExpert> {
             ),
             InkWell(
               onTap: () async {
-                if (_form.currentState.validate() && !isBusy) {
+                if (_form.currentState!.validate() && !isBusy) {
                   setState(() {
                     isBusy = true;
                   });
@@ -168,7 +168,7 @@ class _FormExpertState extends State<FormExpert> {
 }
 
 class RegisterLogin extends StatelessWidget {
-  const RegisterLogin({Key key}) : super(key: key);
+  const RegisterLogin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

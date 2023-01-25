@@ -17,11 +17,11 @@ class _NavigatorNState extends State<NavigatorN> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Inicio'),
+            label:   'Inicio' ,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.folder),
-            title: Text('Consulta'),
+            label:   'Consulta' ,
           ),
         ],
         onTap: (index) {

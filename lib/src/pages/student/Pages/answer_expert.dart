@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AnswerExpert extends StatelessWidget {
   final solicitudeId;
-  const AnswerExpert({Key key, this.solicitudeId}) : super(key: key);
+  const AnswerExpert({Key? key, this.solicitudeId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,22 +48,20 @@ class AnswerExpert extends StatelessWidget {
 }
 
 class DataExpert extends StatefulWidget {
-  const DataExpert({Key key, this.solicitudeId}) : super(key: key);
+  const DataExpert({Key? key, this.solicitudeId}) : super(key: key);
   final solicitudeId;
   @override
   _DataExpertState createState() => _DataExpertState();
 }
 
 class _DataExpertState extends State<DataExpert> {
-  void _downloadFile(String url, String filename) async {
+  void _downloadFile(String? url, String filename) async {
     if (url == "") {
       Dialogs.alert(context,
           title: "Aviso", message: "No hay archivo para descargar");
       return;
     }
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
+    if (!await launchUrl(Uri.parse(url!))) {
       throw 'Could not launch $url';
     }
   }
@@ -74,21 +72,21 @@ class _DataExpertState extends State<DataExpert> {
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
 
-    return FutureBuilder<List<SolicitudeAnswerEntity>>(
+    return FutureBuilder<List<SolicitudeAnswerEntity>?>(
         future: AnswerApiProvider.getAnswerBySolicitude(
           widget.solicitudeId,
         ),
         builder: (
           BuildContext context,
-          AsyncSnapshot<List<SolicitudeAnswerEntity>> snapshot,
+          AsyncSnapshot<List<SolicitudeAnswerEntity>?> snapshot,
         ) {
           if (snapshot.hasData) {
             return Expanded(
                 child: ListView.builder(
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
                       SolicitudeAnswerEntity solicitudeAnswerEntity =
-                          snapshot.data[index];
+                          snapshot.data![index];
                       return Padding(
                         padding: const EdgeInsets.all(
                           20,
@@ -105,13 +103,13 @@ class _DataExpertState extends State<DataExpert> {
                                   ),
                                   Text(
                                     'Nombres: ' +
-                                        solicitudeAnswerEntity.fullName,
+                                        solicitudeAnswerEntity.fullName!,
                                     style:
                                         TextStyle(fontSize: responsive.ip(1.7)),
                                   ),
                                   Text(
                                     'Expecialista: ' +
-                                        solicitudeAnswerEntity.specialty,
+                                        solicitudeAnswerEntity.specialty!,
                                     style:
                                         TextStyle(fontSize: responsive.ip(1.7)),
                                   ),
@@ -156,7 +154,7 @@ class _DataExpertState extends State<DataExpert> {
                                   SizedBox(
                                     height: responsive.hp(1.0),
                                   ),
-                                  Text(solicitudeAnswerEntity.comments),
+                                  Text(solicitudeAnswerEntity.comments!),
                                 ],
                               ),
                             ),
@@ -170,7 +168,7 @@ class _DataExpertState extends State<DataExpert> {
                                   width: responsive.wp(25),
                                   child: solicitudeAnswerEntity.photo != ""
                                       ? Image.network(
-                                          solicitudeAnswerEntity.photo,
+                                          solicitudeAnswerEntity.photo!,
                                         )
                                       : SizedBox(),
                                 ),

@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddDimensions extends StatefulWidget {
-  String speciality;
-  int expertId;
-  int _researchId;
+  String? speciality;
+  int? expertId;
+  int? _researchId;
   DimensionEntity dimension;
   AddDimensions(this.speciality, this.expertId ,this.dimension,this._researchId);
   @override
@@ -20,8 +20,8 @@ class _AddDimensionsState extends State<AddDimensions> {
   final TextEditingController _dimensionController = TextEditingController();
   final TextEditingController _variableController = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  String sDimensionFinal = "";
-  String sVariableFinal = "";
+  String? sDimensionFinal = "";
+  String? sVariableFinal = "";
   bool isBusy = false;
   bool isEdit = false;
   @override
@@ -33,13 +33,13 @@ class _AddDimensionsState extends State<AddDimensions> {
         isEdit = true;
         sDimensionFinal =  widget.dimension.name;
         sVariableFinal =  widget.dimension.variable;
-        _dimensionController.text = widget.dimension.name;
-        _variableController.text = widget.dimension.variable;
+        _dimensionController.text = widget.dimension.name!;
+        _variableController.text = widget.dimension.variable!;
       });
     } else {
       setState(() {
         isEdit = false;
-        _dimensionController.text = widget.dimension.name;
+        _dimensionController.text = widget.dimension.name!;
       });
     }
   }
@@ -47,22 +47,17 @@ class _AddDimensionsState extends State<AddDimensions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
+        appBar: AppBar( 
           title: Text(
-            isEdit ? "Editar dimensión" : "Nueva dimesión",
-            style: TextStyle(color: Colors.pink[900]),
+            isEdit ? "Editar dimensión" : "Nueva dimesión", 
           ),
-          centerTitle: true,
-          leading: BackButton(
-            color: Colors.pink[900],
-          ),
+          centerTitle: true, 
         ),
         body: GestureDetector(
           onTap: () {
             final FocusScopeNode focus = FocusScope.of(context);
             if (!focus.hasPrimaryFocus && focus.hasFocus) {
-              FocusManager.instance.primaryFocus.unfocus();
+              FocusManager.instance.primaryFocus!.unfocus();
             }
           },
           child: Padding(
@@ -80,7 +75,7 @@ class _AddDimensionsState extends State<AddDimensions> {
                       child: TextFormField(
                         controller: _dimensionController,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         readOnly: isEdit,
@@ -92,7 +87,7 @@ class _AddDimensionsState extends State<AddDimensions> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value){
-                          _form.currentState.validate();
+                          _form.currentState!.validate();
                         },
                       ),
                     ),
@@ -102,7 +97,7 @@ class _AddDimensionsState extends State<AddDimensions> {
                       child: TextFormField(
                         controller: _variableController,
                         validator: (val) {
-                          if (val.isEmpty) return 'Este campo es requerido';
+                          if (val!.isEmpty) return 'Este campo es requerido';
                           return null;
                         },
                         minLines: 3,
@@ -115,7 +110,7 @@ class _AddDimensionsState extends State<AddDimensions> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value){
-                          _form.currentState.validate();
+                          _form.currentState!.validate();
                         },
                       ),
                     ),
@@ -131,16 +126,17 @@ class _AddDimensionsState extends State<AddDimensions> {
                       future: CriterioApiProvider.getCriterios(widget.speciality, widget.expertId),
                       builder: (_, snapshot){
                         if(snapshot.hasData){
-                          print( snapshot.data.length);
+                          List<CriterioEntity>? criteriolist = snapshot.data as List<CriterioEntity>;
+                          print( criteriolist.length);
                           return ListView.builder(
                               physics: ClampingScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: snapshot.data.length,
+                              itemCount:criteriolist.length,
                               itemBuilder: (context, index){
-                                CriterioEntity element = snapshot.data[index];
+                                CriterioEntity element = criteriolist[index];
                                 return ListTile(
                                   leading: Icon(Icons.filter_tilt_shift,color: Colors.green,),
-                                  title: Text(element.name),
+                                  title: Text(element.name!),
                                 );
                               }
 
@@ -162,14 +158,13 @@ class _AddDimensionsState extends State<AddDimensions> {
       bottomSheet: Container(
         width: double.infinity,
         height: 50,
-        child: FlatButton(
-          color: Colors.amber,
+        child: ElevatedButton( 
           child:  Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(isEdit ? "Agregar" : "Crear", style: TextStyle(fontSize: 18, color: Colors.pink[900]),),
+                Text(isEdit ? "Agregar" : "Crear", style: TextStyle(fontSize: 18,  ),),
                 Visibility(
                   visible: isBusy,
                   child: Padding(
@@ -181,7 +176,7 @@ class _AddDimensionsState extends State<AddDimensions> {
                   child: Container(
                     height: 20,
                     width: 20,
-                    child: CircularProgressIndicator(backgroundColor: Colors.pink[900],),
+                    child: CircularProgressIndicator(  ),
                   ),
                 ),
               ],
@@ -189,7 +184,7 @@ class _AddDimensionsState extends State<AddDimensions> {
           ) ,
           onPressed: () async {
 
-            if (_form.currentState.validate() && !isBusy) {
+            if (_form.currentState!.validate() && !isBusy) {
               String oMessage = "";
               if(isEdit){
                 if(sDimensionFinal != _dimensionController.text && sVariableFinal != _variableController.text){
@@ -200,7 +195,7 @@ class _AddDimensionsState extends State<AddDimensions> {
                   oMessage = "¿Está seguro de editar la variable?";
                 }
                 Dialogs.confirm(context,title: "Confirmación",message: oMessage).then((value) async {
-                  if(value){
+                  if(value!){
 
                     setState(() {
                       isBusy = true;
@@ -229,7 +224,7 @@ class _AddDimensionsState extends State<AddDimensions> {
               }else{
                 oMessage = "¿Está seguro de registar la dimensión?";
                 Dialogs.confirm(context,title: "Confirmación",message: oMessage).then((value) async {
-                  if(value){
+                  if(value!){
 
                     setState(() {
                       isBusy = true;

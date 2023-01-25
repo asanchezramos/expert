@@ -6,7 +6,7 @@ import 'package:expert/src/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key key, @required this.texto}) : super(key: key);
+  const Header({Key? key, required this.texto}) : super(key: key);
 
   final String texto;
 
@@ -25,12 +25,12 @@ class Header extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 SizedBox(
-                  child: RaisedButton(
-                    splashColor: Colors.green[300],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      side: BorderSide(color: Colors.black),
-                    ),
+                  child: ElevatedButton(
+                    // splashColor: Colors.green[300],
+                    // shape: RoundedRectangleBorder(
+                    //   borderRadius: BorderRadius.circular(18),
+                    //   side: BorderSide(color: Colors.black),
+                    // ),
                     onPressed: () {
                       AuthApiProvider.logout(context);
                     },
@@ -42,25 +42,28 @@ class Header extends StatelessWidget {
                     ),
                   ),
                 ),
-                RaisedButton(
-                  splashColor: Colors.green[300],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    side: BorderSide(color: Colors.black),
-                  ),
+                ElevatedButton(
+                  // splashColor: Colors.green[300],
+                  // shape: RoundedRectangleBorder(
+                  //   borderRadius: BorderRadius.circular(18),
+                  //   side: BorderSide(color: Colors.black),
+                  // ),
                   onPressed: () async {
                     Widget nextPage;
-                    final session = await SessionManager.getInstance();
-                    final role = session.getRole();
-                    if (role == "E") {
-                      nextPage = ResultStudentPage();
-                    } else {
-                      nextPage = ResultExpertPage();
+                    SessionManager? session =
+                        await SessionManager.getInstance();
+                    if (session != null) {
+                      final role = session.getRole();
+                      if (role == "E") {
+                        nextPage = ResultStudentPage();
+                      } else {
+                        nextPage = ResultExpertPage();
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => nextPage),
+                      );
                     }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => nextPage),
-                    );
                   },
                   child: Text(
                     "Resultados",
@@ -92,7 +95,7 @@ class Header extends StatelessWidget {
 }
 
 class Header2 extends StatelessWidget {
-  const Header2({Key key, @required this.texto}) : super(key: key);
+  const Header2({Key? key, required this.texto}) : super(key: key);
 
   final String texto;
 
@@ -109,12 +112,12 @@ class Header2 extends StatelessWidget {
         children: <Widget>[
           Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
             SizedBox(
-              child: RaisedButton(
-                splashColor: Colors.green[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  side: BorderSide(color: Colors.black),
-                ),
+              child: ElevatedButton(
+                // splashColor: Colors.green[300],
+                // shape: RoundedRectangleBorder(
+                //   borderRadius: BorderRadius.circular(18),
+                //   side: BorderSide(color: Colors.black),
+                // ),
                 onPressed: () {
                   AuthApiProvider.logout(context);
                 },

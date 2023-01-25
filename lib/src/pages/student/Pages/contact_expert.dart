@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactExpert extends StatelessWidget {
-  final ExpertEntity expertEntity;
-  const ContactExpert({Key key, this.expertEntity}) : super(key: key);
+  final ExpertEntity? expertEntity;
+  const ContactExpert({Key? key, this.expertEntity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,24 +51,27 @@ class ContactExpert extends StatelessWidget {
 }
 
 class DataExpert extends StatefulWidget {
-  const DataExpert({Key key, this.expertEntity}) : super(key: key);
-  final ExpertEntity expertEntity;
+  const DataExpert({Key? key, this.expertEntity}) : super(key: key);
+  final ExpertEntity? expertEntity;
 
   @override
   _DataExpertState createState() => _DataExpertState();
 }
 
 class _DataExpertState extends State<DataExpert> {
-  File _repositoryFile;
-  File _investigationFile;
+  File? _repositoryFile;
+  File? _investigationFile;
   bool isBusy = false;
 
   Future getFile() async {
     try {
-      File file = await FilePicker.getFile(
-        type: FileType.custom,
-      );
-      return file;
+      FilePickerResult? rs = await FilePicker.platform.pickFiles();
+      if (rs != null) {
+        File file = File(rs.files.single.path!);
+        return file;
+      } else {
+        throw 'Could not launch  ';
+      }
     } catch (e) {
       print("Error while picking the file: " + e.toString());
     }
@@ -77,11 +80,11 @@ class _DataExpertState extends State<DataExpert> {
   _launchURL() async {
     const url =
         'https://drive.google.com/drive/folders/101SIsDTw4ZKzjANtXUrKFXKhHUF3nlX9';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
+        
+    if (!await launchUrl(Uri.parse(url))) {
       throw 'Could not launch $url';
     }
+     
   }
 
   @override
@@ -100,11 +103,11 @@ class _DataExpertState extends State<DataExpert> {
                 height: responsive.hp(2.0),
               ),
               Text(
-                'Nombre: ' + widget.expertEntity.fullName,
+                'Nombre: ' + widget.expertEntity!.fullName!,
                 style: TextStyle(fontSize: responsive.ip(1.7)),
               ),
               Text(
-                'Especialista: ' + widget.expertEntity.specialty,
+                'Especialista: ' + widget.expertEntity!.specialty!,
                 style: TextStyle(fontSize: responsive.ip(1.7)),
               ),
               SizedBox(
@@ -189,7 +192,7 @@ class _DataExpertState extends State<DataExpert> {
               SizedBox(
                 height: responsive.hp(2),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: _launchURL,
                 child: Text('Respositorio \n de matrices'),
               ),
@@ -205,7 +208,7 @@ class _DataExpertState extends State<DataExpert> {
                     final request = SolicitudeRequest(
                       investigation: _investigationFile,
                       repository: _repositoryFile,
-                      expertId: widget.expertEntity.id,
+                      expertId: widget.expertEntity!.id,
                       status: 'P',
                     );
                     final success =
@@ -257,9 +260,9 @@ class _DataExpertState extends State<DataExpert> {
                 height: responsive.hp(20),
                 width: responsive.wp(25),
                 //color: Colors.white,
-                child: widget.expertEntity.photo != ""
+                child: widget.expertEntity!.photo != ""
                     ? Image.network(
-                        widget.expertEntity.photo,
+                        widget.expertEntity!.photo!,
                       )
                     : SizedBox(),
               ),
@@ -275,9 +278,9 @@ class _DataExpertState extends State<DataExpert> {
                           builder: (context) => AlertDialog(
                                 title: Text('Contactar'),
                                 content: Text(
-                                    'Teléfono: ' + widget.expertEntity.phone),
+                                    'Teléfono: ' + widget.expertEntity!.phone!),
                                 actions: <Widget>[
-                                  FlatButton(
+                                  ElevatedButton(
                                     child: Text('OK'),
                                     onPressed: () {
                                       Navigator.of(context).pop();

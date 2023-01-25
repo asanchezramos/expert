@@ -7,8 +7,8 @@ class FunkyNotification extends StatefulWidget {
 
 class FunkyNotificationState extends State<FunkyNotification>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<Offset> position;
+  AnimationController? controller;
+  late Animation<Offset> position;
 
   @override
   void initState() {

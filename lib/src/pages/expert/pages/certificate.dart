@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 class Certificate extends StatelessWidget {
   final solicitudeId;
-  const Certificate({Key key, this.solicitudeId}) : super(key: key);
+  const Certificate({Key? key, this.solicitudeId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,20 +53,23 @@ class Certificate extends StatelessWidget {
 }
 
 class DataExpert extends StatefulWidget {
-  const DataExpert({Key key, this.solicitudeId}) : super(key: key);
+  const DataExpert({Key? key, this.solicitudeId}) : super(key: key);
   final solicitudeId;
   @override
   _DataExpertState createState() => _DataExpertState();
 }
 
 class _DataExpertState extends State<DataExpert> {
-  File _repositoryFile;
+  File? _repositoryFile;
   Future getFile() async {
     try {
-      File file = await FilePicker.getFile(
-        type: FileType.custom,
-      );
-      return file;
+      FilePickerResult? rs = await FilePicker.platform.pickFiles();
+      if (rs != null) {
+        File file = File(rs.files.single.path!);
+        return file;
+      } else {
+        throw 'Could not launch  ';
+      }
     } catch (e) {
       print("Error while picking the file: " + e.toString());
     }
